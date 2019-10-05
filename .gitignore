@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# 编译后文件
+build.*
