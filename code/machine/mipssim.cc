@@ -53,8 +53,7 @@ class Instruction {
 //	times concurrently -- one for each thread executing user code.
 //----------------------------------------------------------------------
 
-void
-Machine::Run()
+void Machine::Run()
 {
     Instruction *instr = new Instruction;  // storage for decoded instruction
 
@@ -65,9 +64,9 @@ Machine::Run()
     kernel->interrupt->setStatus(UserMode);
     for (;;) {
         OneInstruction(instr);
-	kernel->interrupt->OneTick();
-	if (singleStep && (runUntilTime <= kernel->stats->totalTicks))
-	  Debugger();
+		kernel->interrupt->OneTick();
+		if (singleStep && (runUntilTime <= kernel->stats->totalTicks))
+			Debugger();
     }
 }
 

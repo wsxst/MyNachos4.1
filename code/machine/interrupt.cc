@@ -118,7 +118,7 @@ void Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 // Parameters:
 //	"now" -- the new interrupt status
 //----------------------------------------------------------------------
-
+//恢复中断的时候进行时钟模拟
 IntStatus Interrupt::SetLevel(IntStatus now)
 {
     IntStatus old = level;
@@ -150,10 +150,10 @@ Interrupt::OneTick()
 // advance simulated time
     if (status == SystemMode) {
         stats->totalTicks += SystemTick;
-	stats->systemTicks += SystemTick;
+	    stats->systemTicks += SystemTick;
     } else {
-	stats->totalTicks += UserTick;
-	stats->userTicks += UserTick;
+        stats->totalTicks += UserTick;
+        stats->userTicks += UserTick;
     }
     DEBUG(dbgInt, "== Tick " << stats->totalTicks << " ==");
 
@@ -163,12 +163,11 @@ Interrupt::OneTick()
 				// interrupts disabled)
     CheckIfDue(FALSE);		// check for pending interrupts
     ChangeLevel(IntOff, IntOn);	// re-enable interrupts
-    if (yieldOnReturn) {	// if the timer device handler asked 
-    				// for a context switch, ok to do it now
-	yieldOnReturn = FALSE;
- 	status = SystemMode;		// yield is a kernel routine
-	kernel->currentThread->Yield();
-	status = oldStatus;
+    if (yieldOnReturn) {	// if the timer device handler asked for a context switch, ok to do it now
+        yieldOnReturn = FALSE;
+        status = SystemMode;		// yield is a kernel routine
+        kernel->currentThread->Yield();
+        status = oldStatus;
     }
 }
 
@@ -273,8 +272,7 @@ void Interrupt::Schedule(CallBackObj *toCall, int fromNow, IntType type)
 //		so we should simply advance the clock to when the next 
 //		pending interrupt would occur (if any).
 //----------------------------------------------------------------------
-bool
-Interrupt::CheckIfDue(bool advanceClock)
+bool Interrupt::CheckIfDue(bool advanceClock)
 {
     PendingInterrupt *next;
     Statistics *stats = kernel->stats;
@@ -310,9 +308,8 @@ Interrupt::CheckIfDue(bool advanceClock)
     do {
         next = pending->RemoveFront();    // pull interrupt off list
         next->callOnInterrupt->CallBack();// call the interrupt handler
-	delete next;
-    } while (!pending->IsEmpty() 
-    		&& (pending->Front()->when <= stats->totalTicks));
+	    delete next;
+    } while (!pending->IsEmpty() && (pending->Front()->when <= stats->totalTicks));
     inHandler = FALSE;
     return TRUE;
 }

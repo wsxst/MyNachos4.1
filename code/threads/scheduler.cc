@@ -29,9 +29,15 @@
 //	Initially, no ready threads.
 //----------------------------------------------------------------------
 
+int cmp(Thread* t1,Thread* t2)
+{
+    return t1->getPriority()<t2->getPriority();
+}
+
 Scheduler::Scheduler()
 {
-    readyList = new List<Thread *>;
+    // readyList = new List<Thread *>;
+    readyList = new SortedList<Thread *>(cmp);
     toBeDestroyed = NULL;
 }
 
@@ -55,11 +61,11 @@ Scheduler::~Scheduler()
 
 void Scheduler::ReadyToRun(Thread *thread)
 {
-    ASSERT(kernel->interrupt->getLevel() == IntOff);
+    ASSERT(kernel->interrupt->getLevel() == IntOff);//判断是否已经关中断
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
-    thread->setStatus(READY);
-    readyList->Append(thread);
+    thread->setStatus(READY);//将该线程状态设置为就绪态
+    readyList->Append(thread);//向就绪队列中插入该线程
 }
 
 //----------------------------------------------------------------------

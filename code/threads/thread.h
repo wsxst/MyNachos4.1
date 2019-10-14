@@ -113,6 +113,8 @@ public:
   char *getName() { return (name); }
   void removeAThread(int tid);
   int addAThread(Thread* t);
+  int getPriority(){ return priority; }
+  void setPriority(int priority) { this->priority = priority; }
 
   int getTID() { return this->threadID; }
   int getTUID() { return this->userID; }
@@ -132,6 +134,7 @@ private:
   
   int userID;           //线程所属的用户ID
   int threadID;         //线程ID
+  int priority;
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.

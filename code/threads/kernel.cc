@@ -108,6 +108,7 @@ void Kernel::Initialize()
     // object to save its state.
     memset(threadArray,0,sizeof(threadArray));
     currentThread = new Thread("main");
+    currentThread->setPriority(8);
     currentThread->setStatus(RUNNING);
 
     stats = new Statistics();       // collect statistics
@@ -267,12 +268,12 @@ void Kernel::NetworkTest()
 
 void Kernel::TS()
 {
-    cout<<"线程ID\t线程名称\t拥有者\t线程状态"<<endl;
+    cout<<"线程ID\t线程名称\t拥有者\t线程状态\t优先级"<<endl;
     for(int i=0;i<MaxThreadNum;++i)
     {
         if(kernel->threadArray[i])
         {
-            printf("%d\t%s\t%d\t%s\n",kernel->threadArray[i]->getTID(),kernel->threadArray[i]->getName(),kernel->threadArray[i]->getTUID(),threadStatusName[kernel->threadArray[i]->getStatus()]);
+            printf("%d\t%s\t%d\t%s\t%d\n",kernel->threadArray[i]->getTID(),kernel->threadArray[i]->getName(),kernel->threadArray[i]->getTUID(),threadStatusName[kernel->threadArray[i]->getStatus()],kernel->threadArray[i]->getPriority());
         }
     }
 }
