@@ -40,7 +40,9 @@ class Kernel {
     void ConsoleTest();         // interactive console self test
 
     void NetworkTest();         // interactive 2-machine network test
-    
+
+    void TS();
+
 // These are public for notational convenience; really, 
 // they're global variables used everywhere.
 
@@ -56,6 +58,7 @@ class Kernel {
     FileSystem *fileSystem;     
     PostOfficeInput *postOfficeIn;
     PostOfficeOutput *postOfficeOut;
+    Thread* threadArray[MaxThreadNum];//线程数组
 
     int hostName;               // machine identifier
 

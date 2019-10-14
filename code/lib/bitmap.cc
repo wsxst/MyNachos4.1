@@ -164,8 +164,7 @@ Bitmap::Print() const
 // 	Test whether this module is working.
 //----------------------------------------------------------------------
 
-void
-Bitmap::SelfTest() 
+void Bitmap::SelfTest() 
 {
     int i;
     

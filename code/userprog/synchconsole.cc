@@ -41,8 +41,7 @@ SynchConsoleInput::~SynchConsoleInput()
 //      Read a character typed at the keyboard, waiting if necessary.
 //----------------------------------------------------------------------
 
-char
-SynchConsoleInput::GetChar()
+char SynchConsoleInput::GetChar()
 {
     char ch;
 

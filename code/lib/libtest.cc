@@ -64,15 +64,12 @@ static char *hashTestVector[] = { "0", "1", "2", "3", "4", "5", "6",
 //	hash tables.
 //----------------------------------------------------------------------
 
-void
-LibSelfTest () {
+void LibSelfTest () {
     Bitmap *map = new Bitmap(200);
     List<int> *list = new List<int>;
     SortedList<int> *sortList = new SortedList<int>(IntCompare);
-    HashTable<int, char *> *hashTable = 
-	new HashTable<int, char *>(HashKey, HashInt);
+    HashTable<int, char *> *hashTable = new HashTable<int, char *>(HashKey, HashInt);
 	
-		
     map->SelfTest();
     list->SelfTest(listTestVector, sizeof(listTestVector)/sizeof(int));
     sortList->SelfTest(listTestVector, sizeof(listTestVector)/sizeof(int));

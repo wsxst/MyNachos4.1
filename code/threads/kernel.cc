@@ -30,6 +30,7 @@ Kernel::Kernel(int argc, char **argv)
     debugUserProg = FALSE;
     consoleIn = NULL;  // default is stdin
     consoleOut = NULL; // default is stdout
+    
 #ifndef FILESYS_STUB
     formatFlag = FALSE;
 #endif
@@ -105,6 +106,7 @@ void Kernel::Initialize()
     // We didn't explicitly allocate the current thread we are running in.
     // But if it ever tries to give up the CPU, we better have a Thread
     // object to save its state.
+    memset(threadArray,0,sizeof(threadArray));
     currentThread = new Thread("main");
     currentThread->setStatus(RUNNING);
 
@@ -156,11 +158,13 @@ Kernel::~Kernel()
 
 void Kernel::ThreadSelfTest()
 {
+    /*
     Semaphore *semaphore;
     SynchList<int> *synchList;
 
     LibSelfTest(); // test library routines
 
+    DEBUG(dbgThread, "进入系统提供的线程测试环节！");
     currentThread->SelfTest(); // test thread switching
 
     // test semaphore operation
@@ -173,6 +177,8 @@ void Kernel::ThreadSelfTest()
     synchList = new SynchList<int>;
     synchList->SelfTest(9);
     delete synchList;
+    */
+   currentThread->MyThreadTest();
 }
 
 //----------------------------------------------------------------------
@@ -192,6 +198,7 @@ void Kernel::ConsoleTest()
     do
     {
         ch = synchConsoleIn->GetChar();
+        // cout<<"我获取到字符了："<<ch;
         if (ch != EOF)
             synchConsoleOut->PutChar(ch); // echo it!
     } while (ch != EOF);
@@ -214,7 +221,6 @@ void Kernel::ConsoleTest()
 
 void Kernel::NetworkTest()
 {
-
     if (hostName == 0 || hostName == 1)
     {
         // if we're machine 1, send to 0 and vice versa
@@ -257,4 +263,16 @@ void Kernel::NetworkTest()
     }
 
     // Then we're done!
+}
+
+void Kernel::TS()
+{
+    cout<<"线程ID\t线程名称\t拥有者\t线程状态"<<endl;
+    for(int i=0;i<MaxThreadNum;++i)
+    {
+        if(kernel->threadArray[i])
+        {
+            printf("%d\t%s\t%d\t%s\n",kernel->threadArray[i]->getTID(),kernel->threadArray[i]->getName(),kernel->threadArray[i]->getTUID(),threadStatusName[kernel->threadArray[i]->getStatus()]);
+        }
+    }
 }

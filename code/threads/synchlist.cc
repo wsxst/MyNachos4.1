@@ -125,3 +125,11 @@ void SynchList<T>::SelfTest(T val)
     }
     delete selfTestPing;
 }
+
+template <class T>
+void SynchList<T>::RemoveSpecificOne(T i)
+{
+    lock->Acquire();
+    list->Remove(i);
+    lock->Release();
+}

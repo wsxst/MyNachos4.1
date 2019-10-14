@@ -215,6 +215,7 @@ int main(int argc, char **argv)
         }
         else if (strcmp(argv[i], "-C") == 0)
         {
+            cout<<"交互式模式启动！"<<endl;
             consoleTestFlag = TRUE;
         }
         else if (strcmp(argv[i], "-N") == 0)
@@ -272,9 +273,12 @@ int main(int argc, char **argv)
     ::tut::runner.get().run_tests(); //run all unit tests
 #endif
 
+    DEBUG(dbgAll, "现在准备创建内核！");
     kernel = new Kernel(argc, argv);
+    DEBUG(dbgAll, "内核创建完成！");
 
     kernel->Initialize();
+    DEBUG(dbgAll, "内核初始化完成！");
 
     CallOnUserAbort(Cleanup); // if user hits ctl-C
 

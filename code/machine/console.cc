@@ -61,8 +61,7 @@ ConsoleInput::~ConsoleInput()
 //	Then invoke the "callBack" registered by whoever wants the character.
 //----------------------------------------------------------------------
 
-void
-ConsoleInput::CallBack()
+void ConsoleInput::CallBack()
 {
   char c;
   int readCount;
@@ -98,8 +97,7 @@ ConsoleInput::CallBack()
 //	Either return the character, or EOF if none buffered.
 //----------------------------------------------------------------------
 
-char
-ConsoleInput::GetChar()
+char ConsoleInput::GetChar()
 {
    char ch = incoming;
 
@@ -163,8 +161,7 @@ ConsoleOutput::CallBack()
 //	to occur in the future, and return.
 //----------------------------------------------------------------------
 
-void
-ConsoleOutput::PutChar(char ch)
+void ConsoleOutput::PutChar(char ch)
 {
     ASSERT(putBusy == FALSE);
     WriteFile(writeFileNo, &ch, sizeof(char));

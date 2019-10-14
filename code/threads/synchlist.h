@@ -29,8 +29,8 @@ class SynchList {
     void Append(T item);	// append item to the end of the list,
 				// and wake up any thread waiting in remove
 
-    T RemoveFront();		// remove the first item from the front of
-				// the list, waiting if the list is empty
+    T RemoveFront();		// remove the first item from the front of the list, waiting if the list is empty
+    void RemoveSpecificOne(T i);
 
     void Apply(void (*f)(T)); // apply function to all elements in list
 

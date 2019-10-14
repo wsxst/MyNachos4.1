@@ -102,8 +102,7 @@ Interrupt::~Interrupt()
 //	"now" -- the new interrupt status
 //----------------------------------------------------------------------
 
-void
-Interrupt::ChangeLevel(IntStatus old, IntStatus now)
+void Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 {
     level = now;
     DEBUG(dbgInt, "\tinterrupts: " << intLevelNames[old] << " -> " << intLevelNames[now]);
@@ -120,8 +119,7 @@ Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 //	"now" -- the new interrupt status
 //----------------------------------------------------------------------
 
-IntStatus
-Interrupt::SetLevel(IntStatus now)
+IntStatus Interrupt::SetLevel(IntStatus now)
 {
     IntStatus old = level;
     
@@ -129,9 +127,8 @@ Interrupt::SetLevel(IntStatus now)
     ASSERT((now == IntOff) || (inHandler == FALSE));
 
     ChangeLevel(old, now);			// change to new state
-    if ((now == IntOn) && (old == IntOff)) {
-	OneTick();				// advance simulated time
-    }
+    // advance simulated time
+    if ((now == IntOn) && (old == IntOff)) { OneTick();}
     return old;
 }
 
@@ -253,8 +250,7 @@ Interrupt::Halt()
 //		 interrupt is to occur
 //	"type" is the hardware device that generated the interrupt
 //----------------------------------------------------------------------
-void
-Interrupt::Schedule(CallBackObj *toCall, int fromNow, IntType type)
+void Interrupt::Schedule(CallBackObj *toCall, int fromNow, IntType type)
 {
     int when = kernel->stats->totalTicks + fromNow;
     PendingInterrupt *toOccur = new PendingInterrupt(toCall, when, type);

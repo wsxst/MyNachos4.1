@@ -205,8 +205,7 @@ List<T>::IsInList(T item) const
 //----------------------------------------------------------------------
 
 template <class T>
-void
-List<T>::Apply(void (*func)(T)) const
+void List<T>::Apply(void (*func)(T)) const
 { 
     ListElement<T> *ptr;
 

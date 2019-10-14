@@ -21,6 +21,8 @@
 #include "switch.h"
 #include "synch.h"
 #include "sysdep.h"
+#include <unistd.h>
+#include <sys/types.h>
 
 // this is put at the top of the execution stack, for detecting stack overflows
 const int STACK_FENCEPOST = 0xdedbeef;
@@ -35,6 +37,9 @@ const int STACK_FENCEPOST = 0xdedbeef;
 
 Thread::Thread(char *threadName)
 {
+    threadID = addAThread(this);
+    ASSERT(threadID!=-1);
+    userID = (int)getuid();
     name = threadName;
     stackTop = NULL;
     stack = NULL;
@@ -65,6 +70,7 @@ Thread::~Thread()
     ASSERT(this != kernel->currentThread);
     if (stack != NULL)
         DeallocBoundedArray((char *)stack, StackSize * sizeof(int));
+    removeAThread(this->getTID());
 }
 
 //----------------------------------------------------------------------
@@ -89,11 +95,6 @@ Thread::~Thread()
 
 void Thread::Fork(VoidFunctionPtr func, void *arg)
 {
-    //TODO:自己加的
-    if(Thread::currentThreadNum+1>MaxThreadNum)
-    {
-        
-    }
     Interrupt *interrupt = kernel->interrupt;
     Scheduler *scheduler = kernel->scheduler;
     IntStatus oldLevel;
@@ -103,8 +104,7 @@ void Thread::Fork(VoidFunctionPtr func, void *arg)
     StackAllocate(func, arg);
 
     oldLevel = interrupt->SetLevel(IntOff);
-    scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts
-                                 // are disabled!
+    scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts are disabled!
     (void)interrupt->SetLevel(oldLevel);
 }
 
@@ -409,8 +409,9 @@ static void SimpleThread(int which)
 
     for (num = 0; num < 5; num++)
     {
-        cout << "*** thread " << which << " looped " << num << " times\n";
+        cout << "线程" << which << "已经循环了" << num << "次\n";
         kernel->currentThread->Yield();
+        
     }
 }
 
@@ -429,4 +430,35 @@ void Thread::SelfTest()
     t->Fork((VoidFunctionPtr)SimpleThread, (void *)1);
     kernel->currentThread->Yield();
     SimpleThread(0);
+}
+
+void Thread::MyThreadTest()
+{
+    DEBUG(dbgThread, "进入自己写的线程测试环节：");
+    Thread* t[MaxThreadNum+1]={0};
+    char tname[MaxThreadNum+1][20]={0};
+    for(int i=0;i<=MaxThreadNum;++i)
+    {
+        sprintf(tname[i],"线程%d",i);
+        t[i] = new Thread(tname[i]);
+        kernel->TS();
+    }
+}
+
+int Thread::addAThread(Thread* t)
+{
+    for(int i=0;i<MaxThreadNum;++i)
+    {
+        if(!kernel->threadArray[i])
+        {
+            kernel->threadArray[i] = t;
+            return i;
+        }
+    }
+    return -1;
+}
+
+void Thread::removeAThread(int tid)
+{
+    kernel->threadArray[tid] = NULL;
 }

@@ -52,7 +52,6 @@
 // For simplicity, I just take the maximum over all architectures.
 #define MachineStateSize 75
 
-//TODO:自己加的
 //最多同时存在128个线程
 #define MaxThreadNum 128
 
@@ -68,6 +67,10 @@ enum ThreadStatus
   READY,
   BLOCKED
 };
+
+static const char threadStatusName[4][20] = {"JUST_CREATED","RUNNING","READY","BLOCKED"};
+
+static int currentThreadNum = 0;//当前存在的线程数
 
 // The following class defines a "thread control block" -- which
 // represents a single thread of execution.
@@ -106,9 +109,17 @@ public:
 
   void CheckOverflow(); // Check if thread stack has overflowed
   void setStatus(ThreadStatus st) { status = st; }
+  ThreadStatus getStatus() { return this->status; }
   char *getName() { return (name); }
+  void removeAThread(int tid);
+  int addAThread(Thread* t);
+
+  int getTID() { return this->threadID; }
+  int getTUID() { return this->userID; }
+
   void Print() { cout << name; }
   void SelfTest(); // test whether thread impl is working
+  void MyThreadTest();
 
 private:
   // some of the private data for this class is listed above
@@ -118,10 +129,9 @@ private:
                        // (If NULL, don't deallocate stack)
   ThreadStatus status; // ready, running or blocked
   char *name;          //这就是个线程名，应该是方便调试用的
-  //TODO:自己加的
+  
   int userID;           //线程所属的用户ID
   int threadID;         //线程ID
-  static int currentThreadNum; //当前线程数量
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.
