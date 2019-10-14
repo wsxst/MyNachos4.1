@@ -39,6 +39,7 @@ Thread::Thread(char *threadName)
 {
     threadID = addAThread(this);
     ASSERT(threadID!=-1);
+    priority = 8;
     userID = (int)getuid();
     name = threadName;
     stackTop = NULL;
@@ -208,12 +209,14 @@ void Thread::Yield()
 
     DEBUG(dbgThread, "Yielding thread: " << name);
 
+    //先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
     nextThread = kernel->scheduler->FindNextToRun();
     if (nextThread != NULL)
     {
         kernel->scheduler->ReadyToRun(this);
         kernel->scheduler->Run(nextThread, FALSE);
     }
+    
     (void)kernel->interrupt->SetLevel(oldLevel);
 }
 
@@ -410,9 +413,10 @@ static void SimpleThread(int which)
     for (num = 0; num < 5; num++)
     {
         cout << "线程" << which << "已经循环了" << num << "次\n";
-        kernel->currentThread->Yield();
-        
     }
+    kernel->TS();
+    kernel->currentThread->Yield();
+    kernel->TS();
 }
 
 //----------------------------------------------------------------------
@@ -435,14 +439,21 @@ void Thread::SelfTest()
 void Thread::MyThreadTest()
 {
     DEBUG(dbgThread, "进入自己写的线程测试环节：");
-    Thread* t[MaxThreadNum+1]={0};
-    char tname[MaxThreadNum+1][20]={0};
-    for(int i=0;i<=MaxThreadNum;++i)
+    /*lab1测试代码*/
+    for(int i=1;;++i)
     {
-        sprintf(tname[i],"线程%d",i);
-        t[i] = new Thread(tname[i]);
-        kernel->TS();
+        Thread *t = new Thread("fork出来的进程");
+        t->Fork((VoidFunctionPtr)SimpleThread,(void*)i);
     }
+    SimpleThread(0);
+    
+    // Thread* t1 = new Thread("线程1");
+    // t1->setPriority(7);
+    // t1->Fork()
+    // Thread* t2 = new Thread("线程2");
+    // t2->setPriority(6);
+    // Thread* t2 = new Thread("线程2");
+    // t2->setPriority(6);
 }
 
 int Thread::addAThread(Thread* t)
