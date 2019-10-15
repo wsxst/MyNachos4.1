@@ -463,12 +463,7 @@ void Thread::MyThreadTest()
     /*lab2测试代码*/
     Thread* t1 = new Thread("线程1");
     t1->setPriority(7);
-    t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);
-    kernel->currentThread->Yield();
-    
-    // Thread* t3 = new Thread("线程3");
-    // t3->setPriority(5);
-    // t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
+    t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);   
 }
 
 int Thread::addAThread(Thread* t)
