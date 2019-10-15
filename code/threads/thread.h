@@ -58,6 +58,7 @@
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 const int StackSize = (8 * 1024); // in words
+const int timeSlice = 3;
 
 // Thread state
 enum ThreadStatus
@@ -115,11 +116,12 @@ public:
   int addAThread(Thread* t);
   int getPriority(){ return priority; }
   void setPriority(int priority) { this->priority = priority; }
-
   int getTID() { return this->threadID; }
   int getTUID() { return this->userID; }
+  int getRemainTime() { return this->timeSliceRemain; }
+  int setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
 
-  void Print() { cout << name; }
+  void Print() { if(this) printf("%d\t%s\t%d\t%s\t%d\n",getTID(),getName(),getTUID(),threadStatusName[getStatus()],getPriority()); }
   void SelfTest(); // test whether thread impl is working
   void MyThreadTest();
 
@@ -135,6 +137,7 @@ private:
   int userID;           //线程所属的用户ID
   int threadID;         //线程ID
   int priority;
+  int timeSliceRemain;
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.

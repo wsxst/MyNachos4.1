@@ -39,6 +39,7 @@ Thread::Thread(char *threadName)
 {
     threadID = addAThread(this);
     ASSERT(threadID!=-1);
+    timeSliceRemain = timeSlice;
     priority = 8;
     userID = (int)getuid();
     name = threadName;
@@ -107,7 +108,7 @@ void Thread::Fork(VoidFunctionPtr func, void *arg)
     oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts are disabled!
     (void)interrupt->SetLevel(oldLevel);
-    kernel->currentThread->Yield();
+    // kernel->currentThread->Yield();
 }
 
 //----------------------------------------------------------------------
@@ -210,16 +211,18 @@ void Thread::Yield()
 
     DEBUG(dbgThread, "Yielding thread: " << name);
 
-    //原来的逻辑：先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
-    // nextThread = kernel->scheduler->FindNextToRun();
-    // if (nextThread != NULL)
-    // {
-    //     kernel->scheduler->ReadyToRun(this);
-    //     kernel->scheduler->Run(nextThread, FALSE);
-    // }
-    kernel->scheduler->ReadyToRun(this);
+    //1.原来的逻辑：先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
     nextThread = kernel->scheduler->FindNextToRun();
-    if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
+    if (nextThread != NULL)
+    {
+        kernel->scheduler->ReadyToRun(this);
+        kernel->scheduler->Run(nextThread, FALSE);
+    }
+
+    //2.抢占式FIFO
+    // kernel->scheduler->ReadyToRun(this);
+    // nextThread = kernel->scheduler->FindNextToRun();
+    // if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
 
     (void)kernel->interrupt->SetLevel(oldLevel);
 }
@@ -424,7 +427,7 @@ static void SimpleThread(int which)
         t3->setPriority(5);
         t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
     }
-    for (int num = 0; num < 5; num++)
+    for (int num = 0; num < 2000; num++)
     {
         IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
         cout << "线程" << which << "已经循环了" << num << "次\n";
@@ -463,7 +466,8 @@ void Thread::MyThreadTest()
     /*lab2测试代码*/
     Thread* t1 = new Thread("线程1");
     t1->setPriority(7);
-    t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);   
+    t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);
+    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
 }
 
 int Thread::addAThread(Thread* t)

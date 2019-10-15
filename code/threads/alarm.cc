@@ -45,10 +45,12 @@ Alarm::Alarm(bool doRandom)
 
 void Alarm::CallBack() 
 {
+    kernel->currentThread->setRemainTime(kernel->currentThread->getRemainTime() - 1);
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
     
-    if (status != IdleMode) {
+    if (status != IdleMode && kernel->currentThread->getRemainTime()<=0) {
+        cout<<kernel->currentThread->getName()<<"的时间片到了，下CPU！"<<endl;
 	    interrupt->YieldOnReturn();
     }
 }
