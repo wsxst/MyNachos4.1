@@ -179,6 +179,8 @@ void Kernel::ThreadSelfTest()
     synchList->SelfTest(9);
     delete synchList;
     */
+    // DEBUG(dbgThread, "进入系统提供的线程测试环节！");
+    // LibSelfTest(); // test library routines
    currentThread->MyThreadTest();
 }
 

@@ -31,7 +31,9 @@
 
 int cmp(Thread* t1,Thread* t2)
 {
-    return t1->getPriority()<t2->getPriority();
+    if(t1->getPriority()<t2->getPriority()) return -1;
+    else if(t1->getPriority()>t2->getPriority()) return 1;
+    return 0;
 }
 
 Scheduler::Scheduler()
@@ -65,7 +67,8 @@ void Scheduler::ReadyToRun(Thread *thread)
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
     thread->setStatus(READY);//将该线程状态设置为就绪态
-    readyList->Append(thread);//向就绪队列中插入该线程
+    readyList->Insert(thread);//向就绪队列中插入该线程
+    cout<<"就绪队列队头现在是："<<readyList->Front()->getName()<<endl;
 }
 
 //----------------------------------------------------------------------
@@ -86,6 +89,9 @@ Thread* Scheduler::FindNextToRun()
     }
     else
     {
+        cout<<"当前全部线程状态："<<endl;
+        kernel->TS();
+        cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<"；优先级："<<readyList->Front()->getPriority()<<endl;
         return readyList->RemoveFront();
     }
 }

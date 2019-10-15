@@ -43,13 +43,12 @@ Alarm::Alarm(bool doRandom)
 //      if we're currently running something (in other words, not idle).
 //----------------------------------------------------------------------
 
-void 
-Alarm::CallBack() 
+void Alarm::CallBack() 
 {
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
     
     if (status != IdleMode) {
-	interrupt->YieldOnReturn();
+	    interrupt->YieldOnReturn();
     }
 }

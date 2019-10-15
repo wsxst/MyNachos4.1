@@ -106,8 +106,8 @@ void Thread::Fork(VoidFunctionPtr func, void *arg)
 
     oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts are disabled!
-    kernel->currentThread->Yield();
     (void)interrupt->SetLevel(oldLevel);
+    kernel->currentThread->Yield();
 }
 
 //----------------------------------------------------------------------
@@ -217,10 +217,9 @@ void Thread::Yield()
     //     kernel->scheduler->ReadyToRun(this);
     //     kernel->scheduler->Run(nextThread, FALSE);
     // }
-    //抢占式的FIFO，先自己下CPU，进入就绪队列，然后再在就绪队列中进行选择
     kernel->scheduler->ReadyToRun(this);
     nextThread = kernel->scheduler->FindNextToRun();
-    if(nextThread) kernel->scheduler->Run(nextThread,FALSE);
+    if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
 
     (void)kernel->interrupt->SetLevel(oldLevel);
 }
@@ -413,13 +412,24 @@ void Thread::RestoreUserState()
 
 static void SimpleThread(int which)
 {
-    // int num;
-
-    // for (num = 0; num < 5; num++)
-    // {
-    //     cout << "线程" << which << "已经循环了" << num << "次\n";
-    // }
-    cout<<"线程"<<which<<"运行！"<<endl;
+    if(which==1)
+    {
+        Thread* t2 = new Thread("线程2");
+        t2->setPriority(6);
+        t2->Fork((VoidFunctionPtr)SimpleThread,(void*)2);
+    }
+    else if(which==2)
+    {
+        Thread* t3 = new Thread("线程3");
+        t3->setPriority(5);
+        t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
+    }
+    for (int num = 0; num < 5; num++)
+    {
+        IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+        cout << "线程" << which << "已经循环了" << num << "次\n";
+        (void)kernel->interrupt->SetLevel(oldLevel);
+    }
 }
 
 //----------------------------------------------------------------------
@@ -454,12 +464,11 @@ void Thread::MyThreadTest()
     Thread* t1 = new Thread("线程1");
     t1->setPriority(7);
     t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);
-    Thread* t2 = new Thread("线程2");
-    t2->setPriority(6);
-    t2->Fork((VoidFunctionPtr)SimpleThread,(void*)2);
-    Thread* t3 = new Thread("线程3");
-    t3->setPriority(5);
-    t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
+    kernel->currentThread->Yield();
+    
+    // Thread* t3 = new Thread("线程3");
+    // t3->setPriority(5);
+    // t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
 }
 
 int Thread::addAThread(Thread* t)

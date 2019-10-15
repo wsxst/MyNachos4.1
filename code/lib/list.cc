@@ -240,19 +240,19 @@ SortedList<T>::Insert(T item)
         this->first = element;
         this->last = element;
     } else if (compare(item, this->first->item) < 0) {  // item goes at front 
-	element->next = this->first;
-	this->first = element;
+        element->next = this->first;
+        this->first = element;
     } else {		// look for first elt in list bigger than item
         for (ptr = this->first; ptr->next != NULL; ptr = ptr->next) {
             if (compare(item, ptr->next->item) < 0) {
-		element->next = ptr->next;
-	        ptr->next = element;
-		this->numInList++;
-		return;
-	    }
-	}
-	this->last->next = element;		// item goes at end of list
-	this->last = element;
+                element->next = ptr->next;
+                ptr->next = element;
+                this->numInList++;
+                return;
+	        }
+        }
+        this->last->next = element;		// item goes at end of list
+        this->last = element;
     }
     this->numInList++;
     ASSERT(this->IsInList(item));

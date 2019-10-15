@@ -130,7 +130,7 @@ private:
                        // NULL if this is the main thread
                        // (If NULL, don't deallocate stack)
   ThreadStatus status; // ready, running or blocked
-  char *name;          //这就是个线程名，应该是方便调试用的
+  char *name;          //这就是个线程名，方便调试用的
   
   int userID;           //线程所属的用户ID
   int threadID;         //线程ID
