@@ -37,6 +37,8 @@ class Scheduler {
     void Print();		// Print contents of ready list
 
     bool isReadyListEmpty();
+
+    Thread* getReadyListFront();
     
     // SelfTest for scheduler is implemented in class Thread
     

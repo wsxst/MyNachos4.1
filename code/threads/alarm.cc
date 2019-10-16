@@ -50,13 +50,9 @@ void Alarm::CallBack()
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
     
-    if(typeno==1)
+    if(typeno==1) interrupt->YieldOnReturn();
+    else if ((typeno==2||typeno==3)&&status != IdleMode && kernel->currentThread->getRemainTime()<=0)
     {
-        if (status != IdleMode) {
-            interrupt->YieldOnReturn();
-        }
-    }
-    else if (typeno!=0&&status != IdleMode && kernel->currentThread->getRemainTime()<=0) {
         DEBUG(dbgThread, kernel->currentThread->getName()<<"的时间片到了，下CPU！");
         interrupt->YieldOnReturn();
     }

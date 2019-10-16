@@ -112,7 +112,7 @@ void Thread::Fork(VoidFunctionPtr func, void *arg)
     oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts are disabled!
     (void)interrupt->SetLevel(oldLevel);
-    if(typeno==1) kernel->currentThread->Yield();
+    if(typeno==1 && kernel->scheduler->getReadyListFront()->getPriority()<kernel->currentThread->getPriority()) kernel->currentThread->Yield();
 }
 
 //----------------------------------------------------------------------
@@ -216,21 +216,11 @@ void Thread::Yield()
     DEBUG(dbgThread, "Yielding thread: " << name);
 
     //先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
-    if(typeno!=1)
+    nextThread = kernel->scheduler->FindNextToRun();
+    if (nextThread != NULL)
     {
-        nextThread = kernel->scheduler->FindNextToRun();
-        if (nextThread != NULL)
-        {
-            kernel->scheduler->ReadyToRun(this);
-            kernel->scheduler->Run(nextThread, FALSE);
-        }
-    }
-    else//先让当前线程加入就绪队列,再进行调度,以实现高优先级线程能一直运行
-    {
-        kernel->scheduler->Print();
         kernel->scheduler->ReadyToRun(this);
-        nextThread = kernel->scheduler->FindNextToRun();
-        if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
+        kernel->scheduler->Run(nextThread, FALSE);
     }
 
     (void)kernel->interrupt->SetLevel(oldLevel);
@@ -429,13 +419,13 @@ static void SimpleThread(int which)
         if(which==1)
         {
             Thread* t2 = new Thread("线程2");
-            if(typeno==1) t2->setPriority(6);
+            if(typeno==1) t2->setPriority(4);
             t2->Fork((VoidFunctionPtr)SimpleThread,(void*)2);
         }
         else if(which==2)
         {
             Thread* t3 = new Thread("线程3");
-            if(typeno==1) t3->setPriority(5);
+            if(typeno==1) t3->setPriority(7);
             t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
         }
     }

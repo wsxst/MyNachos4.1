@@ -265,3 +265,24 @@ bool Scheduler::isReadyListEmpty()
     }
     return true;
 }
+
+Thread* Scheduler::getReadyListFront()
+{
+    kernel->TS();
+    if(typeno==0||typeno==2)
+    {
+        if (!readyList->IsEmpty()) return readyList->Front();
+    }
+    else if(typeno==1)
+    {
+        if (!sortedReadyList->IsEmpty()) return sortedReadyList->Front();
+    }
+    else if(typeno==3)
+    {
+        for(int i=0;i<QueueNum;++i)
+        {
+            if(!threadArrQueue[i]->IsEmpty()) return threadArrQueue[i]->Front();
+        }
+    }
+    return NULL;
+}
