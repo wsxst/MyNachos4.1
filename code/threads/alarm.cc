@@ -45,12 +45,19 @@ Alarm::Alarm(bool doRandom)
 
 void Alarm::CallBack() 
 {
+    cout<<"发生一个时钟中断!\n";
     kernel->currentThread->setRemainTime(kernel->currentThread->getRemainTime() - 1);
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
     
-    if (status != IdleMode && kernel->currentThread->getRemainTime()<=0) {
-        cout<<kernel->currentThread->getName()<<"的时间片到了，下CPU！"<<endl;
-	    interrupt->YieldOnReturn();
+    if(typeno==1)
+    {
+        if (status != IdleMode) {
+            interrupt->YieldOnReturn();
+        }
+    }
+    else if (typeno!=0&&status != IdleMode && kernel->currentThread->getRemainTime()<=0) {
+        DEBUG(dbgThread, kernel->currentThread->getName()<<"的时间片到了，下CPU！");
+        interrupt->YieldOnReturn();
     }
 }

@@ -58,7 +58,6 @@
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 const int StackSize = (8 * 1024); // in words
-const int timeSlice = 3;
 
 // Thread state
 enum ThreadStatus
@@ -70,8 +69,6 @@ enum ThreadStatus
 };
 
 static const char threadStatusName[4][20] = {"JUST_CREATED","RUNNING","READY","BLOCKED"};
-
-static int currentThreadNum = 0;//当前存在的线程数
 
 // The following class defines a "thread control block" -- which
 // represents a single thread of execution.
@@ -121,7 +118,7 @@ public:
   int getRemainTime() { return this->timeSliceRemain; }
   int setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
 
-  void Print() { if(this) printf("%d\t%s\t%d\t%s\t%d\n",getTID(),getName(),getTUID(),threadStatusName[getStatus()],getPriority()); }
+  void Print() { printf("%d\t%s\t%d\t%s\t%d\n",getTID(),getName(),getTUID(),threadStatusName[getStatus()],getPriority()); }
   void SelfTest(); // test whether thread impl is working
   void MyThreadTest();
 
@@ -136,8 +133,8 @@ private:
   
   int userID;           //线程所属的用户ID
   int threadID;         //线程ID
-  int priority;
-  int timeSliceRemain;
+  int priority;         //优先级
+  int timeSliceRemain;  //剩余时间片大小,以时钟中断为单位
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.

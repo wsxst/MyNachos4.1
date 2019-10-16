@@ -39,8 +39,12 @@ Thread::Thread(char *threadName)
 {
     threadID = addAThread(this);
     ASSERT(threadID!=-1);
-    timeSliceRemain = timeSlice;
-    priority = 8;
+    if(typeno==1)
+    {
+        priority = 8;
+        timeSliceRemain = timeSlice;
+    }
+    else if(typeno==3) priority = -1;
     userID = (int)getuid();
     name = threadName;
     stackTop = NULL;
@@ -108,7 +112,7 @@ void Thread::Fork(VoidFunctionPtr func, void *arg)
     oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts are disabled!
     (void)interrupt->SetLevel(oldLevel);
-    // kernel->currentThread->Yield();
+    if(typeno==1) kernel->currentThread->Yield();
 }
 
 //----------------------------------------------------------------------
@@ -211,18 +215,23 @@ void Thread::Yield()
 
     DEBUG(dbgThread, "Yielding thread: " << name);
 
-    //1.原来的逻辑：先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
-    nextThread = kernel->scheduler->FindNextToRun();
-    if (nextThread != NULL)
+    //先从就绪队列里面挑出一个要运行的线程，如果存在该线程，则将当前线程加入就绪队列，运行该线程且不销毁原线程
+    if(typeno!=1)
     {
-        kernel->scheduler->ReadyToRun(this);
-        kernel->scheduler->Run(nextThread, FALSE);
+        nextThread = kernel->scheduler->FindNextToRun();
+        if (nextThread != NULL)
+        {
+            kernel->scheduler->ReadyToRun(this);
+            kernel->scheduler->Run(nextThread, FALSE);
+        }
     }
-
-    //2.抢占式FIFO
-    // kernel->scheduler->ReadyToRun(this);
-    // nextThread = kernel->scheduler->FindNextToRun();
-    // if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
+    else//先让当前线程加入就绪队列,再进行调度,以实现高优先级线程能一直运行
+    {
+        kernel->scheduler->Print();
+        kernel->scheduler->ReadyToRun(this);
+        nextThread = kernel->scheduler->FindNextToRun();
+        if(nextThread) kernel->scheduler->Run(nextThread, FALSE);
+    }
 
     (void)kernel->interrupt->SetLevel(oldLevel);
 }
@@ -415,23 +424,68 @@ void Thread::RestoreUserState()
 
 static void SimpleThread(int which)
 {
-    if(which==1)
+    if(typeno!=0)
     {
-        Thread* t2 = new Thread("线程2");
-        t2->setPriority(6);
-        t2->Fork((VoidFunctionPtr)SimpleThread,(void*)2);
+        if(which==1)
+        {
+            Thread* t2 = new Thread("线程2");
+            if(typeno==1) t2->setPriority(6);
+            t2->Fork((VoidFunctionPtr)SimpleThread,(void*)2);
+        }
+        else if(which==2)
+        {
+            Thread* t3 = new Thread("线程3");
+            if(typeno==1) t3->setPriority(5);
+            t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
+        }
     }
-    else if(which==2)
+    if(typeno==0||typeno==1)
     {
-        Thread* t3 = new Thread("线程3");
-        t3->setPriority(5);
-        t3->Fork((VoidFunctionPtr)SimpleThread,(void*)3);
+        for (int num = 0; num < 5; num++)
+        {
+            IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+            cout<<"线程" << which << "已经循环了" << num << "次\n";
+            (void)kernel->interrupt->SetLevel(oldLevel);
+        }
     }
-    for (int num = 0; num < 2000; num++)
+    else if(typeno==2)
     {
-        IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-        cout << "线程" << which << "已经循环了" << num << "次\n";
-        (void)kernel->interrupt->SetLevel(oldLevel);
+        for (int num = 0; num < 100; num++)
+        {
+            IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+            cout<<"线程" << which << "已经循环了" << num << "次\n";
+            (void)kernel->interrupt->SetLevel(oldLevel);
+        }
+    }
+    else if(typeno==3)
+    {
+        if(which==1)
+        {
+            for (int num = 0; num < 500; num++)
+            {
+                IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                (void)kernel->interrupt->SetLevel(oldLevel);
+            }
+        }
+        else if(which==2)
+        {
+            for (int num = 0; num < 100; num++)
+            {
+                IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                (void)kernel->interrupt->SetLevel(oldLevel);
+            }
+        }
+        else if(which==3)
+        {
+            for (int num = 0; num < 20; num++)
+            {
+                IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
+                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                (void)kernel->interrupt->SetLevel(oldLevel);
+            }
+        }
     }
 }
 
@@ -454,20 +508,28 @@ void Thread::SelfTest()
 
 void Thread::MyThreadTest()
 {
-    DEBUG(dbgThread, "进入自己写的线程测试环节：");
-    /*lab1测试代码*/
-    // for(int i=1;;++i)
-    // {
-    //     Thread *t = new Thread("fork出来的进程");
-    //     t->Fork((VoidFunctionPtr)SimpleThread,(void*)i);
-    // }
-    // SimpleThread(0);
+    cout<<"进入自己写的线程测试环节：\n";
     
-    /*lab2测试代码*/
-    Thread* t1 = new Thread("线程1");
-    t1->setPriority(7);
-    t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);
-    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+    if(typeno==0)
+    {
+        char tname[MaxThreadNum+5][20]={0};
+        Thread* t[MaxThreadNum+5]={0};
+        for(int i=1;;++i)
+        {
+            sprintf(tname[i],"线程%d",i);
+            t[i] = new Thread(tname[i]);
+            t[i]->Fork((VoidFunctionPtr)SimpleThread,(void*)i);
+            kernel->TS();
+        }
+        SimpleThread(0);
+    }
+    else if(typeno>=1&&typeno<=3)
+    {
+        Thread* t1 = new Thread("线程1");
+        if(typeno==1) t1->setPriority(7);
+        t1->Fork((VoidFunctionPtr)SimpleThread,(void*)1);
+        while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+    }
 }
 
 int Thread::addAThread(Thread* t)

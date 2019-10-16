@@ -1,0 +1,7 @@
+抢占式优先级调度:
+./nachos -d + -K 1
+RR调度:
+./nachos -d + -K 2
+多级反馈队列调度:
+./nachos -d + -K 3
+

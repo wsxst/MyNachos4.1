@@ -14,6 +14,7 @@
 
 extern Kernel *kernel;
 extern Debug *debug;
+extern int typeno;
 
 #endif // MAIN_H
 

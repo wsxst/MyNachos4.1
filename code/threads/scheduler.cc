@@ -38,8 +38,13 @@ int cmp(Thread* t1,Thread* t2)
 
 Scheduler::Scheduler()
 {
+    //FIFO
     readyList = new List<Thread *>;
-    // readyList = new SortedList<Thread *>(cmp);
+    //抢占式优先级
+    sortedReadyList = new SortedList<Thread *>(cmp);
+    //多级反馈队列
+    for(int i=0;i<QueueNum;++i) threadArrQueue[i]=new List<Thread*>;
+
     toBeDestroyed = NULL;
 }
 
@@ -51,6 +56,7 @@ Scheduler::Scheduler()
 Scheduler::~Scheduler()
 {
     delete readyList;
+    delete sortedReadyList;
 }
 
 //----------------------------------------------------------------------
@@ -67,9 +73,22 @@ void Scheduler::ReadyToRun(Thread *thread)
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
     thread->setStatus(READY);//将该线程状态设置为就绪态
-    // readyList->Insert(thread);//向就绪队列中插入该线程
-    readyList->Append(thread);//向就绪队列中插入该线程
-    cout<<"就绪队列队头现在是："<<readyList->Front()->getName()<<endl;
+    if(typeno==1) sortedReadyList->Insert(thread);//抢占式优先级
+    else if(typeno==0||typeno==2)
+    {
+        if(typeno==2) thread->setRemainTime(timeSlice);
+        readyList->Append(thread);//FIFO
+    }
+    else if(typeno==3)
+    {
+        if(thread->getPriority()!=QueueNum-1)
+        {
+            thread->setPriority(thread->getPriority()+1);
+        }
+        thread->setRemainTime(threadArrTimeSlice[thread->getPriority()]);
+        threadArrQueue[thread->getPriority()]->Append(thread);
+        cout<<thread->getName()<<"进入第"<<thread->getPriority()<<"级队列,时间片为:"<<thread->getRemainTime()<<endl;
+    }
 }
 
 //----------------------------------------------------------------------
@@ -84,19 +103,48 @@ Thread* Scheduler::FindNextToRun()
 {
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
-    if (readyList->IsEmpty())
+    kernel->TS();
+    if(typeno==0)
     {
-        return NULL;
+        if (!readyList->IsEmpty())
+        {
+            Print();
+            cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<endl;
+            return readyList->RemoveFront();
+        }
     }
-    else
+    else if(typeno==1)
     {
-        cout<<"当前全部线程状态："<<endl;
-        kernel->TS();
-        cout<<"当前的就绪队列："<<endl;
+        if (!sortedReadyList->IsEmpty())
+        {
+            Print();
+            cout<<"从就绪队列中选出线程："<<sortedReadyList->Front()->getName()<<"；优先级："<<sortedReadyList->Front()->getPriority()<<endl;
+            return sortedReadyList->RemoveFront();
+        }
+    }
+    else if(typeno==2)
+    {
+        if (!readyList->IsEmpty())
+        {
+            Print();
+            cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
+            return readyList->RemoveFront();
+        }
+    }
+    else if(typeno==3)
+    {
         Print();
-        cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<"；优先级："<<readyList->Front()->getPriority()<<endl;
-        return readyList->RemoveFront();
+        for(int i=0;i<QueueNum;++i)
+        {
+            if(!threadArrQueue[i]->IsEmpty())
+            {
+                cout<<"从就绪队列中选出线程："<<threadArrQueue[i]->Front()->getName()<<";所在队列:"<<i<<";剩余时间片:"<<threadArrQueue[i]->Front()->getRemainTime()<<endl;
+                return threadArrQueue[i]->RemoveFront();
+            }
+        }
     }
+    
+    return NULL;
 }
 
 //----------------------------------------------------------------------
@@ -191,6 +239,29 @@ void Scheduler::CheckToBeDestroyed()
 //----------------------------------------------------------------------
 void Scheduler::Print()
 {
-    cout << "Ready list contents:\n";
-    readyList->Apply(ThreadPrint);
+    cout << "当前的就绪队列：\n";
+    if(typeno==0||typeno==2) readyList->Apply(ThreadPrint);
+    else if(typeno==1) sortedReadyList->Apply(ThreadPrint);
+    else if(typeno==3)
+    {
+        for(int i=0;i<QueueNum;++i)
+        {
+            cout<<"第"<<i<<"级队列:\n";
+            threadArrQueue[i]->Apply(ThreadPrint);
+        }
+    }
+}
+
+bool Scheduler::isReadyListEmpty()
+{
+    if(typeno==0||typeno==2) return readyList->IsEmpty();
+    else if(typeno==1) return sortedReadyList->IsEmpty();
+    else if(typeno==3)
+    {
+        for(int i=0;i<QueueNum;++i)
+        {
+            if(!threadArrQueue[i]->IsEmpty()) return false;
+        }
+    }
+    return true;
 }

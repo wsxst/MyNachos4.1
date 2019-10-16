@@ -17,6 +17,10 @@
 // the data structures and operations needed to keep track of which 
 // thread is running, and which threads are ready but not running.
 
+const int timeSlice = 3;
+#define QueueNum 5
+const int threadArrTimeSlice[QueueNum]={3,4,5,6,7};
+
 class Scheduler {
   public:
     Scheduler();		// Initialize list of ready threads 
@@ -32,12 +36,13 @@ class Scheduler {
     				// running needs to be deleted
     void Print();		// Print contents of ready list
 
-    bool isReadyListEmpty() { return readyList->IsEmpty(); }
+    bool isReadyListEmpty();
     
     // SelfTest for scheduler is implemented in class Thread
     
   private:
-    // SortedList<Thread *> *readyList;  // queue of threads that are ready to run, but not running
+    List<Thread*>* threadArrQueue[QueueNum];
+    SortedList<Thread *> *sortedReadyList;  // queue of threads that are ready to run, but not running
     List<Thread *> *readyList;  // queue of threads that are ready to run, but not running
     Thread *toBeDestroyed;	// finishing thread to be destroyed by the next thread that runs
 };

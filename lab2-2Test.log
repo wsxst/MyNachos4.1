@@ -1,0 +1,671 @@
+Entering main
+
+
+tests summary: ok:0
+现在准备创建内核！
+内核创建完成！
+Forking thread: postal worker f(a): 134604204 0x8fce510
+Putting thread on ready list: postal worker
+内核初始化完成！
+进入自己写的线程测试环节：
+Forking thread: 线程1 f(a): 134591709 0x1
+Putting thread on ready list: 线程1
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	READY	0
+2	线程1	1000	READY	0
+当前的就绪队列：
+1	postal worker	1000	READY	0
+2	线程1	1000	READY	0
+从就绪队列中选出线程：postal worker;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: postal worker
+Beginning thread: postal worker
+Sleeping thread: postal worker
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+当前的就绪队列：
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+从就绪队列中选出线程：线程1;剩余时间片:3
+Switching from: postal worker to: 线程1
+Beginning thread: 线程1
+Forking thread: 线程2 f(a): 134591709 0x2
+Putting thread on ready list: 线程2
+线程1已经循环了0次
+线程1已经循环了1次
+线程1已经循环了2次
+线程1已经循环了3次
+线程1已经循环了4次
+发生一个时钟中断!
+线程1已经循环了5次
+线程1已经循环了6次
+线程1已经循环了7次
+线程1已经循环了8次
+线程1已经循环了9次
+线程1已经循环了10次
+线程1已经循环了11次
+线程1已经循环了12次
+线程1已经循环了13次
+线程1已经循环了14次
+发生一个时钟中断!
+线程1已经循环了15次
+线程1已经循环了16次
+线程1已经循环了17次
+线程1已经循环了18次
+线程1已经循环了19次
+线程1已经循环了20次
+线程1已经循环了21次
+线程1已经循环了22次
+线程1已经循环了23次
+线程1已经循环了24次
+发生一个时钟中断!
+线程1的时间片到了，下CPU！
+Yielding thread: 线程1
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	RUNNING	0
+3	线程2	1000	READY	0
+当前的就绪队列：
+0	main	1000	READY	0
+3	线程2	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Putting thread on ready list: 线程1
+Switching from: 线程1 to: main
+Now in thread: main
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	READY	0
+当前的就绪队列：
+3	线程2	1000	READY	0
+2	线程1	1000	READY	0
+从就绪队列中选出线程：线程2;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程2
+Beginning thread: 线程2
+Forking thread: 线程3 f(a): 134591709 0x3
+Putting thread on ready list: 线程3
+线程2已经循环了0次
+线程2已经循环了1次
+线程2已经循环了2次
+线程2已经循环了3次
+线程2已经循环了4次
+线程2已经循环了5次
+线程2已经循环了6次
+发生一个时钟中断!
+线程2已经循环了7次
+线程2已经循环了8次
+线程2已经循环了9次
+线程2已经循环了10次
+线程2已经循环了11次
+线程2已经循环了12次
+线程2已经循环了13次
+线程2已经循环了14次
+线程2已经循环了15次
+线程2已经循环了16次
+发生一个时钟中断!
+线程2已经循环了17次
+线程2已经循环了18次
+线程2已经循环了19次
+线程2已经循环了20次
+线程2已经循环了21次
+线程2已经循环了22次
+线程2已经循环了23次
+线程2已经循环了24次
+线程2已经循环了25次
+线程2已经循环了26次
+发生一个时钟中断!
+线程2的时间片到了，下CPU！
+Yielding thread: 线程2
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	RUNNING	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+从就绪队列中选出线程：线程1;剩余时间片:3
+Putting thread on ready list: 线程2
+Switching from: 线程2 to: 线程1
+Now in thread: 线程1
+线程1已经循环了25次
+线程1已经循环了26次
+线程1已经循环了27次
+线程1已经循环了28次
+线程1已经循环了29次
+线程1已经循环了30次
+线程1已经循环了31次
+线程1已经循环了32次
+线程1已经循环了33次
+发生一个时钟中断!
+线程1已经循环了34次
+线程1已经循环了35次
+线程1已经循环了36次
+线程1已经循环了37次
+线程1已经循环了38次
+线程1已经循环了39次
+线程1已经循环了40次
+线程1已经循环了41次
+线程1已经循环了42次
+线程1已经循环了43次
+发生一个时钟中断!
+线程1已经循环了44次
+线程1已经循环了45次
+线程1已经循环了46次
+线程1已经循环了47次
+线程1已经循环了48次
+线程1已经循环了49次
+线程1已经循环了50次
+线程1已经循环了51次
+线程1已经循环了52次
+线程1已经循环了53次
+发生一个时钟中断!
+线程1的时间片到了，下CPU！
+Yielding thread: 线程1
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	RUNNING	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Putting thread on ready list: 线程1
+Switching from: 线程1 to: main
+Now in thread: main
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+2	线程1	1000	READY	0
+从就绪队列中选出线程：线程3;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程3
+Beginning thread: 线程3
+线程3已经循环了0次
+线程3已经循环了1次
+线程3已经循环了2次
+线程3已经循环了3次
+线程3已经循环了4次
+线程3已经循环了5次
+线程3已经循环了6次
+线程3已经循环了7次
+发生一个时钟中断!
+线程3已经循环了8次
+线程3已经循环了9次
+线程3已经循环了10次
+线程3已经循环了11次
+线程3已经循环了12次
+线程3已经循环了13次
+线程3已经循环了14次
+线程3已经循环了15次
+线程3已经循环了16次
+线程3已经循环了17次
+发生一个时钟中断!
+线程3已经循环了18次
+线程3已经循环了19次
+线程3已经循环了20次
+线程3已经循环了21次
+线程3已经循环了22次
+线程3已经循环了23次
+线程3已经循环了24次
+线程3已经循环了25次
+线程3已经循环了26次
+线程3已经循环了27次
+发生一个时钟中断!
+线程3的时间片到了，下CPU！
+Yielding thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	READY	0
+4	线程3	1000	RUNNING	0
+当前的就绪队列：
+3	线程2	1000	READY	0
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+从就绪队列中选出线程：线程2;剩余时间片:3
+Putting thread on ready list: 线程3
+Switching from: 线程3 to: 线程2
+Now in thread: 线程2
+线程2已经循环了27次
+线程2已经循环了28次
+线程2已经循环了29次
+线程2已经循环了30次
+线程2已经循环了31次
+线程2已经循环了32次
+线程2已经循环了33次
+线程2已经循环了34次
+线程2已经循环了35次
+发生一个时钟中断!
+线程2已经循环了36次
+线程2已经循环了37次
+线程2已经循环了38次
+线程2已经循环了39次
+线程2已经循环了40次
+线程2已经循环了41次
+线程2已经循环了42次
+线程2已经循环了43次
+线程2已经循环了44次
+线程2已经循环了45次
+发生一个时钟中断!
+线程2已经循环了46次
+线程2已经循环了47次
+线程2已经循环了48次
+线程2已经循环了49次
+线程2已经循环了50次
+线程2已经循环了51次
+线程2已经循环了52次
+线程2已经循环了53次
+线程2已经循环了54次
+线程2已经循环了55次
+发生一个时钟中断!
+线程2的时间片到了，下CPU！
+Yielding thread: 线程2
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	RUNNING	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+从就绪队列中选出线程：线程1;剩余时间片:3
+Putting thread on ready list: 线程2
+Switching from: 线程2 to: 线程1
+Now in thread: 线程1
+线程1已经循环了54次
+线程1已经循环了55次
+线程1已经循环了56次
+线程1已经循环了57次
+线程1已经循环了58次
+线程1已经循环了59次
+线程1已经循环了60次
+线程1已经循环了61次
+线程1已经循环了62次
+发生一个时钟中断!
+线程1已经循环了63次
+线程1已经循环了64次
+线程1已经循环了65次
+线程1已经循环了66次
+线程1已经循环了67次
+线程1已经循环了68次
+线程1已经循环了69次
+线程1已经循环了70次
+线程1已经循环了71次
+线程1已经循环了72次
+发生一个时钟中断!
+线程1已经循环了73次
+线程1已经循环了74次
+线程1已经循环了75次
+线程1已经循环了76次
+线程1已经循环了77次
+线程1已经循环了78次
+线程1已经循环了79次
+线程1已经循环了80次
+线程1已经循环了81次
+线程1已经循环了82次
+发生一个时钟中断!
+线程1的时间片到了，下CPU！
+Yielding thread: 线程1
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	RUNNING	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Putting thread on ready list: 线程1
+Switching from: 线程1 to: main
+Now in thread: main
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+2	线程1	1000	READY	0
+从就绪队列中选出线程：线程3;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程3
+Now in thread: 线程3
+线程3已经循环了28次
+线程3已经循环了29次
+线程3已经循环了30次
+线程3已经循环了31次
+线程3已经循环了32次
+线程3已经循环了33次
+线程3已经循环了34次
+线程3已经循环了35次
+发生一个时钟中断!
+线程3已经循环了36次
+线程3已经循环了37次
+线程3已经循环了38次
+线程3已经循环了39次
+线程3已经循环了40次
+线程3已经循环了41次
+线程3已经循环了42次
+线程3已经循环了43次
+线程3已经循环了44次
+线程3已经循环了45次
+发生一个时钟中断!
+线程3已经循环了46次
+线程3已经循环了47次
+线程3已经循环了48次
+线程3已经循环了49次
+线程3已经循环了50次
+线程3已经循环了51次
+线程3已经循环了52次
+线程3已经循环了53次
+线程3已经循环了54次
+线程3已经循环了55次
+发生一个时钟中断!
+线程3的时间片到了，下CPU！
+Yielding thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	READY	0
+4	线程3	1000	RUNNING	0
+当前的就绪队列：
+3	线程2	1000	READY	0
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+从就绪队列中选出线程：线程2;剩余时间片:3
+Putting thread on ready list: 线程3
+Switching from: 线程3 to: 线程2
+Now in thread: 线程2
+线程2已经循环了56次
+线程2已经循环了57次
+线程2已经循环了58次
+线程2已经循环了59次
+线程2已经循环了60次
+线程2已经循环了61次
+线程2已经循环了62次
+线程2已经循环了63次
+线程2已经循环了64次
+发生一个时钟中断!
+线程2已经循环了65次
+线程2已经循环了66次
+线程2已经循环了67次
+线程2已经循环了68次
+线程2已经循环了69次
+线程2已经循环了70次
+线程2已经循环了71次
+线程2已经循环了72次
+线程2已经循环了73次
+线程2已经循环了74次
+发生一个时钟中断!
+线程2已经循环了75次
+线程2已经循环了76次
+线程2已经循环了77次
+线程2已经循环了78次
+线程2已经循环了79次
+线程2已经循环了80次
+线程2已经循环了81次
+线程2已经循环了82次
+线程2已经循环了83次
+线程2已经循环了84次
+发生一个时钟中断!
+线程2的时间片到了，下CPU！
+Yielding thread: 线程2
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	READY	0
+3	线程2	1000	RUNNING	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+2	线程1	1000	READY	0
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+从就绪队列中选出线程：线程1;剩余时间片:3
+Putting thread on ready list: 线程2
+Switching from: 线程2 to: 线程1
+Now in thread: 线程1
+线程1已经循环了83次
+线程1已经循环了84次
+线程1已经循环了85次
+线程1已经循环了86次
+线程1已经循环了87次
+线程1已经循环了88次
+线程1已经循环了89次
+线程1已经循环了90次
+线程1已经循环了91次
+发生一个时钟中断!
+线程1已经循环了92次
+线程1已经循环了93次
+线程1已经循环了94次
+线程1已经循环了95次
+线程1已经循环了96次
+线程1已经循环了97次
+线程1已经循环了98次
+线程1已经循环了99次
+Finishing thread: 线程1
+Sleeping thread: 线程1
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+2	线程1	1000	BLOCKED	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Switching from: 线程1 to: main
+Now in thread: main
+Deleting thread: 线程1
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+3	线程2	1000	READY	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+4	线程3	1000	READY	0
+3	线程2	1000	READY	0
+从就绪队列中选出线程：线程3;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程3
+Now in thread: 线程3
+发生一个时钟中断!
+线程3已经循环了56次
+线程3已经循环了57次
+线程3已经循环了58次
+线程3已经循环了59次
+线程3已经循环了60次
+线程3已经循环了61次
+线程3已经循环了62次
+线程3已经循环了63次
+线程3已经循环了64次
+线程3已经循环了65次
+发生一个时钟中断!
+线程3已经循环了66次
+线程3已经循环了67次
+线程3已经循环了68次
+线程3已经循环了69次
+线程3已经循环了70次
+线程3已经循环了71次
+线程3已经循环了72次
+线程3已经循环了73次
+线程3已经循环了74次
+线程3已经循环了75次
+发生一个时钟中断!
+线程3的时间片到了，下CPU！
+Yielding thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+3	线程2	1000	READY	0
+4	线程3	1000	RUNNING	0
+当前的就绪队列：
+3	线程2	1000	READY	0
+0	main	1000	READY	0
+从就绪队列中选出线程：线程2;剩余时间片:3
+Putting thread on ready list: 线程3
+Switching from: 线程3 to: 线程2
+Now in thread: 线程2
+线程2已经循环了85次
+线程2已经循环了86次
+线程2已经循环了87次
+线程2已经循环了88次
+线程2已经循环了89次
+线程2已经循环了90次
+线程2已经循环了91次
+线程2已经循环了92次
+线程2已经循环了93次
+发生一个时钟中断!
+线程2已经循环了94次
+线程2已经循环了95次
+线程2已经循环了96次
+线程2已经循环了97次
+线程2已经循环了98次
+线程2已经循环了99次
+Finishing thread: 线程2
+Sleeping thread: 线程2
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+3	线程2	1000	BLOCKED	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+0	main	1000	READY	0
+4	线程3	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Switching from: 线程2 to: main
+Now in thread: main
+Deleting thread: 线程2
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+4	线程3	1000	READY	0
+从就绪队列中选出线程：线程3;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程3
+Now in thread: 线程3
+线程3已经循环了76次
+线程3已经循环了77次
+发生一个时钟中断!
+线程3已经循环了78次
+线程3已经循环了79次
+线程3已经循环了80次
+线程3已经循环了81次
+线程3已经循环了82次
+线程3已经循环了83次
+线程3已经循环了84次
+线程3已经循环了85次
+线程3已经循环了86次
+线程3已经循环了87次
+发生一个时钟中断!
+线程3已经循环了88次
+线程3已经循环了89次
+线程3已经循环了90次
+线程3已经循环了91次
+线程3已经循环了92次
+线程3已经循环了93次
+线程3已经循环了94次
+线程3已经循环了95次
+线程3已经循环了96次
+线程3已经循环了97次
+发生一个时钟中断!
+线程3的时间片到了，下CPU！
+Yielding thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+4	线程3	1000	RUNNING	0
+当前的就绪队列：
+0	main	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Putting thread on ready list: 线程3
+Switching from: 线程3 to: main
+Now in thread: main
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	0
+1	postal worker	1000	BLOCKED	0
+4	线程3	1000	READY	0
+当前的就绪队列：
+4	线程3	1000	READY	0
+从就绪队列中选出线程：线程3;剩余时间片:3
+Putting thread on ready list: main
+Switching from: main to: 线程3
+Now in thread: 线程3
+线程3已经循环了98次
+线程3已经循环了99次
+Finishing thread: 线程3
+Sleeping thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	0
+1	postal worker	1000	BLOCKED	0
+4	线程3	1000	BLOCKED	0
+当前的就绪队列：
+0	main	1000	READY	0
+从就绪队列中选出线程：main;剩余时间片:3
+Switching from: 线程3 to: main
+Now in thread: main
+Deleting thread: 线程3
+Machine halting!
+
+Ticks: total 3250, idle 0, system 3250, user 0
+Disk I/O: reads 0, writes 0
+Console I/O: reads 0, writes 0
+Paging: faults 0
+Network I/O: packets received 0, sent 0

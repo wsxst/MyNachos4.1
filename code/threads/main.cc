@@ -61,6 +61,13 @@ namespace tut
 // global variables
 Kernel *kernel;
 Debug *debug;
+/*
+0是lab1(实现类似于PS的功能,限制最大线程数,维护UID和PID)
+1是lab2的E3(抢占式优先级调度算法)
+2是lab2的challenge1(RR调度算法)
+3是lab2的challenge2(多级反馈队列调度算法)
+*/
+int typeno;
 
 //----------------------------------------------------------------------
 // Cleanup
@@ -211,7 +218,10 @@ int main(int argc, char **argv)
         }
         else if (strcmp(argv[i], "-K") == 0)
         {
+            ASSERT(i + 1 < argc); //下一个参数是测试类型
             threadTestFlag = TRUE;
+            typeno = atoi(argv[i + 1]);
+            ++i;
         }
         else if (strcmp(argv[i], "-C") == 0)
         {
@@ -273,12 +283,12 @@ int main(int argc, char **argv)
     ::tut::runner.get().run_tests(); //run all unit tests
 #endif
 
-    DEBUG(dbgAll, "现在准备创建内核！");
+    cout<<"现在准备创建内核！\n";
     kernel = new Kernel(argc, argv);
-    DEBUG(dbgAll, "内核创建完成！");
+    cout<<"内核创建完成！\n";
 
     kernel->Initialize();
-    DEBUG(dbgAll, "内核初始化完成！");
+    cout<<"内核初始化完成！\n";
 
     CallOnUserAbort(Cleanup); // if user hits ctl-C
 
