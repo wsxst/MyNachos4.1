@@ -87,7 +87,7 @@ void Scheduler::ReadyToRun(Thread *thread)
         }
         thread->setRemainTime(threadArrTimeSlice[thread->getPriority()]);
         threadArrQueue[thread->getPriority()]->Append(thread);
-        cout<<thread->getName()<<"进入第"<<thread->getPriority()<<"级队列,时间片为:"<<thread->getRemainTime()<<endl;
+        cerr<<thread->getName()<<"进入第"<<thread->getPriority()<<"级队列,时间片为:"<<thread->getRemainTime()<<endl;
     }
 }
 
@@ -103,13 +103,13 @@ Thread* Scheduler::FindNextToRun()
 {
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
-    kernel->TS();
+    if(debug->IsEnabled('t')) kernel->TS();
     if(typeno==0)
     {
         if (!readyList->IsEmpty())
         {
             Print();
-            cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<endl;
+            if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<endl;
             return readyList->RemoveFront();
         }
     }
@@ -118,7 +118,7 @@ Thread* Scheduler::FindNextToRun()
         if (!sortedReadyList->IsEmpty())
         {
             Print();
-            cout<<"从就绪队列中选出线程："<<sortedReadyList->Front()->getName()<<"；优先级："<<sortedReadyList->Front()->getPriority()<<endl;
+            if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<sortedReadyList->Front()->getName()<<"；优先级："<<sortedReadyList->Front()->getPriority()<<endl;
             return sortedReadyList->RemoveFront();
         }
     }
@@ -127,7 +127,7 @@ Thread* Scheduler::FindNextToRun()
         if (!readyList->IsEmpty())
         {
             Print();
-            cout<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
+            if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
             return readyList->RemoveFront();
         }
     }
@@ -138,7 +138,7 @@ Thread* Scheduler::FindNextToRun()
         {
             if(!threadArrQueue[i]->IsEmpty())
             {
-                cout<<"从就绪队列中选出线程："<<threadArrQueue[i]->Front()->getName()<<";所在队列:"<<i<<";剩余时间片:"<<threadArrQueue[i]->Front()->getRemainTime()<<endl;
+                if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<threadArrQueue[i]->Front()->getName()<<";所在队列:"<<i<<";剩余时间片:"<<threadArrQueue[i]->Front()->getRemainTime()<<endl;
                 return threadArrQueue[i]->RemoveFront();
             }
         }
@@ -239,14 +239,14 @@ void Scheduler::CheckToBeDestroyed()
 //----------------------------------------------------------------------
 void Scheduler::Print()
 {
-    cout << "当前的就绪队列：\n";
+    cerr << "当前的就绪队列：\n";
     if(typeno==0||typeno==2) readyList->Apply(ThreadPrint);
     else if(typeno==1) sortedReadyList->Apply(ThreadPrint);
     else if(typeno==3)
     {
         for(int i=0;i<QueueNum;++i)
         {
-            cout<<"第"<<i<<"级队列:\n";
+            cerr<<"第"<<i<<"级队列:\n";
             threadArrQueue[i]->Apply(ThreadPrint);
         }
     }
@@ -268,7 +268,6 @@ bool Scheduler::isReadyListEmpty()
 
 Thread* Scheduler::getReadyListFront()
 {
-    kernel->TS();
     if(typeno==0||typeno==2)
     {
         if (!readyList->IsEmpty()) return readyList->Front();

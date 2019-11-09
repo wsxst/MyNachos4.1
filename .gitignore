@@ -36,3 +36,6 @@ build.*
 
 # cross-compiler
 coff2noff
+
+# log files
+*.log

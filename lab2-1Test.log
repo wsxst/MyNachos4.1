@@ -4,177 +4,88 @@ Entering main
 tests summary: ok:0
 现在准备创建内核！
 内核创建完成！
-Forking thread: postal worker f(a): 134604204 0x8e61510
+Forking thread: postal worker f(a): 134604398 0x894f510
 Putting thread on ready list: postal worker
-Yielding thread: main
-当前的就绪队列：
-1	postal worker	1000	READY	8
-Putting thread on ready list: main
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
+0	main	1000	RUNNING	8
 1	postal worker	1000	READY	8
-当前的就绪队列：
-1	postal worker	1000	READY	8
-0	main	1000	READY	8
-从就绪队列中选出线程：postal worker；优先级：8
-Switching from: main to: postal worker
-Beginning thread: postal worker
-Sleeping thread: postal worker
-当前全部线程状态：
-线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
-当前的就绪队列：
-0	main	1000	READY	8
-从就绪队列中选出线程：main；优先级：8
-Switching from: postal worker to: main
-Now in thread: main
 内核初始化完成！
 进入自己写的线程测试环节：
-Forking thread: 线程1 f(a): 134591709 0x1
+Forking thread: 线程1 f(a): 134591903 0x1
 Putting thread on ready list: 线程1
-Yielding thread: main
-当前的就绪队列：
-2	线程1	1000	READY	7
-Putting thread on ready list: main
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
+0	main	1000	RUNNING	8
+1	postal worker	1000	READY	8
+2	线程1	1000	READY	7
+Yielding thread: main
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	RUNNING	8
+1	postal worker	1000	READY	8
 2	线程1	1000	READY	7
 当前的就绪队列：
 2	线程1	1000	READY	7
-0	main	1000	READY	8
+1	postal worker	1000	READY	8
 从就绪队列中选出线程：线程1；优先级：7
+Putting thread on ready list: main
 Switching from: main to: 线程1
 Beginning thread: 线程1
-Forking thread: 线程2 f(a): 134591709 0x2
+Forking thread: 线程2 f(a): 134591903 0x2
 Putting thread on ready list: 线程2
-Yielding thread: 线程1
-当前的就绪队列：
-3	线程2	1000	READY	6
-0	main	1000	READY	8
-Putting thread on ready list: 线程1
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
 0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
-2	线程1	1000	READY	7
-3	线程2	1000	READY	6
-当前的就绪队列：
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
+1	postal worker	1000	READY	8
+2	线程1	1000	RUNNING	7
+3	线程2	1000	READY	4
+Yielding thread: 线程1
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
 0	main	1000	READY	8
-从就绪队列中选出线程：线程2；优先级：6
+1	postal worker	1000	READY	8
+2	线程1	1000	RUNNING	7
+3	线程2	1000	READY	4
+当前的就绪队列：
+3	线程2	1000	READY	4
+1	postal worker	1000	READY	8
+0	main	1000	READY	8
+从就绪队列中选出线程：线程2；优先级：4
+Putting thread on ready list: 线程1
 Switching from: 线程1 to: 线程2
 Beginning thread: 线程2
-Forking thread: 线程3 f(a): 134591709 0x3
-Putting thread on ready list: 线程3
-Yielding thread: 线程2
-当前的就绪队列：
-4	线程3	1000	READY	5
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-Putting thread on ready list: 线程2
-当前全部线程状态：
-线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
-2	线程1	1000	READY	7
-3	线程2	1000	READY	6
-4	线程3	1000	READY	5
-当前的就绪队列：
-4	线程3	1000	READY	5
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-从就绪队列中选出线程：线程3；优先级：5
-Switching from: 线程2 to: 线程3
-Beginning thread: 线程3
-线程3已经循环了0次
-线程3已经循环了1次
-发生一个时钟中断!
-Yielding thread: 线程3
-当前的就绪队列：
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
-0	main	1000	READY	8
+Forking thread: 线程3 f(a): 134591903 0x3
 Putting thread on ready list: 线程3
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
 0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
+1	postal worker	1000	READY	8
 2	线程1	1000	READY	7
-3	线程2	1000	READY	6
-4	线程3	1000	READY	5
-当前的就绪队列：
-4	线程3	1000	READY	5
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-从就绪队列中选出线程：线程3；优先级：5
-Switching from: 线程3 to: 线程3
-Now in thread: 线程3
-线程3已经循环了2次
-线程3已经循环了3次
-线程3已经循环了4次
-Finishing thread: 线程3
-Sleeping thread: 线程3
-当前全部线程状态：
-线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
-2	线程1	1000	READY	7
-3	线程2	1000	READY	6
-4	线程3	1000	BLOCKED	5
-当前的就绪队列：
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-从就绪队列中选出线程：线程2；优先级：6
-Switching from: 线程3 to: 线程2
-Now in thread: 线程2
-Deleting thread: 线程3
+3	线程2	1000	RUNNING	4
+4	线程3	1000	READY	7
 线程2已经循环了0次
 线程2已经循环了1次
 线程2已经循环了2次
 线程2已经循环了3次
-线程2已经循环了4次
 发生一个时钟中断!
 Yielding thread: 线程2
-当前的就绪队列：
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-Putting thread on ready list: 线程2
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
 0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
+1	postal worker	1000	READY	8
 2	线程1	1000	READY	7
-3	线程2	1000	READY	6
-当前的就绪队列：
-3	线程2	1000	READY	6
-2	线程1	1000	READY	7
-0	main	1000	READY	8
-从就绪队列中选出线程：线程2；优先级：6
-Switching from: 线程2 to: 线程2
-Now in thread: 线程2
-Finishing thread: 线程2
-Sleeping thread: 线程2
-当前全部线程状态：
-线程ID	线程名称	拥有者	线程状态	优先级
-0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
-2	线程1	1000	READY	7
-3	线程2	1000	BLOCKED	6
+3	线程2	1000	RUNNING	4
+4	线程3	1000	READY	7
 当前的就绪队列：
 2	线程1	1000	READY	7
+4	线程3	1000	READY	7
+1	postal worker	1000	READY	8
 0	main	1000	READY	8
 从就绪队列中选出线程：线程1；优先级：7
+Putting thread on ready list: 线程2
 Switching from: 线程2 to: 线程1
 Now in thread: 线程1
-Deleting thread: 线程2
 线程1已经循环了0次
 线程1已经循环了1次
 线程1已经循环了2次
@@ -185,17 +96,83 @@ Sleeping thread: 线程1
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
 0	main	1000	READY	8
-1	postal worker	1000	BLOCKED	8
+1	postal worker	1000	READY	8
 2	线程1	1000	BLOCKED	7
+3	线程2	1000	READY	4
+4	线程3	1000	READY	7
+当前的就绪队列：
+3	线程2	1000	READY	4
+4	线程3	1000	READY	7
+1	postal worker	1000	READY	8
+0	main	1000	READY	8
+从就绪队列中选出线程：线程2；优先级：4
+Switching from: 线程1 to: 线程2
+Now in thread: 线程2
+Deleting thread: 线程1
+线程2已经循环了4次
+Finishing thread: 线程2
+Sleeping thread: 线程2
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	8
+1	postal worker	1000	READY	8
+3	线程2	1000	BLOCKED	4
+4	线程3	1000	READY	7
+当前的就绪队列：
+4	线程3	1000	READY	7
+1	postal worker	1000	READY	8
+0	main	1000	READY	8
+从就绪队列中选出线程：线程3；优先级：7
+Switching from: 线程2 to: 线程3
+Beginning thread: 线程3
+Deleting thread: 线程2
+线程3已经循环了0次
+发生一个时钟中断!
+Yielding thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	8
+1	postal worker	1000	READY	8
+4	线程3	1000	RUNNING	7
+当前的就绪队列：
+1	postal worker	1000	READY	8
+0	main	1000	READY	8
+从就绪队列中选出线程：postal worker；优先级：8
+Putting thread on ready list: 线程3
+Switching from: 线程3 to: postal worker
+Beginning thread: postal worker
+Sleeping thread: postal worker
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	8
+1	postal worker	1000	BLOCKED	8
+4	线程3	1000	READY	7
+当前的就绪队列：
+4	线程3	1000	READY	7
+0	main	1000	READY	8
+从就绪队列中选出线程：线程3；优先级：7
+Switching from: postal worker to: 线程3
+Now in thread: 线程3
+线程3已经循环了1次
+线程3已经循环了2次
+线程3已经循环了3次
+线程3已经循环了4次
+Finishing thread: 线程3
+Sleeping thread: 线程3
+当前全部线程状态：
+线程ID	线程名称	拥有者	线程状态	优先级
+0	main	1000	READY	8
+1	postal worker	1000	BLOCKED	8
+4	线程3	1000	BLOCKED	7
 当前的就绪队列：
 0	main	1000	READY	8
 从就绪队列中选出线程：main；优先级：8
-Switching from: 线程1 to: main
+Switching from: 线程3 to: main
 Now in thread: main
-Deleting thread: 线程1
+Deleting thread: 线程3
 Machine halting!
 
-Ticks: total 280, idle 0, system 280, user 0
+Ticks: total 270, idle 0, system 270, user 0
 Disk I/O: reads 0, writes 0
 Console I/O: reads 0, writes 0
 Paging: faults 0

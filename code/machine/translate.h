@@ -29,8 +29,9 @@
 
 class TranslationEntry {
   public:
-    int virtualPage;  	// The page number in virtual memory.
-    int physicalPage;  	// The page number in real memory (relative to the
+    unsigned int vpn;  	// The page number in virtual memory.
+	int tID;
+    unsigned int ppn;  	// The page number in real memory (relative to the
 			//  start of "mainMemory"
     bool valid;         // If this bit is set, the translation is ignored.
 			// (In other words, the entry hasn't been initialized.)
@@ -40,6 +41,20 @@ class TranslationEntry {
 			// page is referenced or modified.
     bool dirty;         // This bit is set by the hardware every time the
 			// page is modified.
+	int FIFOFlag;//lower means more possible to be replaced
+	int LRUFlag;//lower means more possible to be replaced
+	void reset()
+	{
+		this->vpn = -1;
+		this->ppn = -1;
+		this->tID = -1;
+		this->valid = false;
+		this->readOnly = false;
+		this->use = false;
+		this->dirty = false;
+		this->FIFOFlag = -1;
+		this->LRUFlag = -1;
+	}
 };
 
 #endif

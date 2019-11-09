@@ -5,7 +5,7 @@
  *
  */
 
-#include "syscall.h"
+// #include "syscall.h"
 
 int
 main()
@@ -14,6 +14,7 @@ main()
   
   result = Add(42, 23);
 
-  Halt();
+  // Halt();
   /* not reached */
+  return 0;
 }

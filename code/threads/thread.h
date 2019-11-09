@@ -43,6 +43,7 @@
 
 #include "machine.h"
 #include "addrspace.h"
+#include "noff.h"
 
 // CPU register state to be saved on context switch.
 // The x86 needs to save only a few registers,
@@ -55,6 +56,8 @@
 //最多同时存在128个线程
 #define MaxThreadNum 128
 
+#define MAX_OPEN_FILES_NUM 10
+
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 const int StackSize = (8 * 1024); // in words
@@ -65,10 +68,11 @@ enum ThreadStatus
   JUST_CREATED,
   RUNNING,
   READY,
-  BLOCKED
+  BLOCKED,
+  SUSPENDED
 };
 
-static const char threadStatusName[4][20] = {"JUST_CREATED","RUNNING","READY","BLOCKED"};
+static const char threadStatusName[5][20] = {"JUST_CREATED","RUNNING","READY","BLOCKED","SUSPENDED"};
 
 // The following class defines a "thread control block" -- which
 // represents a single thread of execution.
@@ -116,9 +120,12 @@ public:
   int getTID() { return this->threadID; }
   int getTUID() { return this->userID; }
   int getRemainTime() { return this->timeSliceRemain; }
-  int setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
+  void setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
+  void openAFile(OpenFile* f, NoffHeader noffHeader);
+  OpenFile* getCurrentOpenFile() { return this->currentOpenedFile; }
+  NoffHeader getCurrentNoffHeader() { return this->currentNoffHeader; };
 
-  void Print() { printf("%d\t%s\t%d\t%s\t%d\n",getTID(),getName(),getTUID(),threadStatusName[getStatus()],getPriority()); }
+  void Print() { cerr<<getTID()<<"\t"<<getName()<<"\t"<<getTUID()<<"\t"<<threadStatusName[getStatus()]<<"\t"<<getPriority()<<endl; }
   void SelfTest(); // test whether thread impl is working
   void MyThreadTest();
 
@@ -135,6 +142,10 @@ private:
   int threadID;         //线程ID
   int priority;         //优先级
   int timeSliceRemain;  //剩余时间片大小,以时钟中断为单位
+  OpenFile** oft;//open file table
+  OpenFile* currentOpenedFile;
+  int openFileNum;
+  NoffHeader currentNoffHeader;
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.
@@ -145,12 +156,12 @@ private:
   // while executing kernel code.
 
   int userRegisters[NumTotalRegs]; // user-level CPU register state
-
 public:
   void SaveUserState();    // save user-level register state
   void RestoreUserState(); // restore user-level register state
 
   AddrSpace *space; // User code this thread is running.
+  
 };
 
 // external function, dummy routine whose sole job is to call Thread::Print

@@ -45,7 +45,7 @@ Alarm::Alarm(bool doRandom)
 
 void Alarm::CallBack() 
 {
-    cout<<"发生一个时钟中断!\n";
+    // cout<<"发生一个时钟中断!\n";
     kernel->currentThread->setRemainTime(kernel->currentThread->getRemainTime() - 1);
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();

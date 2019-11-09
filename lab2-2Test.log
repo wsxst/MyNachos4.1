@@ -4,11 +4,11 @@ Entering main
 tests summary: ok:0
 现在准备创建内核！
 内核创建完成！
-Forking thread: postal worker f(a): 134604204 0x8fce510
+Forking thread: postal worker f(a): 134604398 0x8bd9510
 Putting thread on ready list: postal worker
 内核初始化完成！
 进入自己写的线程测试环节：
-Forking thread: 线程1 f(a): 134591709 0x1
+Forking thread: 线程1 f(a): 134591903 0x1
 Putting thread on ready list: 线程1
 Yielding thread: main
 当前全部线程状态：
@@ -35,7 +35,7 @@ Sleeping thread: postal worker
 从就绪队列中选出线程：线程1;剩余时间片:3
 Switching from: postal worker to: 线程1
 Beginning thread: 线程1
-Forking thread: 线程2 f(a): 134591709 0x2
+Forking thread: 线程2 f(a): 134591903 0x2
 Putting thread on ready list: 线程2
 线程1已经循环了0次
 线程1已经循环了1次
@@ -94,7 +94,7 @@ Yielding thread: main
 Putting thread on ready list: main
 Switching from: main to: 线程2
 Beginning thread: 线程2
-Forking thread: 线程3 f(a): 134591709 0x3
+Forking thread: 线程3 f(a): 134591903 0x3
 Putting thread on ready list: 线程3
 线程2已经循环了0次
 线程2已经循环了1次

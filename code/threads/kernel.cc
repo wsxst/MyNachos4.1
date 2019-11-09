@@ -268,8 +268,8 @@ void Kernel::NetworkTest()
 
 void Kernel::TS()
 {
-    cout<<"当前全部线程状态：\n";
-    cout<<"线程ID\t线程名称\t拥有者\t线程状态\t优先级\n";
+    cerr<<"当前全部线程状态：\n";
+    cerr<<"线程ID\t线程名称\t拥有者\t线程状态\t优先级\n";
     for(int i=0;i<MaxThreadNum;++i)
     {
         if(kernel->threadArray[i]) kernel->threadArray[i]->Print();

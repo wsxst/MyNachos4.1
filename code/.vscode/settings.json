@@ -1,6 +1,14 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "ostream": "cpp"
-    }
+        "ostream": "cpp",
+        "nachos_syscall.h": "c",
+        "syscall.h": "c",
+        "functional": "cpp",
+        "istream": "cpp",
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
+    },
+    "C_Cpp.dimInactiveRegions": false
 }

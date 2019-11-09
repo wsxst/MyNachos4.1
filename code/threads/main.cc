@@ -67,7 +67,7 @@ Debug *debug;
 2是lab2的challenge1(RR调度算法)
 3是lab2的challenge2(多级反馈队列调度算法)
 */
-int typeno;
+int typeno = 2;
 
 //----------------------------------------------------------------------
 // Cleanup
@@ -162,6 +162,15 @@ void Print(char *name)
 
     delete openFile; // close the Nachos file
     return;
+}
+
+static void SimpleUserThread(char* userProgramName)
+{
+    if(debug->IsEnabled('t')) cerr<<kernel->currentThread->getName()<<" 运行的用户程序:"<<userProgramName<<endl;
+    AddrSpace *space = new AddrSpace(userProgramName);
+    ASSERT(space != (AddrSpace *)NULL);
+    space->Execute();   // run the program
+    ASSERTNOTREACHED(); // Execute never returns
 }
 
 //----------------------------------------------------------------------
@@ -283,12 +292,12 @@ int main(int argc, char **argv)
     ::tut::runner.get().run_tests(); //run all unit tests
 #endif
 
-    cout<<"现在准备创建内核！\n";
+    // cout<<"现在准备创建内核！\n";
     kernel = new Kernel(argc, argv);
-    cout<<"内核创建完成！\n";
+    // cout<<"内核创建完成！\n";
 
     kernel->Initialize();
-    cout<<"内核初始化完成！\n";
+    // cout<<"内核初始化完成！\n";
 
     CallOnUserAbort(Cleanup); // if user hits ctl-C
 
@@ -333,13 +342,18 @@ int main(int argc, char **argv)
     // finally, run an initial user program if requested to do so
     if (userProgName != NULL)
     {
-        AddrSpace *space = new AddrSpace;
-        ASSERT(space != (AddrSpace *)NULL);
-        if (space->Load(userProgName))
-        {                       // load the program into the space
-            space->Execute();   // run the program
-            ASSERTNOTREACHED(); // Execute never returns
-        }
+#ifdef USE_RPT
+        kernel->machine->pt = new TranslationEntry[NumPhysPages];
+        for(int i=0;i<NumPhysPages;++i) kernel->machine->pt[i].reset();
+#endif
+        bzero(kernel->machine->mainMemory, MemorySize);
+        Thread* t1 = new Thread("Thread 1");
+        t1->Fork((VoidFunctionPtr)SimpleUserThread,(void*)userProgName);
+        Thread* t2 = new Thread("Thread 2");
+        t2->Fork((VoidFunctionPtr)SimpleUserThread,(void*)userProgName);
+        Thread* t3 = new Thread("Thread 3");
+        t3->Fork((VoidFunctionPtr)SimpleUserThread,(void*)userProgName);
+        while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
     }
 
     // If we don't run a user program, we may get here.

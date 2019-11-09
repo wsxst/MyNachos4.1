@@ -37,6 +37,8 @@ const int STACK_FENCEPOST = 0xdedbeef;
 
 Thread::Thread(char *threadName)
 {
+    oft = new OpenFile*[MAX_OPEN_FILES_NUM];
+    openFileNum = 0;
     threadID = addAThread(this);
     ASSERT(threadID!=-1);
     if(typeno==1)
@@ -76,6 +78,7 @@ Thread::~Thread()
     ASSERT(this != kernel->currentThread);
     if (stack != NULL)
         DeallocBoundedArray((char *)stack, StackSize * sizeof(int));
+    delete oft;
     removeAThread(this->getTID());
 }
 
@@ -434,7 +437,7 @@ static void SimpleThread(int which)
         for (int num = 0; num < 5; num++)
         {
             IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-            cout<<"线程" << which << "已经循环了" << num << "次\n";
+            cerr<<"线程" << which << "已经循环了" << num << "次\n";
             (void)kernel->interrupt->SetLevel(oldLevel);
         }
     }
@@ -443,7 +446,7 @@ static void SimpleThread(int which)
         for (int num = 0; num < 100; num++)
         {
             IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-            cout<<"线程" << which << "已经循环了" << num << "次\n";
+            cerr<<"线程" << which << "已经循环了" << num << "次\n";
             (void)kernel->interrupt->SetLevel(oldLevel);
         }
     }
@@ -454,7 +457,7 @@ static void SimpleThread(int which)
             for (int num = 0; num < 500; num++)
             {
                 IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                cerr<<"线程" << which << "已经循环了" << num << "次\n";
                 (void)kernel->interrupt->SetLevel(oldLevel);
             }
         }
@@ -463,7 +466,7 @@ static void SimpleThread(int which)
             for (int num = 0; num < 100; num++)
             {
                 IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                cerr<<"线程" << which << "已经循环了" << num << "次\n";
                 (void)kernel->interrupt->SetLevel(oldLevel);
             }
         }
@@ -472,7 +475,7 @@ static void SimpleThread(int which)
             for (int num = 0; num < 20; num++)
             {
                 IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
-                cout<<"线程" << which << "已经循环了" << num << "次\n";
+                cerr<<"线程" << which << "已经循环了" << num << "次\n";
                 (void)kernel->interrupt->SetLevel(oldLevel);
             }
         }
@@ -498,7 +501,7 @@ void Thread::SelfTest()
 
 void Thread::MyThreadTest()
 {
-    cout<<"进入自己写的线程测试环节：\n";
+    cerr<<"进入自己写的线程测试环节：\n";
     
     if(typeno==0)
     {
@@ -538,4 +541,11 @@ int Thread::addAThread(Thread* t)
 void Thread::removeAThread(int tid)
 {
     kernel->threadArray[tid] = NULL;
+}
+
+void Thread::openAFile(OpenFile* f, NoffHeader noffHeader)
+{
+    this->oft[openFileNum++] = f;
+    this->currentOpenedFile = f;
+    this->currentNoffHeader = noffHeader;
 }

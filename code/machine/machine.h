@@ -24,6 +24,7 @@
 #include "copyright.h"
 #include "utility.h"
 #include "translate.h"
+#include "bitmap.h"
 
 // Definitions related to the size, and format of user memory
 
@@ -135,7 +136,8 @@ class Machine {
     TranslationEntry *tlb;		// this pointer should be considered 
 					// "read-only" to Nachos kernel code
 
-    TranslationEntry *pageTable;
+    TranslationEntry *pt;
+	Bitmap *mmBitmap;
     unsigned int pageTableSize;
 
     bool ReadMem(int addr, int size, int* value);
@@ -143,6 +145,14 @@ class Machine {
     				// Read or write 1, 2, or 4 bytes of virtual 
 				// memory (at addr).  Return FALSE if a 
 				// correct translation couldn't be found.
+	void showTLB();
+	void showRPT();
+	int findAvailablePageFrame();
+	int findOneToReplace(TranslationEntry* t);
+	void updateFIFOFlag(TranslationEntry* t, int pos);
+	void updateLRUFlag(TranslationEntry* t, int pos);
+	void loadPageFrame(unsigned int vpn, unsigned int ppn);
+	
   private:
 
 // Routines internal to the machine simulation -- DO NOT call these directly
@@ -168,7 +178,6 @@ class Machine {
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
 
-
 // Internal data structures
 
     int registers[NumTotalRegs]; // CPU registers, for executing user programs
@@ -178,7 +187,7 @@ class Machine {
     int runUntilTime;		// drop back into the debugger when simulated
 				// time reaches this value
 
-    friend class Interrupt;		// calls DelayedLoad()    
+    friend class Interrupt;		// calls DelayedLoad()  
 };
 
 extern void ExceptionHandler(ExceptionType which);

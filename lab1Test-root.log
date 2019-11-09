@@ -4,18 +4,18 @@ Entering main
 tests summary: ok:0
 现在准备创建内核！
 内核创建完成！
-Forking thread: postal worker f(a): 134604204 0x8623510
+Forking thread: postal worker f(a): 134604398 0x8c2b510
 Putting thread on ready list: postal worker
 内核初始化完成！
 进入自己写的线程测试环节：
-Forking thread: 线程1 f(a): 134591709 0x1
+Forking thread: 线程1 f(a): 134591903 0x1
 Putting thread on ready list: 线程1
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
 0	main	0	RUNNING	0
 1	postal worker	0	READY	0
 2	线程1	0	READY	0
-Forking thread: 线程2 f(a): 134591709 0x2
+Forking thread: 线程2 f(a): 134591903 0x2
 Putting thread on ready list: 线程2
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -23,7 +23,7 @@ Putting thread on ready list: 线程2
 1	postal worker	0	READY	0
 2	线程1	0	READY	0
 3	线程2	0	READY	0
-Forking thread: 线程3 f(a): 134591709 0x3
+Forking thread: 线程3 f(a): 134591903 0x3
 Putting thread on ready list: 线程3
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -32,7 +32,7 @@ Putting thread on ready list: 线程3
 2	线程1	0	READY	0
 3	线程2	0	READY	0
 4	线程3	0	READY	0
-Forking thread: 线程4 f(a): 134591709 0x4
+Forking thread: 线程4 f(a): 134591903 0x4
 Putting thread on ready list: 线程4
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -42,7 +42,7 @@ Putting thread on ready list: 线程4
 3	线程2	0	READY	0
 4	线程3	0	READY	0
 5	线程4	0	READY	0
-Forking thread: 线程5 f(a): 134591709 0x5
+Forking thread: 线程5 f(a): 134591903 0x5
 Putting thread on ready list: 线程5
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -53,7 +53,7 @@ Putting thread on ready list: 线程5
 4	线程3	0	READY	0
 5	线程4	0	READY	0
 6	线程5	0	READY	0
-Forking thread: 线程6 f(a): 134591709 0x6
+Forking thread: 线程6 f(a): 134591903 0x6
 Putting thread on ready list: 线程6
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -65,7 +65,7 @@ Putting thread on ready list: 线程6
 5	线程4	0	READY	0
 6	线程5	0	READY	0
 7	线程6	0	READY	0
-Forking thread: 线程7 f(a): 134591709 0x7
+Forking thread: 线程7 f(a): 134591903 0x7
 Putting thread on ready list: 线程7
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -78,7 +78,7 @@ Putting thread on ready list: 线程7
 6	线程5	0	READY	0
 7	线程6	0	READY	0
 8	线程7	0	READY	0
-Forking thread: 线程8 f(a): 134591709 0x8
+Forking thread: 线程8 f(a): 134591903 0x8
 Putting thread on ready list: 线程8
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -92,7 +92,7 @@ Putting thread on ready list: 线程8
 7	线程6	0	READY	0
 8	线程7	0	READY	0
 9	线程8	0	READY	0
-Forking thread: 线程9 f(a): 134591709 0x9
+Forking thread: 线程9 f(a): 134591903 0x9
 Putting thread on ready list: 线程9
 发生一个时钟中断!
 当前全部线程状态：
@@ -108,7 +108,7 @@ Putting thread on ready list: 线程9
 8	线程7	0	READY	0
 9	线程8	0	READY	0
 10	线程9	0	READY	0
-Forking thread: 线程10 f(a): 134591709 0xa
+Forking thread: 线程10 f(a): 134591903 0xa
 Putting thread on ready list: 线程10
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -124,7 +124,7 @@ Putting thread on ready list: 线程10
 9	线程8	0	READY	0
 10	线程9	0	READY	0
 11	线程10	0	READY	0
-Forking thread: 线程11 f(a): 134591709 0xb
+Forking thread: 线程11 f(a): 134591903 0xb
 Putting thread on ready list: 线程11
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -141,7 +141,7 @@ Putting thread on ready list: 线程11
 10	线程9	0	READY	0
 11	线程10	0	READY	0
 12	线程11	0	READY	0
-Forking thread: 线程12 f(a): 134591709 0xc
+Forking thread: 线程12 f(a): 134591903 0xc
 Putting thread on ready list: 线程12
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -159,7 +159,7 @@ Putting thread on ready list: 线程12
 11	线程10	0	READY	0
 12	线程11	0	READY	0
 13	线程12	0	READY	0
-Forking thread: 线程13 f(a): 134591709 0xd
+Forking thread: 线程13 f(a): 134591903 0xd
 Putting thread on ready list: 线程13
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -178,7 +178,7 @@ Putting thread on ready list: 线程13
 12	线程11	0	READY	0
 13	线程12	0	READY	0
 14	线程13	0	READY	0
-Forking thread: 线程14 f(a): 134591709 0xe
+Forking thread: 线程14 f(a): 134591903 0xe
 Putting thread on ready list: 线程14
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -198,7 +198,7 @@ Putting thread on ready list: 线程14
 13	线程12	0	READY	0
 14	线程13	0	READY	0
 15	线程14	0	READY	0
-Forking thread: 线程15 f(a): 134591709 0xf
+Forking thread: 线程15 f(a): 134591903 0xf
 Putting thread on ready list: 线程15
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -219,7 +219,7 @@ Putting thread on ready list: 线程15
 14	线程13	0	READY	0
 15	线程14	0	READY	0
 16	线程15	0	READY	0
-Forking thread: 线程16 f(a): 134591709 0x10
+Forking thread: 线程16 f(a): 134591903 0x10
 Putting thread on ready list: 线程16
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -241,7 +241,7 @@ Putting thread on ready list: 线程16
 15	线程14	0	READY	0
 16	线程15	0	READY	0
 17	线程16	0	READY	0
-Forking thread: 线程17 f(a): 134591709 0x11
+Forking thread: 线程17 f(a): 134591903 0x11
 Putting thread on ready list: 线程17
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -264,7 +264,7 @@ Putting thread on ready list: 线程17
 16	线程15	0	READY	0
 17	线程16	0	READY	0
 18	线程17	0	READY	0
-Forking thread: 线程18 f(a): 134591709 0x12
+Forking thread: 线程18 f(a): 134591903 0x12
 Putting thread on ready list: 线程18
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -288,7 +288,7 @@ Putting thread on ready list: 线程18
 17	线程16	0	READY	0
 18	线程17	0	READY	0
 19	线程18	0	READY	0
-Forking thread: 线程19 f(a): 134591709 0x13
+Forking thread: 线程19 f(a): 134591903 0x13
 Putting thread on ready list: 线程19
 发生一个时钟中断!
 当前全部线程状态：
@@ -314,7 +314,7 @@ Putting thread on ready list: 线程19
 18	线程17	0	READY	0
 19	线程18	0	READY	0
 20	线程19	0	READY	0
-Forking thread: 线程20 f(a): 134591709 0x14
+Forking thread: 线程20 f(a): 134591903 0x14
 Putting thread on ready list: 线程20
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -340,7 +340,7 @@ Putting thread on ready list: 线程20
 19	线程18	0	READY	0
 20	线程19	0	READY	0
 21	线程20	0	READY	0
-Forking thread: 线程21 f(a): 134591709 0x15
+Forking thread: 线程21 f(a): 134591903 0x15
 Putting thread on ready list: 线程21
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -367,7 +367,7 @@ Putting thread on ready list: 线程21
 20	线程19	0	READY	0
 21	线程20	0	READY	0
 22	线程21	0	READY	0
-Forking thread: 线程22 f(a): 134591709 0x16
+Forking thread: 线程22 f(a): 134591903 0x16
 Putting thread on ready list: 线程22
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -395,7 +395,7 @@ Putting thread on ready list: 线程22
 21	线程20	0	READY	0
 22	线程21	0	READY	0
 23	线程22	0	READY	0
-Forking thread: 线程23 f(a): 134591709 0x17
+Forking thread: 线程23 f(a): 134591903 0x17
 Putting thread on ready list: 线程23
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -424,7 +424,7 @@ Putting thread on ready list: 线程23
 22	线程21	0	READY	0
 23	线程22	0	READY	0
 24	线程23	0	READY	0
-Forking thread: 线程24 f(a): 134591709 0x18
+Forking thread: 线程24 f(a): 134591903 0x18
 Putting thread on ready list: 线程24
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -454,7 +454,7 @@ Putting thread on ready list: 线程24
 23	线程22	0	READY	0
 24	线程23	0	READY	0
 25	线程24	0	READY	0
-Forking thread: 线程25 f(a): 134591709 0x19
+Forking thread: 线程25 f(a): 134591903 0x19
 Putting thread on ready list: 线程25
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -485,7 +485,7 @@ Putting thread on ready list: 线程25
 24	线程23	0	READY	0
 25	线程24	0	READY	0
 26	线程25	0	READY	0
-Forking thread: 线程26 f(a): 134591709 0x1a
+Forking thread: 线程26 f(a): 134591903 0x1a
 Putting thread on ready list: 线程26
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -517,7 +517,7 @@ Putting thread on ready list: 线程26
 25	线程24	0	READY	0
 26	线程25	0	READY	0
 27	线程26	0	READY	0
-Forking thread: 线程27 f(a): 134591709 0x1b
+Forking thread: 线程27 f(a): 134591903 0x1b
 Putting thread on ready list: 线程27
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -550,7 +550,7 @@ Putting thread on ready list: 线程27
 26	线程25	0	READY	0
 27	线程26	0	READY	0
 28	线程27	0	READY	0
-Forking thread: 线程28 f(a): 134591709 0x1c
+Forking thread: 线程28 f(a): 134591903 0x1c
 Putting thread on ready list: 线程28
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -584,7 +584,7 @@ Putting thread on ready list: 线程28
 27	线程26	0	READY	0
 28	线程27	0	READY	0
 29	线程28	0	READY	0
-Forking thread: 线程29 f(a): 134591709 0x1d
+Forking thread: 线程29 f(a): 134591903 0x1d
 Putting thread on ready list: 线程29
 发生一个时钟中断!
 当前全部线程状态：
@@ -620,7 +620,7 @@ Putting thread on ready list: 线程29
 28	线程27	0	READY	0
 29	线程28	0	READY	0
 30	线程29	0	READY	0
-Forking thread: 线程30 f(a): 134591709 0x1e
+Forking thread: 线程30 f(a): 134591903 0x1e
 Putting thread on ready list: 线程30
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -656,7 +656,7 @@ Putting thread on ready list: 线程30
 29	线程28	0	READY	0
 30	线程29	0	READY	0
 31	线程30	0	READY	0
-Forking thread: 线程31 f(a): 134591709 0x1f
+Forking thread: 线程31 f(a): 134591903 0x1f
 Putting thread on ready list: 线程31
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -693,7 +693,7 @@ Putting thread on ready list: 线程31
 30	线程29	0	READY	0
 31	线程30	0	READY	0
 32	线程31	0	READY	0
-Forking thread: 线程32 f(a): 134591709 0x20
+Forking thread: 线程32 f(a): 134591903 0x20
 Putting thread on ready list: 线程32
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -731,7 +731,7 @@ Putting thread on ready list: 线程32
 31	线程30	0	READY	0
 32	线程31	0	READY	0
 33	线程32	0	READY	0
-Forking thread: 线程33 f(a): 134591709 0x21
+Forking thread: 线程33 f(a): 134591903 0x21
 Putting thread on ready list: 线程33
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -770,7 +770,7 @@ Putting thread on ready list: 线程33
 32	线程31	0	READY	0
 33	线程32	0	READY	0
 34	线程33	0	READY	0
-Forking thread: 线程34 f(a): 134591709 0x22
+Forking thread: 线程34 f(a): 134591903 0x22
 Putting thread on ready list: 线程34
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -810,7 +810,7 @@ Putting thread on ready list: 线程34
 33	线程32	0	READY	0
 34	线程33	0	READY	0
 35	线程34	0	READY	0
-Forking thread: 线程35 f(a): 134591709 0x23
+Forking thread: 线程35 f(a): 134591903 0x23
 Putting thread on ready list: 线程35
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -851,7 +851,7 @@ Putting thread on ready list: 线程35
 34	线程33	0	READY	0
 35	线程34	0	READY	0
 36	线程35	0	READY	0
-Forking thread: 线程36 f(a): 134591709 0x24
+Forking thread: 线程36 f(a): 134591903 0x24
 Putting thread on ready list: 线程36
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -893,7 +893,7 @@ Putting thread on ready list: 线程36
 35	线程34	0	READY	0
 36	线程35	0	READY	0
 37	线程36	0	READY	0
-Forking thread: 线程37 f(a): 134591709 0x25
+Forking thread: 线程37 f(a): 134591903 0x25
 Putting thread on ready list: 线程37
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -936,7 +936,7 @@ Putting thread on ready list: 线程37
 36	线程35	0	READY	0
 37	线程36	0	READY	0
 38	线程37	0	READY	0
-Forking thread: 线程38 f(a): 134591709 0x26
+Forking thread: 线程38 f(a): 134591903 0x26
 Putting thread on ready list: 线程38
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -980,7 +980,7 @@ Putting thread on ready list: 线程38
 37	线程36	0	READY	0
 38	线程37	0	READY	0
 39	线程38	0	READY	0
-Forking thread: 线程39 f(a): 134591709 0x27
+Forking thread: 线程39 f(a): 134591903 0x27
 Putting thread on ready list: 线程39
 发生一个时钟中断!
 当前全部线程状态：
@@ -1026,7 +1026,7 @@ Putting thread on ready list: 线程39
 38	线程37	0	READY	0
 39	线程38	0	READY	0
 40	线程39	0	READY	0
-Forking thread: 线程40 f(a): 134591709 0x28
+Forking thread: 线程40 f(a): 134591903 0x28
 Putting thread on ready list: 线程40
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1072,7 +1072,7 @@ Putting thread on ready list: 线程40
 39	线程38	0	READY	0
 40	线程39	0	READY	0
 41	线程40	0	READY	0
-Forking thread: 线程41 f(a): 134591709 0x29
+Forking thread: 线程41 f(a): 134591903 0x29
 Putting thread on ready list: 线程41
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1119,7 +1119,7 @@ Putting thread on ready list: 线程41
 40	线程39	0	READY	0
 41	线程40	0	READY	0
 42	线程41	0	READY	0
-Forking thread: 线程42 f(a): 134591709 0x2a
+Forking thread: 线程42 f(a): 134591903 0x2a
 Putting thread on ready list: 线程42
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1167,7 +1167,7 @@ Putting thread on ready list: 线程42
 41	线程40	0	READY	0
 42	线程41	0	READY	0
 43	线程42	0	READY	0
-Forking thread: 线程43 f(a): 134591709 0x2b
+Forking thread: 线程43 f(a): 134591903 0x2b
 Putting thread on ready list: 线程43
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1216,7 +1216,7 @@ Putting thread on ready list: 线程43
 42	线程41	0	READY	0
 43	线程42	0	READY	0
 44	线程43	0	READY	0
-Forking thread: 线程44 f(a): 134591709 0x2c
+Forking thread: 线程44 f(a): 134591903 0x2c
 Putting thread on ready list: 线程44
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1266,7 +1266,7 @@ Putting thread on ready list: 线程44
 43	线程42	0	READY	0
 44	线程43	0	READY	0
 45	线程44	0	READY	0
-Forking thread: 线程45 f(a): 134591709 0x2d
+Forking thread: 线程45 f(a): 134591903 0x2d
 Putting thread on ready list: 线程45
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1317,7 +1317,7 @@ Putting thread on ready list: 线程45
 44	线程43	0	READY	0
 45	线程44	0	READY	0
 46	线程45	0	READY	0
-Forking thread: 线程46 f(a): 134591709 0x2e
+Forking thread: 线程46 f(a): 134591903 0x2e
 Putting thread on ready list: 线程46
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1369,7 +1369,7 @@ Putting thread on ready list: 线程46
 45	线程44	0	READY	0
 46	线程45	0	READY	0
 47	线程46	0	READY	0
-Forking thread: 线程47 f(a): 134591709 0x2f
+Forking thread: 线程47 f(a): 134591903 0x2f
 Putting thread on ready list: 线程47
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1422,7 +1422,7 @@ Putting thread on ready list: 线程47
 46	线程45	0	READY	0
 47	线程46	0	READY	0
 48	线程47	0	READY	0
-Forking thread: 线程48 f(a): 134591709 0x30
+Forking thread: 线程48 f(a): 134591903 0x30
 Putting thread on ready list: 线程48
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1476,7 +1476,7 @@ Putting thread on ready list: 线程48
 47	线程46	0	READY	0
 48	线程47	0	READY	0
 49	线程48	0	READY	0
-Forking thread: 线程49 f(a): 134591709 0x31
+Forking thread: 线程49 f(a): 134591903 0x31
 Putting thread on ready list: 线程49
 发生一个时钟中断!
 当前全部线程状态：
@@ -1532,7 +1532,7 @@ Putting thread on ready list: 线程49
 48	线程47	0	READY	0
 49	线程48	0	READY	0
 50	线程49	0	READY	0
-Forking thread: 线程50 f(a): 134591709 0x32
+Forking thread: 线程50 f(a): 134591903 0x32
 Putting thread on ready list: 线程50
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1588,7 +1588,7 @@ Putting thread on ready list: 线程50
 49	线程48	0	READY	0
 50	线程49	0	READY	0
 51	线程50	0	READY	0
-Forking thread: 线程51 f(a): 134591709 0x33
+Forking thread: 线程51 f(a): 134591903 0x33
 Putting thread on ready list: 线程51
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1645,7 +1645,7 @@ Putting thread on ready list: 线程51
 50	线程49	0	READY	0
 51	线程50	0	READY	0
 52	线程51	0	READY	0
-Forking thread: 线程52 f(a): 134591709 0x34
+Forking thread: 线程52 f(a): 134591903 0x34
 Putting thread on ready list: 线程52
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1703,7 +1703,7 @@ Putting thread on ready list: 线程52
 51	线程50	0	READY	0
 52	线程51	0	READY	0
 53	线程52	0	READY	0
-Forking thread: 线程53 f(a): 134591709 0x35
+Forking thread: 线程53 f(a): 134591903 0x35
 Putting thread on ready list: 线程53
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1762,7 +1762,7 @@ Putting thread on ready list: 线程53
 52	线程51	0	READY	0
 53	线程52	0	READY	0
 54	线程53	0	READY	0
-Forking thread: 线程54 f(a): 134591709 0x36
+Forking thread: 线程54 f(a): 134591903 0x36
 Putting thread on ready list: 线程54
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1822,7 +1822,7 @@ Putting thread on ready list: 线程54
 53	线程52	0	READY	0
 54	线程53	0	READY	0
 55	线程54	0	READY	0
-Forking thread: 线程55 f(a): 134591709 0x37
+Forking thread: 线程55 f(a): 134591903 0x37
 Putting thread on ready list: 线程55
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1883,7 +1883,7 @@ Putting thread on ready list: 线程55
 54	线程53	0	READY	0
 55	线程54	0	READY	0
 56	线程55	0	READY	0
-Forking thread: 线程56 f(a): 134591709 0x38
+Forking thread: 线程56 f(a): 134591903 0x38
 Putting thread on ready list: 线程56
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -1945,7 +1945,7 @@ Putting thread on ready list: 线程56
 55	线程54	0	READY	0
 56	线程55	0	READY	0
 57	线程56	0	READY	0
-Forking thread: 线程57 f(a): 134591709 0x39
+Forking thread: 线程57 f(a): 134591903 0x39
 Putting thread on ready list: 线程57
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2008,7 +2008,7 @@ Putting thread on ready list: 线程57
 56	线程55	0	READY	0
 57	线程56	0	READY	0
 58	线程57	0	READY	0
-Forking thread: 线程58 f(a): 134591709 0x3a
+Forking thread: 线程58 f(a): 134591903 0x3a
 Putting thread on ready list: 线程58
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2072,7 +2072,7 @@ Putting thread on ready list: 线程58
 57	线程56	0	READY	0
 58	线程57	0	READY	0
 59	线程58	0	READY	0
-Forking thread: 线程59 f(a): 134591709 0x3b
+Forking thread: 线程59 f(a): 134591903 0x3b
 Putting thread on ready list: 线程59
 发生一个时钟中断!
 当前全部线程状态：
@@ -2138,7 +2138,7 @@ Putting thread on ready list: 线程59
 58	线程57	0	READY	0
 59	线程58	0	READY	0
 60	线程59	0	READY	0
-Forking thread: 线程60 f(a): 134591709 0x3c
+Forking thread: 线程60 f(a): 134591903 0x3c
 Putting thread on ready list: 线程60
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2204,7 +2204,7 @@ Putting thread on ready list: 线程60
 59	线程58	0	READY	0
 60	线程59	0	READY	0
 61	线程60	0	READY	0
-Forking thread: 线程61 f(a): 134591709 0x3d
+Forking thread: 线程61 f(a): 134591903 0x3d
 Putting thread on ready list: 线程61
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2271,7 +2271,7 @@ Putting thread on ready list: 线程61
 60	线程59	0	READY	0
 61	线程60	0	READY	0
 62	线程61	0	READY	0
-Forking thread: 线程62 f(a): 134591709 0x3e
+Forking thread: 线程62 f(a): 134591903 0x3e
 Putting thread on ready list: 线程62
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2339,7 +2339,7 @@ Putting thread on ready list: 线程62
 61	线程60	0	READY	0
 62	线程61	0	READY	0
 63	线程62	0	READY	0
-Forking thread: 线程63 f(a): 134591709 0x3f
+Forking thread: 线程63 f(a): 134591903 0x3f
 Putting thread on ready list: 线程63
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2408,7 +2408,7 @@ Putting thread on ready list: 线程63
 62	线程61	0	READY	0
 63	线程62	0	READY	0
 64	线程63	0	READY	0
-Forking thread: 线程64 f(a): 134591709 0x40
+Forking thread: 线程64 f(a): 134591903 0x40
 Putting thread on ready list: 线程64
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2478,7 +2478,7 @@ Putting thread on ready list: 线程64
 63	线程62	0	READY	0
 64	线程63	0	READY	0
 65	线程64	0	READY	0
-Forking thread: 线程65 f(a): 134591709 0x41
+Forking thread: 线程65 f(a): 134591903 0x41
 Putting thread on ready list: 线程65
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2549,7 +2549,7 @@ Putting thread on ready list: 线程65
 64	线程63	0	READY	0
 65	线程64	0	READY	0
 66	线程65	0	READY	0
-Forking thread: 线程66 f(a): 134591709 0x42
+Forking thread: 线程66 f(a): 134591903 0x42
 Putting thread on ready list: 线程66
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2621,7 +2621,7 @@ Putting thread on ready list: 线程66
 65	线程64	0	READY	0
 66	线程65	0	READY	0
 67	线程66	0	READY	0
-Forking thread: 线程67 f(a): 134591709 0x43
+Forking thread: 线程67 f(a): 134591903 0x43
 Putting thread on ready list: 线程67
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2694,7 +2694,7 @@ Putting thread on ready list: 线程67
 66	线程65	0	READY	0
 67	线程66	0	READY	0
 68	线程67	0	READY	0
-Forking thread: 线程68 f(a): 134591709 0x44
+Forking thread: 线程68 f(a): 134591903 0x44
 Putting thread on ready list: 线程68
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2768,7 +2768,7 @@ Putting thread on ready list: 线程68
 67	线程66	0	READY	0
 68	线程67	0	READY	0
 69	线程68	0	READY	0
-Forking thread: 线程69 f(a): 134591709 0x45
+Forking thread: 线程69 f(a): 134591903 0x45
 Putting thread on ready list: 线程69
 发生一个时钟中断!
 当前全部线程状态：
@@ -2844,7 +2844,7 @@ Putting thread on ready list: 线程69
 68	线程67	0	READY	0
 69	线程68	0	READY	0
 70	线程69	0	READY	0
-Forking thread: 线程70 f(a): 134591709 0x46
+Forking thread: 线程70 f(a): 134591903 0x46
 Putting thread on ready list: 线程70
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2920,7 +2920,7 @@ Putting thread on ready list: 线程70
 69	线程68	0	READY	0
 70	线程69	0	READY	0
 71	线程70	0	READY	0
-Forking thread: 线程71 f(a): 134591709 0x47
+Forking thread: 线程71 f(a): 134591903 0x47
 Putting thread on ready list: 线程71
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -2997,7 +2997,7 @@ Putting thread on ready list: 线程71
 70	线程69	0	READY	0
 71	线程70	0	READY	0
 72	线程71	0	READY	0
-Forking thread: 线程72 f(a): 134591709 0x48
+Forking thread: 线程72 f(a): 134591903 0x48
 Putting thread on ready list: 线程72
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3075,7 +3075,7 @@ Putting thread on ready list: 线程72
 71	线程70	0	READY	0
 72	线程71	0	READY	0
 73	线程72	0	READY	0
-Forking thread: 线程73 f(a): 134591709 0x49
+Forking thread: 线程73 f(a): 134591903 0x49
 Putting thread on ready list: 线程73
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3154,7 +3154,7 @@ Putting thread on ready list: 线程73
 72	线程71	0	READY	0
 73	线程72	0	READY	0
 74	线程73	0	READY	0
-Forking thread: 线程74 f(a): 134591709 0x4a
+Forking thread: 线程74 f(a): 134591903 0x4a
 Putting thread on ready list: 线程74
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3234,7 +3234,7 @@ Putting thread on ready list: 线程74
 73	线程72	0	READY	0
 74	线程73	0	READY	0
 75	线程74	0	READY	0
-Forking thread: 线程75 f(a): 134591709 0x4b
+Forking thread: 线程75 f(a): 134591903 0x4b
 Putting thread on ready list: 线程75
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3315,7 +3315,7 @@ Putting thread on ready list: 线程75
 74	线程73	0	READY	0
 75	线程74	0	READY	0
 76	线程75	0	READY	0
-Forking thread: 线程76 f(a): 134591709 0x4c
+Forking thread: 线程76 f(a): 134591903 0x4c
 Putting thread on ready list: 线程76
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3397,7 +3397,7 @@ Putting thread on ready list: 线程76
 75	线程74	0	READY	0
 76	线程75	0	READY	0
 77	线程76	0	READY	0
-Forking thread: 线程77 f(a): 134591709 0x4d
+Forking thread: 线程77 f(a): 134591903 0x4d
 Putting thread on ready list: 线程77
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3480,7 +3480,7 @@ Putting thread on ready list: 线程77
 76	线程75	0	READY	0
 77	线程76	0	READY	0
 78	线程77	0	READY	0
-Forking thread: 线程78 f(a): 134591709 0x4e
+Forking thread: 线程78 f(a): 134591903 0x4e
 Putting thread on ready list: 线程78
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3564,7 +3564,7 @@ Putting thread on ready list: 线程78
 77	线程76	0	READY	0
 78	线程77	0	READY	0
 79	线程78	0	READY	0
-Forking thread: 线程79 f(a): 134591709 0x4f
+Forking thread: 线程79 f(a): 134591903 0x4f
 Putting thread on ready list: 线程79
 发生一个时钟中断!
 当前全部线程状态：
@@ -3650,7 +3650,7 @@ Putting thread on ready list: 线程79
 78	线程77	0	READY	0
 79	线程78	0	READY	0
 80	线程79	0	READY	0
-Forking thread: 线程80 f(a): 134591709 0x50
+Forking thread: 线程80 f(a): 134591903 0x50
 Putting thread on ready list: 线程80
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3736,7 +3736,7 @@ Putting thread on ready list: 线程80
 79	线程78	0	READY	0
 80	线程79	0	READY	0
 81	线程80	0	READY	0
-Forking thread: 线程81 f(a): 134591709 0x51
+Forking thread: 线程81 f(a): 134591903 0x51
 Putting thread on ready list: 线程81
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3823,7 +3823,7 @@ Putting thread on ready list: 线程81
 80	线程79	0	READY	0
 81	线程80	0	READY	0
 82	线程81	0	READY	0
-Forking thread: 线程82 f(a): 134591709 0x52
+Forking thread: 线程82 f(a): 134591903 0x52
 Putting thread on ready list: 线程82
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -3911,7 +3911,7 @@ Putting thread on ready list: 线程82
 81	线程80	0	READY	0
 82	线程81	0	READY	0
 83	线程82	0	READY	0
-Forking thread: 线程83 f(a): 134591709 0x53
+Forking thread: 线程83 f(a): 134591903 0x53
 Putting thread on ready list: 线程83
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4000,7 +4000,7 @@ Putting thread on ready list: 线程83
 82	线程81	0	READY	0
 83	线程82	0	READY	0
 84	线程83	0	READY	0
-Forking thread: 线程84 f(a): 134591709 0x54
+Forking thread: 线程84 f(a): 134591903 0x54
 Putting thread on ready list: 线程84
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4090,7 +4090,7 @@ Putting thread on ready list: 线程84
 83	线程82	0	READY	0
 84	线程83	0	READY	0
 85	线程84	0	READY	0
-Forking thread: 线程85 f(a): 134591709 0x55
+Forking thread: 线程85 f(a): 134591903 0x55
 Putting thread on ready list: 线程85
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4181,7 +4181,7 @@ Putting thread on ready list: 线程85
 84	线程83	0	READY	0
 85	线程84	0	READY	0
 86	线程85	0	READY	0
-Forking thread: 线程86 f(a): 134591709 0x56
+Forking thread: 线程86 f(a): 134591903 0x56
 Putting thread on ready list: 线程86
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4273,7 +4273,7 @@ Putting thread on ready list: 线程86
 85	线程84	0	READY	0
 86	线程85	0	READY	0
 87	线程86	0	READY	0
-Forking thread: 线程87 f(a): 134591709 0x57
+Forking thread: 线程87 f(a): 134591903 0x57
 Putting thread on ready list: 线程87
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4366,7 +4366,7 @@ Putting thread on ready list: 线程87
 86	线程85	0	READY	0
 87	线程86	0	READY	0
 88	线程87	0	READY	0
-Forking thread: 线程88 f(a): 134591709 0x58
+Forking thread: 线程88 f(a): 134591903 0x58
 Putting thread on ready list: 线程88
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4460,7 +4460,7 @@ Putting thread on ready list: 线程88
 87	线程86	0	READY	0
 88	线程87	0	READY	0
 89	线程88	0	READY	0
-Forking thread: 线程89 f(a): 134591709 0x59
+Forking thread: 线程89 f(a): 134591903 0x59
 Putting thread on ready list: 线程89
 发生一个时钟中断!
 当前全部线程状态：
@@ -4556,7 +4556,7 @@ Putting thread on ready list: 线程89
 88	线程87	0	READY	0
 89	线程88	0	READY	0
 90	线程89	0	READY	0
-Forking thread: 线程90 f(a): 134591709 0x5a
+Forking thread: 线程90 f(a): 134591903 0x5a
 Putting thread on ready list: 线程90
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4652,7 +4652,7 @@ Putting thread on ready list: 线程90
 89	线程88	0	READY	0
 90	线程89	0	READY	0
 91	线程90	0	READY	0
-Forking thread: 线程91 f(a): 134591709 0x5b
+Forking thread: 线程91 f(a): 134591903 0x5b
 Putting thread on ready list: 线程91
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4749,7 +4749,7 @@ Putting thread on ready list: 线程91
 90	线程89	0	READY	0
 91	线程90	0	READY	0
 92	线程91	0	READY	0
-Forking thread: 线程92 f(a): 134591709 0x5c
+Forking thread: 线程92 f(a): 134591903 0x5c
 Putting thread on ready list: 线程92
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4847,7 +4847,7 @@ Putting thread on ready list: 线程92
 91	线程90	0	READY	0
 92	线程91	0	READY	0
 93	线程92	0	READY	0
-Forking thread: 线程93 f(a): 134591709 0x5d
+Forking thread: 线程93 f(a): 134591903 0x5d
 Putting thread on ready list: 线程93
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -4946,7 +4946,7 @@ Putting thread on ready list: 线程93
 92	线程91	0	READY	0
 93	线程92	0	READY	0
 94	线程93	0	READY	0
-Forking thread: 线程94 f(a): 134591709 0x5e
+Forking thread: 线程94 f(a): 134591903 0x5e
 Putting thread on ready list: 线程94
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5046,7 +5046,7 @@ Putting thread on ready list: 线程94
 93	线程92	0	READY	0
 94	线程93	0	READY	0
 95	线程94	0	READY	0
-Forking thread: 线程95 f(a): 134591709 0x5f
+Forking thread: 线程95 f(a): 134591903 0x5f
 Putting thread on ready list: 线程95
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5147,7 +5147,7 @@ Putting thread on ready list: 线程95
 94	线程93	0	READY	0
 95	线程94	0	READY	0
 96	线程95	0	READY	0
-Forking thread: 线程96 f(a): 134591709 0x60
+Forking thread: 线程96 f(a): 134591903 0x60
 Putting thread on ready list: 线程96
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5249,7 +5249,7 @@ Putting thread on ready list: 线程96
 95	线程94	0	READY	0
 96	线程95	0	READY	0
 97	线程96	0	READY	0
-Forking thread: 线程97 f(a): 134591709 0x61
+Forking thread: 线程97 f(a): 134591903 0x61
 Putting thread on ready list: 线程97
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5352,7 +5352,7 @@ Putting thread on ready list: 线程97
 96	线程95	0	READY	0
 97	线程96	0	READY	0
 98	线程97	0	READY	0
-Forking thread: 线程98 f(a): 134591709 0x62
+Forking thread: 线程98 f(a): 134591903 0x62
 Putting thread on ready list: 线程98
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5456,7 +5456,7 @@ Putting thread on ready list: 线程98
 97	线程96	0	READY	0
 98	线程97	0	READY	0
 99	线程98	0	READY	0
-Forking thread: 线程99 f(a): 134591709 0x63
+Forking thread: 线程99 f(a): 134591903 0x63
 Putting thread on ready list: 线程99
 发生一个时钟中断!
 当前全部线程状态：
@@ -5562,7 +5562,7 @@ Putting thread on ready list: 线程99
 98	线程97	0	READY	0
 99	线程98	0	READY	0
 100	线程99	0	READY	0
-Forking thread: 线程100 f(a): 134591709 0x64
+Forking thread: 线程100 f(a): 134591903 0x64
 Putting thread on ready list: 线程100
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5668,7 +5668,7 @@ Putting thread on ready list: 线程100
 99	线程98	0	READY	0
 100	线程99	0	READY	0
 101	线程100	0	READY	0
-Forking thread: 线程101 f(a): 134591709 0x65
+Forking thread: 线程101 f(a): 134591903 0x65
 Putting thread on ready list: 线程101
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5775,7 +5775,7 @@ Putting thread on ready list: 线程101
 100	线程99	0	READY	0
 101	线程100	0	READY	0
 102	线程101	0	READY	0
-Forking thread: 线程102 f(a): 134591709 0x66
+Forking thread: 线程102 f(a): 134591903 0x66
 Putting thread on ready list: 线程102
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5883,7 +5883,7 @@ Putting thread on ready list: 线程102
 101	线程100	0	READY	0
 102	线程101	0	READY	0
 103	线程102	0	READY	0
-Forking thread: 线程103 f(a): 134591709 0x67
+Forking thread: 线程103 f(a): 134591903 0x67
 Putting thread on ready list: 线程103
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -5992,7 +5992,7 @@ Putting thread on ready list: 线程103
 102	线程101	0	READY	0
 103	线程102	0	READY	0
 104	线程103	0	READY	0
-Forking thread: 线程104 f(a): 134591709 0x68
+Forking thread: 线程104 f(a): 134591903 0x68
 Putting thread on ready list: 线程104
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6102,7 +6102,7 @@ Putting thread on ready list: 线程104
 103	线程102	0	READY	0
 104	线程103	0	READY	0
 105	线程104	0	READY	0
-Forking thread: 线程105 f(a): 134591709 0x69
+Forking thread: 线程105 f(a): 134591903 0x69
 Putting thread on ready list: 线程105
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6213,7 +6213,7 @@ Putting thread on ready list: 线程105
 104	线程103	0	READY	0
 105	线程104	0	READY	0
 106	线程105	0	READY	0
-Forking thread: 线程106 f(a): 134591709 0x6a
+Forking thread: 线程106 f(a): 134591903 0x6a
 Putting thread on ready list: 线程106
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6325,7 +6325,7 @@ Putting thread on ready list: 线程106
 105	线程104	0	READY	0
 106	线程105	0	READY	0
 107	线程106	0	READY	0
-Forking thread: 线程107 f(a): 134591709 0x6b
+Forking thread: 线程107 f(a): 134591903 0x6b
 Putting thread on ready list: 线程107
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6438,7 +6438,7 @@ Putting thread on ready list: 线程107
 106	线程105	0	READY	0
 107	线程106	0	READY	0
 108	线程107	0	READY	0
-Forking thread: 线程108 f(a): 134591709 0x6c
+Forking thread: 线程108 f(a): 134591903 0x6c
 Putting thread on ready list: 线程108
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6552,7 +6552,7 @@ Putting thread on ready list: 线程108
 107	线程106	0	READY	0
 108	线程107	0	READY	0
 109	线程108	0	READY	0
-Forking thread: 线程109 f(a): 134591709 0x6d
+Forking thread: 线程109 f(a): 134591903 0x6d
 Putting thread on ready list: 线程109
 发生一个时钟中断!
 当前全部线程状态：
@@ -6668,7 +6668,7 @@ Putting thread on ready list: 线程109
 108	线程107	0	READY	0
 109	线程108	0	READY	0
 110	线程109	0	READY	0
-Forking thread: 线程110 f(a): 134591709 0x6e
+Forking thread: 线程110 f(a): 134591903 0x6e
 Putting thread on ready list: 线程110
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6784,7 +6784,7 @@ Putting thread on ready list: 线程110
 109	线程108	0	READY	0
 110	线程109	0	READY	0
 111	线程110	0	READY	0
-Forking thread: 线程111 f(a): 134591709 0x6f
+Forking thread: 线程111 f(a): 134591903 0x6f
 Putting thread on ready list: 线程111
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -6901,7 +6901,7 @@ Putting thread on ready list: 线程111
 110	线程109	0	READY	0
 111	线程110	0	READY	0
 112	线程111	0	READY	0
-Forking thread: 线程112 f(a): 134591709 0x70
+Forking thread: 线程112 f(a): 134591903 0x70
 Putting thread on ready list: 线程112
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7019,7 +7019,7 @@ Putting thread on ready list: 线程112
 111	线程110	0	READY	0
 112	线程111	0	READY	0
 113	线程112	0	READY	0
-Forking thread: 线程113 f(a): 134591709 0x71
+Forking thread: 线程113 f(a): 134591903 0x71
 Putting thread on ready list: 线程113
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7138,7 +7138,7 @@ Putting thread on ready list: 线程113
 112	线程111	0	READY	0
 113	线程112	0	READY	0
 114	线程113	0	READY	0
-Forking thread: 线程114 f(a): 134591709 0x72
+Forking thread: 线程114 f(a): 134591903 0x72
 Putting thread on ready list: 线程114
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7258,7 +7258,7 @@ Putting thread on ready list: 线程114
 113	线程112	0	READY	0
 114	线程113	0	READY	0
 115	线程114	0	READY	0
-Forking thread: 线程115 f(a): 134591709 0x73
+Forking thread: 线程115 f(a): 134591903 0x73
 Putting thread on ready list: 线程115
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7379,7 +7379,7 @@ Putting thread on ready list: 线程115
 114	线程113	0	READY	0
 115	线程114	0	READY	0
 116	线程115	0	READY	0
-Forking thread: 线程116 f(a): 134591709 0x74
+Forking thread: 线程116 f(a): 134591903 0x74
 Putting thread on ready list: 线程116
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7501,7 +7501,7 @@ Putting thread on ready list: 线程116
 115	线程114	0	READY	0
 116	线程115	0	READY	0
 117	线程116	0	READY	0
-Forking thread: 线程117 f(a): 134591709 0x75
+Forking thread: 线程117 f(a): 134591903 0x75
 Putting thread on ready list: 线程117
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7624,7 +7624,7 @@ Putting thread on ready list: 线程117
 116	线程115	0	READY	0
 117	线程116	0	READY	0
 118	线程117	0	READY	0
-Forking thread: 线程118 f(a): 134591709 0x76
+Forking thread: 线程118 f(a): 134591903 0x76
 Putting thread on ready list: 线程118
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -7748,7 +7748,7 @@ Putting thread on ready list: 线程118
 117	线程116	0	READY	0
 118	线程117	0	READY	0
 119	线程118	0	READY	0
-Forking thread: 线程119 f(a): 134591709 0x77
+Forking thread: 线程119 f(a): 134591903 0x77
 Putting thread on ready list: 线程119
 发生一个时钟中断!
 当前全部线程状态：
@@ -7874,7 +7874,7 @@ Putting thread on ready list: 线程119
 118	线程117	0	READY	0
 119	线程118	0	READY	0
 120	线程119	0	READY	0
-Forking thread: 线程120 f(a): 134591709 0x78
+Forking thread: 线程120 f(a): 134591903 0x78
 Putting thread on ready list: 线程120
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8000,7 +8000,7 @@ Putting thread on ready list: 线程120
 119	线程118	0	READY	0
 120	线程119	0	READY	0
 121	线程120	0	READY	0
-Forking thread: 线程121 f(a): 134591709 0x79
+Forking thread: 线程121 f(a): 134591903 0x79
 Putting thread on ready list: 线程121
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8127,7 +8127,7 @@ Putting thread on ready list: 线程121
 120	线程119	0	READY	0
 121	线程120	0	READY	0
 122	线程121	0	READY	0
-Forking thread: 线程122 f(a): 134591709 0x7a
+Forking thread: 线程122 f(a): 134591903 0x7a
 Putting thread on ready list: 线程122
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8255,7 +8255,7 @@ Putting thread on ready list: 线程122
 121	线程120	0	READY	0
 122	线程121	0	READY	0
 123	线程122	0	READY	0
-Forking thread: 线程123 f(a): 134591709 0x7b
+Forking thread: 线程123 f(a): 134591903 0x7b
 Putting thread on ready list: 线程123
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8384,7 +8384,7 @@ Putting thread on ready list: 线程123
 122	线程121	0	READY	0
 123	线程122	0	READY	0
 124	线程123	0	READY	0
-Forking thread: 线程124 f(a): 134591709 0x7c
+Forking thread: 线程124 f(a): 134591903 0x7c
 Putting thread on ready list: 线程124
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8514,7 +8514,7 @@ Putting thread on ready list: 线程124
 123	线程122	0	READY	0
 124	线程123	0	READY	0
 125	线程124	0	READY	0
-Forking thread: 线程125 f(a): 134591709 0x7d
+Forking thread: 线程125 f(a): 134591903 0x7d
 Putting thread on ready list: 线程125
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级
@@ -8645,7 +8645,7 @@ Putting thread on ready list: 线程125
 124	线程123	0	READY	0
 125	线程124	0	READY	0
 126	线程125	0	READY	0
-Forking thread: 线程126 f(a): 134591709 0x7e
+Forking thread: 线程126 f(a): 134591903 0x7e
 Putting thread on ready list: 线程126
 当前全部线程状态：
 线程ID	线程名称	拥有者	线程状态	优先级

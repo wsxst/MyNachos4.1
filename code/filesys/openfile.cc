@@ -120,8 +120,8 @@ int OpenFile::ReadAt(char *into, int numBytes, int position)
 
     if ((numBytes <= 0) || (position >= fileLength))
     	return 0; 				// check request
-    if ((position + numBytes) > fileLength)		
-	numBytes = fileLength - position;
+    if ((position + numBytes) > fileLength)
+        numBytes = fileLength - position;
     DEBUG(dbgFile, "Reading " << numBytes << " bytes at " << position << " from file of length " << fileLength);
 
     firstSector = divRoundDown(position, SectorSize);
