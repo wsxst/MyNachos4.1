@@ -25,6 +25,8 @@
 #include "utility.h"
 #include "translate.h"
 #include "bitmap.h"
+#include "noff.h"
+#include "filesys.h"
 
 // Definitions related to the size, and format of user memory
 
@@ -43,7 +45,8 @@ const int TLBSize = 4;			// if there is a TLB, make it small
 
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
-		     PageFaultException,    // No valid translation found
+		     TLBMissException,
+			 PageFaultException,    // No valid translation found
 		     ReadOnlyException,     // Write attempted to page marked 
 					    // "read-only"
 		     BusErrorException,     // Translation resulted in an 
@@ -138,7 +141,9 @@ class Machine {
 
     TranslationEntry *pt;
 	Bitmap *mmBitmap;
-    unsigned int pageTableSize;
+    int pageTableSize;
+    OpenFile* currentOpenedFile;
+    NoffHeader currentNoffHeader;
 
     bool ReadMem(int addr, int size, int* value);
     bool WriteMem(int addr, int size, int value);
@@ -148,10 +153,10 @@ class Machine {
 	void showTLB();
 	void showRPT();
 	int findAvailablePageFrame();
-	int findOneToReplace(TranslationEntry* t);
-	void updateFIFOFlag(TranslationEntry* t, int pos);
-	void updateLRUFlag(TranslationEntry* t, int pos);
-	void loadPageFrame(unsigned int vpn, unsigned int ppn);
+	int findOneToReplace(TranslationEntry* t, int type);
+	void updateFIFOFlag(TranslationEntry* t, int pos, int len);
+	void updateLRUFlag(TranslationEntry* t, int pos, int len);
+	void loadPageFrame(int vpn, int ppn);
 	
   private:
 

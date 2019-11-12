@@ -324,7 +324,7 @@ static void
 PrintPending (PendingInterrupt *pending)
 {
     cout << "Interrupt handler "<< intTypeNames[pending->type];
-    cout << ", scheduled at " << pending->when;
+    cout << ", scheduled at " << pending->when<<endl;
 }
 
 //----------------------------------------------------------------------

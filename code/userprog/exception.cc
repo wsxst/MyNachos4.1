@@ -73,17 +73,29 @@ void ExceptionHandler(ExceptionType which)
 #ifdef USE_RPT
 			for(int i=0;i<NumPhysPages;++i)
 			{
-				if(kernel->machine->pt[i].tid == kernel->currentThread->getTID())
+				if(kernel->machine->pt[i].tID == kernel->currentThread->getTID())
 				{
-					mmBitmap.Clear(i);
+					kernel->machine->mmBitmap->Clear(i);
 					kernel->machine->pt[i].reset();
 				}
 			}
+			if(kernel->machine->tlb != NULL)
+			{
+				for(int i=0;i<TLBSize;++i)
+				{
+					if(kernel->machine->tlb[i].tID == kernel->currentThread->getTID())
+						kernel->machine->tlb[i].reset();
+				}
+			}
 #else
-			delete kernel->currentThread->space;
-			char tmpFileName1[10];
-			sprintf(tmpFileName1,"vm%d",kernel->currentThread->getTID());
-			kernel->fileSystem->Remove(tmpFileName1);
+			if(kernel->currentThread->space != NULL)
+			{
+				kernel->fileSystem->Remove(kernel->currentThread->space->getVMFileName());
+			}
+			if(kernel->machine->tlb != NULL)
+			{
+				for(int i=0;i<TLBSize;++i) kernel->machine->tlb[i].reset();
+			}
 #endif
 			kernel->currentThread->Finish();
 			return;
@@ -126,19 +138,18 @@ void ExceptionHandler(ExceptionType which)
 		break;
 	case PageFaultException:
 		++kernel->stats->numPageFaults;
-		DEBUG(dbgAddr, "PageFault occurs!");
 		int vaddr = kernel->machine->ReadRegister(BadVAddrReg);
-		unsigned int vpn = (unsigned int)vaddr / PageSize, offset = (unsigned int)vaddr % PageSize;
+		int vpn = vaddr / PageSize, offset = vaddr % PageSize;
 		if(debug->IsEnabled('a')) cerr<<"vpn:"<<vpn<<";vpo:"<<offset<<endl;
 		int avaiPageFrame = kernel->machine->findAvailablePageFrame();
 		if(avaiPageFrame == -1)
 		{
 			DEBUG(dbgAddr,"No physical page frames in main memory available now !");
-			avaiPageFrame = kernel->machine->findOneToReplace(kernel->machine->pt);
+			avaiPageFrame = kernel->machine->findOneToReplace(kernel->machine->pt, 0);
 		}
 		if(debug->IsEnabled('a'))
 		{
-			cerr<<"Load available page frame #"<<avaiPageFrame<<"into main memory!"<<endl;
+			cerr<<"Load available page frame #"<<avaiPageFrame<<" into main memory!"<<endl;
 		}
 		kernel->machine->loadPageFrame(vpn, avaiPageFrame);
 		return;

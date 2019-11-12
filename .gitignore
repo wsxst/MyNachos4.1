@@ -31,9 +31,6 @@
 *.out
 *.app
 
-# 编译后文件
-build.*
-
 # cross-compiler
 coff2noff
 

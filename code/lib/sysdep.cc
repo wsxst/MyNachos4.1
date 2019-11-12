@@ -235,7 +235,9 @@ AllocBoundedArray(int size)
 #ifdef NO_MPROT
 void DeallocBoundedArray(char *ptr, int /* size */)
 {
+    // cout<<"哈哈3"<<endl;
     delete[] ptr;
+    // cout<<"哈哈4"<<endl;
 }
 #else
 void DeallocBoundedArray(char *ptr, int size)

@@ -188,9 +188,9 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 {
 	++kernel->stats->numAddressTranslation;
 	int i;
-	unsigned int vpn, offset;
+	int vpn, offset;
 	TranslationEntry *entry = NULL;
-	unsigned int pageFrame;
+	int pageFrame;
 	bool tlbWriteFlag = true;
 
 	DEBUG(dbgAddr, "\tTranslate " << virtAddr << (writing ? " , write" : " , read"));
@@ -203,20 +203,23 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 	}
 
 	// we must have either a TLB or a page table, but not both!
-	// ASSERT(tlb == NULL || pt == NULL);
 	ASSERT(tlb != NULL || pt != NULL);
 	ASSERT(tlb == NULL || pt != NULL);
 
 	// calculate the virtual page number, and offset within the page,
 	// from the virtual address
-	vpn = (unsigned)virtAddr / PageSize;
-	offset = (unsigned)virtAddr % PageSize;
+	vpn = virtAddr / PageSize;
+	offset = virtAddr % PageSize;
 	if(debug->IsEnabled('a')) cerr<<"vpn:"<<vpn<<";vpo:"<<offset<<endl;
 	if(tlb)
 	{
-		if(debug->IsEnabled('a')) kernel->machine->showTLB();
+		if(debug->IsEnabled('a')) showTLB();
 		for (i = 0; i < TLBSize; i++)
+#ifdef USE_RPT
+			if (tlb[i].valid && tlb[i].vpn == vpn && tlb[i].tID == kernel->currentThread->getTID())
+#else
 			if (tlb[i].valid && tlb[i].vpn == vpn)
+#endif
 			{
 				entry = &tlb[i]; // FOUND!
 				if (entry->readOnly && writing)
@@ -231,13 +234,14 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 	}
 	if(!entry)
 	{
-		DEBUG(dbgAddr, "Invalid TLB entry for this virtual page!");
+		if(tlb != NULL) DEBUG(dbgAddr, "Invalid TLB entry for this virtual page!");
+		return PageFaultException;
 #ifdef USE_RPT
-		if(debug->IsEnabled('a')) kernel->machine->showRPT();
+		if(debug->IsEnabled('a')) showRPT();
 		bool tmpFindFlag1 = false;
 		for(int i=0;i<NumPhysPages;++i)
 		{
-			if(pt[i].vpn == vpn && pt[i].tid == kernel->currentThread-.getTID())
+			if(pt[i].vpn == vpn && pt[i].tID == kernel->currentThread->getTID())
 			{
 				tmpFindFlag1 = true;
 				entry = &pt[i];
@@ -261,17 +265,25 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 		{
 			if(pt[vpn].ppn!=-1)
 			{
-				DEBUG(dbgAddr,"Read data from VM!");
-				char tmpFileName1[10];
-				sprintf(tmpFileName1,"vm%d",kernel->currentThread->getTID());
-				OpenFile* exec = kernel->fileSystem->Open(tmpFileName1);
+				OpenFile* exec = kernel->fileSystem->Open(kernel->currentThread->space->getVMFileName());
+				for(int j=0;j<pageTableSize;++j)
+				{
+					if(pt[j].valid&&pt[j].ppn == pt[vpn].ppn)
+					{
+						if(debug->IsEnabled('a')) cerr<<"Write data from main memory at addr: "<<pt[vpn].ppn*PageSize<<" , into VM at addr: "<<j*PageSize<<endl;;
+						ASSERT(exec->WriteAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,j*PageSize));
+						pt[j].valid = false;
+						break;
+					}
+				}
+				if(debug->IsEnabled('a')) cerr<<"Read data from VM at addr: "<<vpn*PageSize<<" , into main memory at addr: "<<pt[vpn].ppn*PageSize<<endl;				
 				pt[vpn].valid = true;
-				ASSERT(exec->WriteAt(&(kernel->machine->mainMemory[pt[vpn].ppn*PageSize]),PageSize,vpn*PageSize)>0);
+				exec->ReadAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,vpn*PageSize);
 				delete exec;
 			}
 			else
 			{
-				DEBUG(dbgAddr, "Invalid virtual page # " << virtAddr);
+				DEBUG(dbgAddr, "Invalid virtual page #" << vpn);
 				return PageFaultException;
 			}
 		}
@@ -300,11 +312,11 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 		entry->dirty = TRUE;
 #ifdef USE_RPT
 #ifdef LRU_REPLACE
-	updateLRUFlag(pt, ppn);
+	updateLRUFlag(pt, pageFrame, NumPhysPages);
 #endif
 #else
 #ifdef LRU_REPLACE
-	updateLRUFlag(pt, vpn);
+	updateLRUFlag(pt, vpn, pageTableSize);
 #endif
 #endif
 
@@ -327,7 +339,9 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 		}
 		if(replaceFlag)
 		{
-			tlb[findOneToReplace(tlb)] = *entry;
+			int replaceNum = findOneToReplace(tlb, 1);
+			if(debug->IsEnabled('a')) cerr<<"Replace tlb #"<<replaceNum<<endl;
+			tlb[replaceNum] = *entry;
 		}
 		tlbWriteFlag = false;
 	}

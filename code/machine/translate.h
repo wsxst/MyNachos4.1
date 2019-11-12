@@ -29,9 +29,9 @@
 
 class TranslationEntry {
   public:
-    unsigned int vpn;  	// The page number in virtual memory.
+    int vpn;  	// The page number in virtual memory.
 	int tID;
-    unsigned int ppn;  	// The page number in real memory (relative to the
+    int ppn;  	// The page number in real memory (relative to the
 			//  start of "mainMemory"
     bool valid;         // If this bit is set, the translation is ignored.
 			// (In other words, the entry hasn't been initialized.)

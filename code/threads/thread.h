@@ -43,7 +43,6 @@
 
 #include "machine.h"
 #include "addrspace.h"
-#include "noff.h"
 
 // CPU register state to be saved on context switch.
 // The x86 needs to save only a few registers,
@@ -55,8 +54,6 @@
 
 //最多同时存在128个线程
 #define MaxThreadNum 128
-
-#define MAX_OPEN_FILES_NUM 10
 
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
@@ -121,9 +118,6 @@ public:
   int getTUID() { return this->userID; }
   int getRemainTime() { return this->timeSliceRemain; }
   void setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
-  void openAFile(OpenFile* f, NoffHeader noffHeader);
-  OpenFile* getCurrentOpenFile() { return this->currentOpenedFile; }
-  NoffHeader getCurrentNoffHeader() { return this->currentNoffHeader; };
 
   void Print() { cerr<<getTID()<<"\t"<<getName()<<"\t"<<getTUID()<<"\t"<<threadStatusName[getStatus()]<<"\t"<<getPriority()<<endl; }
   void SelfTest(); // test whether thread impl is working
@@ -142,10 +136,6 @@ private:
   int threadID;         //线程ID
   int priority;         //优先级
   int timeSliceRemain;  //剩余时间片大小,以时钟中断为单位
-  OpenFile** oft;//open file table
-  OpenFile* currentOpenedFile;
-  int openFileNum;
-  NoffHeader currentNoffHeader;
 
   void StackAllocate(VoidFunctionPtr func, void *arg);
   // Allocate a stack for thread.

@@ -82,7 +82,7 @@ AddrSpace::AddrSpace(char* fileName)
 {
     OpenFile *executable = kernel->fileSystem->Open(fileName);
     NoffHeader noffH;
-    unsigned int size;
+    int size;
 
     if (executable == NULL)
     {
@@ -109,7 +109,8 @@ AddrSpace::AddrSpace(char* fileName)
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
 
-    kernel->currentThread->openAFile(executable, noffH);
+    currentOpenedFile = executable;
+    currentNoffHeader = noffH;
 #ifndef USE_RPT
     char tmpFileName1[10]={0};
     sprintf(tmpFileName1,"vm%d",kernel->currentThread->getTID());
@@ -122,13 +123,10 @@ AddrSpace::AddrSpace(char* fileName)
     pt = new TranslationEntry[numPages];
     for (int i = 0; i < numPages; i++)
     {
-        pt[i].vpn = i; // for now, virt page # = phys page #
-        pt[i].ppn = -1;
-        pt[i].valid = FALSE;
-        pt[i].use = FALSE;
-        pt[i].dirty = FALSE;
-        pt[i].readOnly = FALSE;
+        pt[i].reset();
     }
+#else
+    pt = NULL;
 #endif
 }
 
@@ -139,7 +137,8 @@ AddrSpace::AddrSpace(char* fileName)
 
 AddrSpace::~AddrSpace()
 {
-    delete pt;
+    // cout<<"什么鬼!"<<endl;
+    if(pt != NULL) delete pt;
 }
 
 //----------------------------------------------------------------------
@@ -228,9 +227,7 @@ void AddrSpace::Execute()
     kernel->currentThread->space = this;
 
     this->InitRegisters(); // set the initial register values
-#ifndef USE_RPT
     this->RestoreState();  // load page table register
-#endif
     kernel->machine->Run(); // jump to the user progam
 
     ASSERTNOTREACHED(); // machine->Run never returns; the address space exits by doing the syscall "exit"
@@ -281,6 +278,12 @@ void AddrSpace::InitRegisters()
 
 void AddrSpace::SaveState()
 {
+#ifndef USE_RPT
+    pt = kernel->machine->pt;
+    numPages = kernel->machine->pageTableSize;
+#endif
+    currentOpenedFile = kernel->machine->currentOpenedFile;
+    currentNoffHeader = kernel->machine->currentNoffHeader;
 }
 
 //----------------------------------------------------------------------
@@ -293,8 +296,12 @@ void AddrSpace::SaveState()
 
 void AddrSpace::RestoreState()
 {
+#ifndef USE_RPT
     kernel->machine->pt = pt;
     kernel->machine->pageTableSize = numPages;
+#endif
+    kernel->machine->currentOpenedFile = currentOpenedFile;
+    kernel->machine->currentNoffHeader = currentNoffHeader;
 }
 
 //----------------------------------------------------------------------

@@ -103,12 +103,12 @@ Thread* Scheduler::FindNextToRun()
 {
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
-    if(debug->IsEnabled('t')) kernel->TS();
+    // if(debug->IsEnabled('t')) kernel->TS();
     if(typeno==0)
     {
         if (!readyList->IsEmpty())
         {
-            Print();
+            // Print();
             if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<endl;
             return readyList->RemoveFront();
         }
@@ -117,7 +117,7 @@ Thread* Scheduler::FindNextToRun()
     {
         if (!sortedReadyList->IsEmpty())
         {
-            Print();
+            // Print();
             if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<sortedReadyList->Front()->getName()<<"；优先级："<<sortedReadyList->Front()->getPriority()<<endl;
             return sortedReadyList->RemoveFront();
         }
@@ -126,14 +126,14 @@ Thread* Scheduler::FindNextToRun()
     {
         if (!readyList->IsEmpty())
         {
-            Print();
+            // Print();
             if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
             return readyList->RemoveFront();
         }
     }
     else if(typeno==3)
     {
-        Print();
+        // Print();
         for(int i=0;i<QueueNum;++i)
         {
             if(!threadArrQueue[i]->IsEmpty())

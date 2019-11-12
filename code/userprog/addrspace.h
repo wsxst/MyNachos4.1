@@ -15,6 +15,7 @@
 
 #include "copyright.h"
 #include "filesys.h"
+#include "noff.h"
 
 #define UserStackSize		1024 	// increase this as necessary!
 
@@ -41,13 +42,18 @@ class AddrSpace {
     ExceptionType Translate(unsigned int vaddr, unsigned int *paddr, int mode);
     char* getVMFileName() { return vmFileName; }
 	  void setVMFileName(char* vmFileName) { this->vmFileName = vmFileName; }
-	  unsigned int getNumPages() { return this->numPages; }
+	  int getNumPages() { return this->numPages; }
     void showPT();
+    void openAFile(OpenFile* f, NoffHeader noffHeader);
+    OpenFile* getCurrentOpenFile() { return this->currentOpenedFile; }
+    NoffHeader getCurrentNoffHeader() { return this->currentNoffHeader; };
 
   private:
     TranslationEntry *pt;	// Assume linear page table translation for now!
-    unsigned int numPages;		// Number of pages in the virtual address space
+    int numPages;		// Number of pages in the virtual address space
     char* vmFileName;
+    OpenFile* currentOpenedFile;
+    NoffHeader currentNoffHeader;
 
     void InitRegisters();		// Initialize user-level CPU registers, before jumping to user code
 };

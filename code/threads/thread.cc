@@ -37,8 +37,6 @@ const int STACK_FENCEPOST = 0xdedbeef;
 
 Thread::Thread(char *threadName)
 {
-    oft = new OpenFile*[MAX_OPEN_FILES_NUM];
-    openFileNum = 0;
     threadID = addAThread(this);
     ASSERT(threadID!=-1);
     if(typeno==1)
@@ -76,9 +74,11 @@ Thread::~Thread()
     DEBUG(dbgThread, "Deleting thread: " << name);
 
     ASSERT(this != kernel->currentThread);
+    if(this->space!=NULL) delete this->space;
+    // cout<<"哈哈"<<endl;
     if (stack != NULL)
         DeallocBoundedArray((char *)stack, StackSize * sizeof(int));
-    delete oft;
+    // cout<<"哈哈1"<<endl;
     removeAThread(this->getTID());
 }
 
@@ -512,7 +512,7 @@ void Thread::MyThreadTest()
             sprintf(tname[i],"线程%d",i);
             t[i] = new Thread(tname[i]);
             t[i]->Fork((VoidFunctionPtr)SimpleThread,(void*)i);
-            kernel->TS();
+            // kernel->TS();
         }
         SimpleThread(0);
     }
@@ -541,11 +541,4 @@ int Thread::addAThread(Thread* t)
 void Thread::removeAThread(int tid)
 {
     kernel->threadArray[tid] = NULL;
-}
-
-void Thread::openAFile(OpenFile* f, NoffHeader noffHeader)
-{
-    this->oft[openFileNum++] = f;
-    this->currentOpenedFile = f;
-    this->currentNoffHeader = noffHeader;
 }
