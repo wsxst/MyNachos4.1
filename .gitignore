@@ -36,3 +36,6 @@ coff2noff
 
 # log files
 *.log
+
+#IDE
+.vscode

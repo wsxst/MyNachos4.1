@@ -187,9 +187,9 @@ bool Machine::WriteMem(int addr, int size, int value)
 ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool writing)
 {
 	++kernel->stats->numAddressTranslation;
-	int i;
+	int tlbEntryID;
 	int vpn, offset;
-	TranslationEntry *entry = NULL;
+	TranslationEntry entry;
 	int pageFrame;
 	bool tlbWriteFlag = true;
 
@@ -214,84 +214,35 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 	if(tlb)
 	{
 		if(debug->IsEnabled('a')) showTLB();
-		for (i = 0; i < TLBSize; i++)
+		for (tlbEntryID = 0; tlbEntryID < TLBSize; tlbEntryID++)
 #ifdef USE_RPT
-			if (tlb[i].valid && tlb[i].vpn == vpn && tlb[i].tID == kernel->currentThread->getTID())
+			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn && tlb[tlbEntryID].tID == kernel->currentThread->getTID())
 #else
-			if (tlb[i].valid && tlb[i].vpn == vpn)
+			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn)
 #endif
 			{
-				entry = &tlb[i]; // FOUND!
-				if (entry->readOnly && writing)
+				entry = tlb[tlbEntryID]; // FOUND!
+				if (entry.readOnly && writing)
 				{ // trying to write to a read-only page
 					DEBUG(dbgAddr, "Write to read-only page at " << virtAddr);
 					return ReadOnlyException;
 				}
-				pageFrame = entry->ppn;
+				pageFrame = entry.ppn;
 				tlbWriteFlag = false;
 				break;
 			}
+		if(tlbWriteFlag)
+		{
+			DEBUG(dbgAddr, "Invalid TLB entry for this virtual page!");
+			return TLBMissException;
+		}
 	}
-	if(!entry)
+	else
 	{
-		if(tlb != NULL) DEBUG(dbgAddr, "Invalid TLB entry for this virtual page!");
-		return PageFaultException;
-#ifdef USE_RPT
-		if(debug->IsEnabled('a')) showRPT();
-		bool tmpFindFlag1 = false;
-		for(int i=0;i<NumPhysPages;++i)
-		{
-			if(pt[i].vpn == vpn && pt[i].tID == kernel->currentThread->getTID())
-			{
-				tmpFindFlag1 = true;
-				entry = &pt[i];
-				pageFrame = i;
-				break;
-			}
-		}
-		if(!tmpFindFlag1)
-		{
-			return PageFaultException;
-		}
-#else
-		if(debug->IsEnabled('a')) kernel->currentThread->space->showPT();
-		// => page table => vpn is index into table
-		if (vpn >= pageTableSize)
-		{
-			DEBUG(dbgAddr, "Illegal virtual page # " << virtAddr);
-			return AddressErrorException;
-		}
-		else if (!pt[vpn].valid)
-		{
-			if(pt[vpn].ppn!=-1)
-			{
-				OpenFile* exec = kernel->fileSystem->Open(kernel->currentThread->space->getVMFileName());
-				for(int j=0;j<pageTableSize;++j)
-				{
-					if(pt[j].valid&&pt[j].ppn == pt[vpn].ppn)
-					{
-						if(debug->IsEnabled('a')) cerr<<"Write data from main memory at addr: "<<pt[vpn].ppn*PageSize<<" , into VM at addr: "<<j*PageSize<<endl;;
-						ASSERT(exec->WriteAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,j*PageSize));
-						pt[j].valid = false;
-						break;
-					}
-				}
-				if(debug->IsEnabled('a')) cerr<<"Read data from VM at addr: "<<vpn*PageSize<<" , into main memory at addr: "<<pt[vpn].ppn*PageSize<<endl;				
-				pt[vpn].valid = true;
-				exec->ReadAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,vpn*PageSize);
-				delete exec;
-			}
-			else
-			{
-				DEBUG(dbgAddr, "Invalid virtual page #" << vpn);
-				return PageFaultException;
-			}
-		}
-		entry = &pt[vpn];
-		pageFrame = entry->ppn;
-#endif
+		ExceptionType e = pageTableTranslation(vpn, pageFrame, entry, virtAddr);
+		if(e != NoException) return e;
 	}
-	if (entry->readOnly && writing)
+	if (entry.readOnly && writing)
 	{ // trying to write to a read-only page
 		DEBUG(dbgAddr, "Write to read-only page at " << virtAddr);
 		return ReadOnlyException;
@@ -299,17 +250,16 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 
 	// if the pageFrame is too big, there is something really wrong!
 	// An invalid translation was loaded into the page table or TLB.
-	if (pageFrame >= NumPhysPages)
+	if (pageFrame >= NumPhysPages||pageFrame<0)
 	{
 		DEBUG(dbgAddr, "Illegal pageframe " << pageFrame);
 		return BusErrorException;
 	}
-
-	entry->vpn = vpn;
-	entry->ppn = pageFrame;
-	entry->use = TRUE; // set the use, dirty bits
+	entry.vpn = vpn;
+	entry.ppn = pageFrame;
+	entry.use = TRUE; // set the use, dirty bits
 	if (writing)
-		entry->dirty = TRUE;
+		entry.dirty = TRUE;
 #ifdef USE_RPT
 #ifdef LRU_REPLACE
 	updateLRUFlag(pt, pageFrame, NumPhysPages);
@@ -324,27 +274,78 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 	*physAddr = pageFrame * PageSize + offset;
 	ASSERT((*physAddr >= 0) && ((*physAddr + 4) <= MemorySize));
 	DEBUG(dbgAddr, "phys addr = " << *physAddr);
-	if(tlb && tlbWriteFlag)
+	if(tlb)
 	{
-		DEBUG(dbgAddr,"Update TLB!");
-		bool replaceFlag = true;
-		for(int i=0;i<TLBSize;++i)
+		if(tlbWriteFlag)
 		{
-			if(!tlb[i].valid)
-			{
-				replaceFlag = false;
-				tlb[i] = *entry;
-				break;
-			}
+			updateTLB(tlb, entry);
+			tlbWriteFlag = false;
 		}
-		if(replaceFlag)
+		else
 		{
-			int replaceNum = findOneToReplace(tlb, 1);
-			if(debug->IsEnabled('a')) cerr<<"Replace tlb #"<<replaceNum<<endl;
-			tlb[replaceNum] = *entry;
+#ifdef LRU_REPLACE
+			updateLRUFlag(tlb, tlbEntryID, TLBSize);
+#endif
 		}
-		tlbWriteFlag = false;
 	}
 	return NoException;
 }
 
+ExceptionType Machine::pageTableTranslation(int vpn, int &pageFrame, TranslationEntry &entry, int virtAddr)
+{
+#ifdef USE_RPT
+	if(debug->IsEnabled('a')) showRPT();
+	bool tmpFindFlag1 = false;
+	for(int i=0;i<NumPhysPages;++i)
+	{
+		if(pt[i].vpn == vpn && pt[i].tID == kernel->currentThread->getTID())
+		{
+			tmpFindFlag1 = true;
+			entry = pt[i];
+			pageFrame = i;
+			break;
+		}
+	}
+	if(!tmpFindFlag1)
+	{
+		DEBUG(dbgAddr, "Invalid virtual page #" << vpn);
+		return PageFaultException;
+	}
+#else
+	if(debug->IsEnabled('a')) kernel->currentThread->space->showPT();
+	if (vpn >= pageTableSize)
+	{
+		DEBUG(dbgAddr, "Illegal virtual page # " << virtAddr);
+		return AddressErrorException;
+	}
+	else if (!pt[vpn].valid)
+	{
+		if(pt[vpn].ppn!=-1)
+		{
+			OpenFile* exec = kernel->fileSystem->Open(kernel->currentThread->space->getVMFileName());
+			for(int j=0;j<pageTableSize;++j)
+			{
+				if(pt[j].valid&&pt[j].ppn == pt[vpn].ppn)
+				{
+					if(debug->IsEnabled('a')) cerr<<"Write data from main memory at addr: "<<pt[vpn].ppn*PageSize<<" , into VM at addr: "<<j*PageSize<<endl;;
+					ASSERT(exec->WriteAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,j*PageSize));
+					pt[j].valid = false;
+					break;
+				}
+			}
+			if(debug->IsEnabled('a')) cerr<<"Read data from VM at addr: "<<vpn*PageSize<<" , into main memory at addr: "<<pt[vpn].ppn*PageSize<<endl;				
+			pt[vpn].valid = true;
+			exec->ReadAt(&(mainMemory[pt[vpn].ppn*PageSize]),PageSize,vpn*PageSize);
+			delete exec;
+		}
+		else
+		{
+			DEBUG(dbgAddr, "Invalid virtual page #" << vpn);
+			return PageFaultException;
+		}
+	}
+	entry = pt[vpn];
+	pageFrame = entry.ppn;
+#endif
+	return NoException;
+}

@@ -45,8 +45,8 @@ const int TLBSize = 4;			// if there is a TLB, make it small
 
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
-		     TLBMissException,
 			 PageFaultException,    // No valid translation found
+			 TLBMissException,
 		     ReadOnlyException,     // Write attempted to page marked 
 					    // "read-only"
 		     BusErrorException,     // Translation resulted in an 
@@ -157,6 +157,8 @@ class Machine {
 	void updateFIFOFlag(TranslationEntry* t, int pos, int len);
 	void updateLRUFlag(TranslationEntry* t, int pos, int len);
 	void loadPageFrame(int vpn, int ppn);
+	ExceptionType pageTableTranslation(int vpn, int &ppn, TranslationEntry &entry, int virtAddr);
+	void updateTLB(TranslationEntry* tlb, TranslationEntry entry);
 	
   private:
 
@@ -175,8 +177,7 @@ class Machine {
 				// the translation entry appropriately,
     				// and return an exception code if the 
 				// translation couldn't be completed.
-
-    void RaiseException(ExceptionType which, int badVAddr);
+	void RaiseException(ExceptionType which, int badVAddr);
 				// Trap to the Nachos kernel, because of a
 				// system call or other exception.  
 

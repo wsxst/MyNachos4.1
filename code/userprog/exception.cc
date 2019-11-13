@@ -51,12 +51,12 @@
 void ExceptionHandler(ExceptionType which)
 {
 	int type = kernel->machine->ReadRegister(2);
+	int vaddr, vpn, offset;
 
 	DEBUG(dbgSys, "Received Exception " << which << " type: " << type << "\n");
 
-	switch (which)
+	if(which == SyscallException)
 	{
-	case SyscallException:
 		cerr<<"system call type:"<<type<<endl;
 		switch (type)
 		{
@@ -135,11 +135,13 @@ void ExceptionHandler(ExceptionType which)
 			cerr << "Unexpected system call " << type << "\n";
 			break;
 		}
-		break;
-	case PageFaultException:
-		++kernel->stats->numPageFaults;
-		int vaddr = kernel->machine->ReadRegister(BadVAddrReg);
-		int vpn = vaddr / PageSize, offset = vaddr % PageSize;
+	}
+	else if(which == PageFaultException)
+	{
+		++(kernel->stats->numPageFaults);
+		vaddr = kernel->machine->ReadRegister(BadVAddrReg);
+		vpn = vaddr / PageSize;
+		offset = vaddr % PageSize;
 		if(debug->IsEnabled('a')) cerr<<"vpn:"<<vpn<<";vpo:"<<offset<<endl;
 		int avaiPageFrame = kernel->machine->findAvailablePageFrame();
 		if(avaiPageFrame == -1)
@@ -153,10 +155,28 @@ void ExceptionHandler(ExceptionType which)
 		}
 		kernel->machine->loadPageFrame(vpn, avaiPageFrame);
 		return;
-		break;
-	default:
+	}
+	else if(which == TLBMissException)
+	{
+		++(kernel->stats->numTLBMiss);
+		vaddr = kernel->machine->ReadRegister(BadVAddrReg);
+		vpn = vaddr / PageSize;
+		offset = vaddr % PageSize;
+		int ppn = -1;
+		if(debug->IsEnabled('a')) cerr<<"vpn:"<<vpn<<";vpo:"<<offset<<endl;
+		TranslationEntry entry;
+		ExceptionType e = kernel->machine->pageTableTranslation(vpn ,ppn, entry, vaddr);
+		if(e!=NoException)
+		{
+			ExceptionHandler(e);
+			return;
+		}
+		kernel->machine->updateTLB(kernel->machine->tlb, entry);
+		return;
+	}
+	else
+	{
 		cerr << "Unexpected user mode exception" << (int)which << "\n";
-		break;
 	}
 	ASSERTNOTREACHED();
 }

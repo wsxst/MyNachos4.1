@@ -192,7 +192,7 @@
 # and eventually will not require the symbol definition
 ################################################################
 DEFINES = -DFILESYS_STUB -DSIM_FIX -DTUT -DRDATA
-# DEFINES += -DFIFO_REPLACE
+DEFINES += -DFIFO_REPLACE
 # DEFINES += -DLRU_REPLACE
 # DEFINES += -DFIFO_REPLACE -DUSE_RPT
 # DEFINES += -DLRU_REPLACE -DUSE_RPT

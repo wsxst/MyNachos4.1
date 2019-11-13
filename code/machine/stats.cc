@@ -22,6 +22,7 @@ Statistics::Statistics()
     numDiskReads = numDiskWrites = 0;
     numConsoleCharsRead = numConsoleCharsWritten = 0;
     numPageFaults = numPacketsSent = numPacketsRecvd = 0;
+    numTLBMiss = 0;
 }
 
 //----------------------------------------------------------------------
@@ -39,6 +40,7 @@ Statistics::Print()
 		cout << ", writes " << numDiskWrites << "\n";
 		cout << "Console I/O: reads " << numConsoleCharsRead;
     cout << ", writes " << numConsoleCharsWritten << "\n";
+    cout << "TLB miss number: " << numTLBMiss << ", miss rate: " << (double)numTLBMiss/numAddressTranslation*100 << "%\n";
     cout << "Page fault number:" << numPageFaults << ", Page fault rate:" << (double)numPageFaults/numAddressTranslation*100 << "%\n";
     cout << "Network I/O: packets received " << numPacketsRecvd;
 		cout << ", sent " << numPacketsSent << "\n";

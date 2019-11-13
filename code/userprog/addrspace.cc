@@ -94,18 +94,18 @@ AddrSpace::AddrSpace(char* fileName)
     if ((noffH.noffMagic != NOFFMAGIC) && (WordToHost(noffH.noffMagic) == NOFFMAGIC))
         SwapHeader(&noffH);
     ASSERT(noffH.noffMagic == NOFFMAGIC);
-    cerr<<"code segment start addr:"<<noffH.code.inFileAddr<<",VA:"<<noffH.code.virtualAddr<<",size:"<<noffH.code.size<<";"<<endl;
+    // cerr<<"code segment start addr:"<<noffH.code.inFileAddr<<",VA:"<<noffH.code.virtualAddr<<",size:"<<noffH.code.size<<";"<<endl;
 
 #ifdef RDATA
     // how big is address space?
     size = noffH.code.size + noffH.readonlyData.size + noffH.initData.size + noffH.uninitData.size + UserStackSize; //we need to increase the size to leave room for the stack
-    cerr<<"readOnly data segment start addr:"<<noffH.readonlyData.inFileAddr<<",VA:"<<noffH.readonlyData.virtualAddr<<",size:"<<noffH.readonlyData.size<<";"<<endl;
+    // cerr<<"readOnly data segment start addr:"<<noffH.readonlyData.inFileAddr<<",VA:"<<noffH.readonlyData.virtualAddr<<",size:"<<noffH.readonlyData.size<<";"<<endl;
 #else
     // how big is address space?
     size = noffH.code.size + noffH.initData.size + noffH.uninitData.size + UserStackSize; // we need to increase the size
                                                                                           // to leave room for the stack
 #endif
-    cerr<<"initData segment start addr:"<<noffH.initData.inFileAddr<<",VA:"<<noffH.initData.virtualAddr<<",size:"<<noffH.initData.size<<";\nuninitData segment start addr:"<<noffH.uninitData.inFileAddr<<",VA:"<<noffH.uninitData.virtualAddr<<",size:"<<noffH.uninitData.size<<endl;
+    // cerr<<"initData segment start addr:"<<noffH.initData.inFileAddr<<",VA:"<<noffH.initData.virtualAddr<<",size:"<<noffH.initData.size<<";\nuninitData segment start addr:"<<noffH.uninitData.inFileAddr<<",VA:"<<noffH.uninitData.virtualAddr<<",size:"<<noffH.uninitData.size<<endl;
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
 
