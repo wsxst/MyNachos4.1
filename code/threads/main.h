@@ -15,6 +15,7 @@
 extern Kernel *kernel;
 extern Debug *debug;
 extern int typeno;
+extern bool debugThreadStatusChanging;
 
 #endif // MAIN_H
 

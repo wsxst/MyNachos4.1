@@ -38,7 +38,19 @@ class Scheduler {
 
     bool isReadyListEmpty();
 
+    bool isBlockListEmpty() { return blockList->IsEmpty(); }
+
+    bool isSuspendListEmpty() { return suspendList->IsEmpty(); }
+
     Thread* getReadyListFront();
+
+    void blockAThread(Thread* t);
+
+    void awakeAThead();
+
+    void restoreAThread();
+
+    void suspendAThread();
     
     // SelfTest for scheduler is implemented in class Thread
     
@@ -46,6 +58,8 @@ class Scheduler {
     List<Thread*>* threadArrQueue[QueueNum];
     SortedList<Thread *> *sortedReadyList;  // queue of threads that are ready to run, but not running
     List<Thread *> *readyList;  // queue of threads that are ready to run, but not running
+    List<Thread *> *suspendList;
+    List<Thread*> *blockList;
     Thread *toBeDestroyed;	// finishing thread to be destroyed by the next thread that runs
 };
 

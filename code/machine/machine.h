@@ -41,7 +41,7 @@ const int PageSize = 128; 		// set the page size equal to
 const int NumPhysPages = 128;
 
 const int MemorySize = (NumPhysPages * PageSize);
-const int TLBSize = 4;			// if there is a TLB, make it small
+const int TLBSize = 3;			// if there is a TLB, make it small
 
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
@@ -156,7 +156,6 @@ class Machine {
 	int findOneToReplace(TranslationEntry* t, int type);
 	void updateFIFOFlag(TranslationEntry* t, int pos, int len);
 	void updateLRUFlag(TranslationEntry* t, int pos, int len);
-	void loadPageFrame(int vpn, int ppn);
 	ExceptionType pageTableTranslation(int vpn, int &ppn, TranslationEntry &entry, int virtAddr);
 	void updateTLB(TranslationEntry* tlb, TranslationEntry entry);
 	

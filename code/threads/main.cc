@@ -69,6 +69,8 @@ Debug *debug;
 */
 int typeno = 2;
 
+bool debugThreadStatusChanging = false;
+
 //----------------------------------------------------------------------
 // Cleanup
 //	Delete kernel data structures; called when user hits "ctl-C".
@@ -223,6 +225,11 @@ int main(int argc, char **argv)
             ASSERT(i + 1 < argc);
             userProgName = argv[i + 1];
             i++;
+            if(i + 1 < argc && !strcmp(argv[i + 1], "-dt"))
+            {
+                debugThreadStatusChanging = true;
+                ++i;
+            }
         }
         else if (strcmp(argv[i], "-K") == 0)
         {

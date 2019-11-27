@@ -44,6 +44,16 @@ public:
 					 // Immediates are sign-extended.
 };
 
+void SuspendAThread()
+{
+
+}
+
+void RestoreAThread()
+{
+
+}
+
 //----------------------------------------------------------------------
 // Machine::Run
 // 	Simulate the execution of a user-level program on Nachos.
@@ -63,13 +73,35 @@ void Machine::Run()
 		cout << ", at time: " << kernel->stats->totalTicks << "\n";
 	}
 	kernel->interrupt->setStatus(UserMode);
+	int count = 0;
 	for (;;)
 	{
+		if(debugThreadStatusChanging)
+		{
+			if(strcmp(kernel->currentThread->getName(), "Thread 1") == 0 && count == 30)
+			{
+				(void)kernel->interrupt->SetLevel(IntOff);
+				kernel->currentThread->Sleep(false);
+			}
+			else if(strcmp(kernel->currentThread->getName(), "Thread 2") == 0 && count == 50)
+			{
+				kernel->scheduler->suspendAThread();
+				(void)kernel->interrupt->SetLevel(IntOff);
+				kernel->currentThread->Sleep(false);
+			}
+			else if(strcmp(kernel->currentThread->getName(), "Thread 3") == 0 && count == 70)
+			{
+				kernel->scheduler->awakeAThead();
+				kernel->scheduler->restoreAThread();
+			}
+		}
 		OneInstruction(instr);
 		cerr<<"One instruction completed!\n\n";
+		// cout<<count<<endl;
 		kernel->interrupt->OneTick();
 		if (singleStep && (runUntilTime <= kernel->stats->totalTicks))
 			Debugger();
+		++count;
 	}
 }
 

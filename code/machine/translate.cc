@@ -215,11 +215,12 @@ ExceptionType Machine::Translate(int virtAddr, int *physAddr, int size, bool wri
 	{
 		if(debug->IsEnabled('a')) showTLB();
 		for (tlbEntryID = 0; tlbEntryID < TLBSize; tlbEntryID++)
-#ifdef USE_RPT
-			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn && tlb[tlbEntryID].tID == kernel->currentThread->getTID())
-#else
+// #ifdef USE_RPT
+// 			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn && tlb[tlbEntryID].tID == kernel->currentThread->getTID())
+// #else
+// 			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn)
+// #endif
 			if (tlb[tlbEntryID].valid && tlb[tlbEntryID].vpn == vpn)
-#endif
 			{
 				entry = tlb[tlbEntryID]; // FOUND!
 				if (entry.readOnly && writing)

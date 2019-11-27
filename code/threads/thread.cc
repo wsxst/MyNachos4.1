@@ -258,7 +258,7 @@ void Thread::Sleep(bool finishing)
 
     DEBUG(dbgThread, "Sleeping thread: " << name);
 
-    status = BLOCKED;
+    kernel->scheduler->blockAThread(this);
     while ((nextThread = kernel->scheduler->FindNextToRun()) == NULL)
         kernel->interrupt->Idle(); // no one to run, wait for an interrupt
 
@@ -276,6 +276,85 @@ void Thread::Sleep(bool finishing)
 
 static void ThreadFinish() { kernel->currentThread->Finish(); }
 static void ThreadBegin() { kernel->currentThread->Begin(); }
+void Thread::SaveAThread(char* fname)
+{
+    OpenFile* f = NULL;
+#ifdef FILESYS_STUB
+    f = kernel->fileSystem->Open(fname);
+#endif
+    ASSERT(f != NULL);
+    Machine* m = kernel->machine;
+    int pageNum = 0, offset = sizeof(int);
+#ifdef USE_RPT
+    for(int i=0;i<NumPhysPages;++i)
+        if(m->pt[i].tID == this->getTID() && m->pt[i].valid) ++pageNum;
+    char buf[100];
+    sprintf(buf,"%d",pageNum);
+    ASSERT(f->WriteAt(buf, sizeof(int), 0)>0);
+    for(int i=0;i<NumPhysPages;++i)
+    {
+        if(m->pt[i].tID == this->getTID() && m->pt[i].valid)
+        {
+            m->pt[i].valid = false;
+            m->mmBitmap->Clear(i);
+            sprintf(buf,"%d",m->pt[i].vpn);
+            ASSERT(f->WriteAt(buf, sizeof(int), offset)>0);
+            offset += sizeof(int);
+            ASSERT(f->WriteAt(&(m->mainMemory[i*PageSize]), PageSize, offset)>0);
+            offset += PageSize;
+        }
+    }
+#else
+    TranslationEntry* pt = this->space->getPT();
+    for(int i=0;i<this->space->getNumPages();++i)
+        if(pt[i].valid) ++pageNum;
+    char buf[100];
+    sprintf(buf,"%d",pageNum);
+    ASSERT(f->WriteAt(buf, sizeof(int), 0)>0);
+    for(int i=0;i<this->space->getNumPages();++i)
+    {
+        if(pt[i].valid)
+        {
+            pt[i].valid = false;
+            m->mmBitmap->Clear(pt[i].ppn);
+            sprintf(buf,"%d",i);
+            ASSERT(f->WriteAt(buf, sizeof(int), offset)>0);
+            offset += sizeof(int);
+            ASSERT(f->WriteAt(&(m->mainMemory[(pt[i].ppn)*PageSize]), PageSize, offset)>0);
+            offset += PageSize;
+            ++pageNum;
+        }
+    }
+#endif
+    delete f;
+}
+void Thread::LoadAThread(char* fname)
+{
+    OpenFile* f = NULL;
+#ifdef FILESYS_STUB
+    f = kernel->fileSystem->Open(fname);
+#endif
+    ASSERT(f != NULL);
+    char buf[100];
+    f->ReadAt(buf, sizeof(int), 0);
+    int numPages = atoi(buf), offset = sizeof(int);    
+    Machine* m = kernel->machine;
+    for(int i=0;i<numPages;++i)
+    {
+        f->ReadAt(buf, sizeof(int), offset);
+        int vpn = atoi(buf);
+        offset += sizeof(int);
+        int avaiPageFrame = m->findAvailablePageFrame();
+		if(avaiPageFrame == -1)
+		{
+			DEBUG(dbgAddr,"No physical page frames in main memory available now !");
+			avaiPageFrame = m->findOneToReplace(m->pt, 0);
+		}
+        this->loadPageFrame(vpn, avaiPageFrame, offset, f);
+        offset += PageSize;
+    }
+    delete f;
+}
 void ThreadPrint(Thread *t) { t->Print(); }
 
 #ifdef PARISC
@@ -541,4 +620,43 @@ int Thread::addAThread(Thread* t)
 void Thread::removeAThread(int tid)
 {
     kernel->threadArray[tid] = NULL;
+}
+
+void Thread::loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f)
+{
+#ifdef USE_RPT
+    TranslationEntry* pt = kernel->machine->pt;
+#else
+    TranslationEntry* pt = this->space->getPT();
+#endif
+    bool writeIntoVM = false;
+#ifdef USE_RPT
+    pt[ppn].tID = this->threadID;
+    pt[ppn].vpn = vpn;
+    pt[ppn].valid = true;
+    pt[ppn].ppn = ppn;
+#ifdef FIFO_REPLACE
+    kernel->machine->updateFIFOFlag(pt, ppn, NumPhysPages);
+#endif
+#else
+    pt[vpn].vpn = vpn;
+    pt[vpn].ppn = ppn;
+    pt[vpn].valid = true;
+    if(pt[vpn].dirty) writeIntoVM = true;
+#ifdef FIFO_REPLACE
+    kernel->machine->updateFIFOFlag(pt, vpn, kernel->machine->pageTableSize);
+#endif
+#endif
+    kernel->machine->mmBitmap->Mark(ppn);
+#ifndef USE_RPT
+    if(writeIntoVM)
+    {
+        if(debug->IsEnabled('a')) cerr<<"Dirty page #"<<ppn<<" is written into VM, addr: "<<kernel->currentThread->space->getCurrentNoffHeader().code.inFileAddr+vpn*PageSize<<endl;
+        OpenFile* exec = kernel->fileSystem->Open(kernel->currentThread->space->getVMFileName());
+        exec->WriteAt(&(kernel->machine->mainMemory[ppn*PageSize]), PageSize, vpn*PageSize);
+        delete exec;
+    }
+#endif
+    if(debug->IsEnabled('a')) cerr<<"Read addr: "<<fileAddr<<" from the file into addr: "<<ppn*PageSize<<" in the main memory!"<<endl;
+    f->ReadAt(&(kernel->machine->mainMemory[ppn*PageSize]), PageSize, fileAddr);
 }

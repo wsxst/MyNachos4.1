@@ -118,6 +118,9 @@ public:
   int getTUID() { return this->userID; }
   int getRemainTime() { return this->timeSliceRemain; }
   void setRemainTime(int timeSliceRemain) { this->timeSliceRemain = timeSliceRemain; }
+  void SaveAThread(char* fname);
+  void LoadAThread(char* fname);
+  void loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f);
 
   void Print() { cerr<<getTID()<<"\t"<<getName()<<"\t"<<getTUID()<<"\t"<<threadStatusName[getStatus()]<<"\t"<<getPriority()<<endl; }
   void SelfTest(); // test whether thread impl is working

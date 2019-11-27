@@ -192,15 +192,8 @@
 # and eventually will not require the symbol definition
 ################################################################
 DEFINES = -DFILESYS_STUB -DSIM_FIX -DTUT -DRDATA
-DEFINES += -DFIFO_REPLACE
-# DEFINES += -DLRU_REPLACE
-# DEFINES += -DFIFO_REPLACE -DUSE_RPT
-# DEFINES += -DLRU_REPLACE -DUSE_RPT
-# DEFINES += -DFIFO_REPLACE -DUSE_TLB
-# DEFINES += -DLRU_REPLACE -DUSE_TLB
-# DEFINES += -DFIFO_REPLACE -DUSE_TLB -DUSE_RPT
-# DEFINES += -DLRU_REPLACE -DUSE_TLB -DUSE_RPT
-
+# DEFINES += -DLRU_REPLACE/-DFIFO_REPLACE -DUSE_TLB -DUSE_RPT
+DEFINES += $(compileOption)
 
 #####################################################################
 #

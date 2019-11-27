@@ -58,17 +58,14 @@ void ExceptionHandler(ExceptionType which)
 	if(which == SyscallException)
 	{
 		cerr<<"system call type:"<<type<<endl;
-		switch (type)
+		if(type == SC_Halt)
 		{
-		case SC_Halt:
 			DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
-
 			SysHalt();
-
 			ASSERTNOTREACHED();
-			break;
-		
-		case SC_Exit:
+		}
+		else if(type == SC_Exit)
+		{
 			if(debug->IsEnabled('s')) cerr<<"Current thread "<<kernel->currentThread->getName()<<" exit!\n";
 #ifdef USE_RPT
 			for(int i=0;i<NumPhysPages;++i)
@@ -99,9 +96,9 @@ void ExceptionHandler(ExceptionType which)
 #endif
 			kernel->currentThread->Finish();
 			return;
-			break;
-
-		case SC_Add:
+		}
+		else if(type == SC_Add)
+		{
 			DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
 
 			/* Process SysAdd Systemcall*/
@@ -128,12 +125,10 @@ void ExceptionHandler(ExceptionType which)
 			return;
 
 			ASSERTNOTREACHED();
-
-			break;
-
-		default:
+		}
+		else
+		{
 			cerr << "Unexpected system call " << type << "\n";
-			break;
 		}
 	}
 	else if(which == PageFaultException)
@@ -153,7 +148,7 @@ void ExceptionHandler(ExceptionType which)
 		{
 			cerr<<"Load available page frame #"<<avaiPageFrame<<" into main memory!"<<endl;
 		}
-		kernel->machine->loadPageFrame(vpn, avaiPageFrame);
+		kernel->currentThread->loadPageFrame(vpn, avaiPageFrame, kernel->currentThread->space->getCurrentNoffHeader().code.inFileAddr+vpn*PageSize, kernel->currentThread->space->getCurrentOpenFile());
 		return;
 	}
 	else if(which == TLBMissException)

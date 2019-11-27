@@ -365,3 +365,16 @@ void AddrSpace::showPT()
         if(pt[i].ppn!=-1) cerr<<i<<"\t"<<pt[i].ppn<<"\t"<<pt[i].valid<<"\t"<<pt[i].readOnly<<"\t"<<pt[i].use<<"\t"<<pt[i].dirty<<"\t"<<pt[i].FIFOFlag<<"\t"<<pt[i].LRUFlag<<endl;
     }
 }
+
+void AddrSpace::setPT(TranslationEntry* pt)
+{
+    this->pt->vpn = pt->vpn;
+    this->pt->ppn = pt->ppn;
+    this->pt->tID = pt->tID;
+    this->pt->valid = pt->valid;
+    this->pt->readOnly = pt->readOnly;
+    this->pt->use = pt->use;
+    this->pt->dirty = pt->dirty;
+    this->pt->FIFOFlag = pt->FIFOFlag;
+    this->pt->LRUFlag = pt->LRUFlag;
+}

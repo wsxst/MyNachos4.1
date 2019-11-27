@@ -45,6 +45,9 @@ Scheduler::Scheduler()
     //多级反馈队列
     for(int i=0;i<QueueNum;++i) threadArrQueue[i]=new List<Thread*>;
 
+    suspendList = new List<Thread*>;
+    blockList = new List<Thread*>;
+
     toBeDestroyed = NULL;
 }
 
@@ -57,6 +60,9 @@ Scheduler::~Scheduler()
 {
     delete readyList;
     delete sortedReadyList;
+    for(int i=0;i<QueueNum;++i) delete threadArrQueue[i];
+    delete suspendList;
+    delete blockList;
 }
 
 //----------------------------------------------------------------------
@@ -103,7 +109,7 @@ Thread* Scheduler::FindNextToRun()
 {
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
-    // if(debug->IsEnabled('t')) kernel->TS();
+    if(debug->IsEnabled('t')) kernel->TS();
     if(typeno==0)
     {
         if (!readyList->IsEmpty())
@@ -126,7 +132,7 @@ Thread* Scheduler::FindNextToRun()
     {
         if (!readyList->IsEmpty())
         {
-            // Print();
+            Print();
             if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
             return readyList->RemoveFront();
         }
@@ -176,6 +182,12 @@ void Scheduler::Run(Thread *nextThread, bool finishing)
         toBeDestroyed = oldThread;
     }
 
+#ifdef USE_TLB
+    for (int i = 0; i < TLBSize; i++)
+    {
+        kernel->machine->tlb[i].reset();
+    }
+#endif
     if (oldThread->space != NULL)
     {                               // if this thread is a user program,
         oldThread->SaveUserState(); // save the user's CPU registers
@@ -284,4 +296,43 @@ Thread* Scheduler::getReadyListFront()
         }
     }
     return NULL;
+}
+
+void Scheduler::awakeAThead()
+{
+    Thread* t = blockList->RemoveFront();
+    t->setStatus(READY);
+    readyList->Append(t);
+}
+
+void Scheduler::suspendAThread()
+{
+    Thread* t = blockList->RemoveFront();
+    char fname[100];
+    sprintf(fname, "thread%d", t->getTID());
+#ifdef FILESYS_STUB
+    kernel->fileSystem->Create(fname);
+#else
+    kernel->fileSystem->Create(fname, 1024);//TODO:This number is not accurate
+#endif
+    suspendList->Append(t);
+    t->SaveAThread(fname);
+    t->setStatus(SUSPENDED);
+}
+
+void Scheduler::restoreAThread()
+{
+    Thread* t = suspendList->RemoveFront();
+    char fname[100];
+    sprintf(fname,"thread%d",t->getTID());
+    t->LoadAThread(fname);
+    readyList->Append(t);
+    t->setStatus(READY);
+    kernel->fileSystem->Remove(fname);
+}
+
+void Scheduler::blockAThread(Thread* t)
+{
+    t->setStatus(BLOCKED);
+    blockList->Append(t);
 }

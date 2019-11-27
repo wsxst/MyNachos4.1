@@ -44,6 +44,8 @@ class AddrSpace {
 	  void setVMFileName(char* vmFileName) { this->vmFileName = vmFileName; }
 	  int getNumPages() { return this->numPages; }
     void showPT();
+    TranslationEntry* getPT() { return pt; }
+    void setPT(TranslationEntry* pt);
     void openAFile(OpenFile* f, NoffHeader noffHeader);
     OpenFile* getCurrentOpenFile() { return this->currentOpenedFile; }
     NoffHeader getCurrentNoffHeader() { return this->currentNoffHeader; };
