@@ -6,33 +6,48 @@
 -DUSE_TLB表示使用TLB
 -DUSE_RPT表示使用倒排页表,不使用普通页表
 -DFIFO_REPLACE表示使用FIFO页面置换算法,-DLRU_REPLACE表示使用LRU
-可以通过修改Makefile实现不同情况下的调试
 
 对应用到的测试命令如下:
-export compileOption="-DFIFO_REPLACE" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-000-res.log 2>~/MyNachos4.1/lab3-000-debug.log \
-&& export compileOption="-DLRU_REPLACE" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-001-res.log 2>~/MyNachos4.1/lab3-001-debug.log
-&& export compileOption="-DFIFO_REPLACE -DUSE_RPT" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-010-res.log 2>~/MyNachos4.1/lab3-010-debug.log
-&& export compileOption="-DLRU_REPLACE -DUSE_RPT" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-011-res.log 2>~/MyNachos4.1/lab3-011-debug.log
-&& export compileOption="-DFIFO_REPLACE -DUSE_RPT -DUSE_TLB" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-110-res.log 2>~/MyNachos4.1/lab3-110-debug.log
-&& export compileOption="-DLRU_REPLACE -DUSE_RPT -DUSE_TLB" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-111-res.log 2>~/MyNachos4.1/lab3-111-debug.log
-&& export compileOption="-DFIFO_REPLACE -DUSE_TLB" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-100-res.log 2>~/MyNachos4.1/lab3-100-debug.log
-&& export compileOption="-DLRU_REPLACE -DUSE_TLB" \
-&& sh compile.sh \
-&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-101-res.log 2>~/MyNachos4.1/lab3-101-debug.log
+#首先清空结果输出文件
+> ~/MyNachos4.1/lab3-FinalTestResult.log
 
-对challenge1进行单独测试的命令为:
-./nachos -d ats -x /home/sjc/MyNachos4.1/code/test/matmult.noff -dt 1>~/MyNachos4.1/lab3-challenge1-res.log 2>~/MyNachos4.1/lab3-challenge1-debug.log
+#每次都先修改环境变量,使得makefile里的参数被修改,使得编译可以得到不同的可执行文件
+export compileOption="-DFIFO_REPLACE" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-000-debug.log \
+&& echo "000 success!" >>~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DLRU_REPLACE" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-001-debug.log \
+&& echo "001 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DFIFO_REPLACE -DUSE_RPT" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-010-debug.log \
+&& echo "010 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DLRU_REPLACE -DUSE_RPT" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-011-debug.log \
+&& echo "011 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DFIFO_REPLACE -DUSE_RPT -DUSE_TLB" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-110-debug.log \
+&& echo "110 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DLRU_REPLACE -DUSE_RPT -DUSE_TLB" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-111-debug.log \
+&& echo "111 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DFIFO_REPLACE -DUSE_TLB" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-100-debug.log \
+&& echo "100 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
+
+export compileOption="-DLRU_REPLACE -DUSE_TLB" \
+&& sh compile.sh >~/tmp.log 2>~/tmp.err \
+&& ./nachos -d ats -x ~/MyNachos4.1/code/test/matmult.noff -dt 1>>~/MyNachos4.1/lab3-FinalTestResult.log 2>~/MyNachos4.1/lab3-101-debug.log \
+&& echo "101 success!" >> ~/MyNachos4.1/lab3-FinalTestResult.log
