@@ -215,6 +215,7 @@ Condition::Condition(char *debugName)
 {
     name = debugName;
     waitQueue = new List<Semaphore *>;
+    barrierNum = 0;
 }
 
 //----------------------------------------------------------------------
@@ -297,4 +298,11 @@ void Condition::Broadcast(Lock *conditionLock)
     {
         Signal(conditionLock);
     }
+}
+
+void Condition::Barrier(Lock *conditionLock)
+{
+    ++barrierNum;
+    if(barrierNum == BARRIER_NUM) Broadcast(conditionLock);
+    else Wait(conditionLock);
 }

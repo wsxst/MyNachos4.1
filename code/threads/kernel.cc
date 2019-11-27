@@ -18,6 +18,26 @@
 #include "synchdisk.h"
 #include "post.h"
 
+#define MAX_PRODUCE_ARRAY_NUM 50
+Semaphore *isFull,*isEmpty;
+Lock* produceArrayLock;
+int high,low;
+int produceArray[MAX_PRODUCE_ARRAY_NUM];
+#define PRODUCER_NUM 1
+#define CONSUMER_NUM 2
+#define PRODUCE_TIMES 50
+#define CONSUME_TIMES 25
+SynchList<int> *produceList;
+Condition* barrier;
+Lock* barrierMutex;
+#define TEST_THREAD_NUM 5
+Lock *wLock,*rwMutex;
+#define READER_NUM 5
+#define WRITER_NUM 3
+#define READ_CONTENT_SIZE 100
+int readerCount;
+int readContent[READ_CONTENT_SIZE]={0};
+
 //----------------------------------------------------------------------
 // Kernel::Kernel
 // 	Interpret command line arguments in order to determine flags
@@ -158,26 +178,6 @@ Kernel::~Kernel()
 
 void Kernel::ThreadSelfTest()
 {
-    /*
-    Semaphore *semaphore;
-    SynchList<int> *synchList;
-
-    LibSelfTest(); // test library routines
-
-    DEBUG(dbgThread, "进入系统提供的线程测试环节！");
-    currentThread->SelfTest(); // test thread switching
-
-    // test semaphore operation
-    semaphore = new Semaphore("test", 0);
-    semaphore->SelfTest();
-    delete semaphore;
-
-    // test locks, condition variables
-    // using synchronized lists
-    synchList = new SynchList<int>;
-    synchList->SelfTest(9);
-    delete synchList;
-    */
    currentThread->MyThreadTest();
 }
 
@@ -273,4 +273,188 @@ void Kernel::TS()
     {
         if(kernel->threadArray[i]) kernel->threadArray[i]->Print();
     }
+}
+
+void static Produce(int which)
+{
+    for(int i=0;i<PRODUCE_TIMES;++i)
+    {
+        isEmpty->P();
+        produceArrayLock->Acquire();
+        produceArray[high++] = i;
+        if(debug->IsEnabled('s')) cerr<<"producer"<<which<<" produces: "<<i<<", now high is "<<high<<". Now number in list is: "<<high-low-1<<endl;
+        produceArrayLock->Release();
+        isFull->V();
+    }
+}
+
+void static Consume(int which)
+{
+    for(int i=0;i<CONSUME_TIMES;++i)
+    {
+        isFull->P();
+        produceArrayLock->Acquire();
+        if(debug->IsEnabled('s')) cerr<<"consumer"<<which<<" consumes: "<<produceArray[++low]<<", now low is "<<low<<". Now number in list is: "<<high-low-2<<endl;
+        produceArrayLock->Release();
+        isEmpty->V();
+    }
+}
+
+static void Produce1(int which)
+{
+    for(int i=0;i<PRODUCE_TIMES;++i)
+    {
+        produceList->Append(i);
+        if(debug->IsEnabled('s')) cerr<<"producer"<<which<<" produces: "<<i<<endl;
+    }
+}
+
+static void Consume1(int which)
+{
+    for(int i=0;i<CONSUME_TIMES;++i)
+    {
+        if(debug->IsEnabled('s')) cerr<<"consumer"<<which<<" consumes: "<<produceList->RemoveFront()<<endl;
+    }
+}
+
+void MyProducerConsumer1()
+{
+    isFull = new Semaphore("isFull",0);
+    isEmpty = new Semaphore("isEmpty",MAX_PRODUCE_ARRAY_NUM);
+    produceArrayLock = new Lock("produceArrayLock");
+    high = 0;
+    low = -1;
+    memset(produceArray,-1,sizeof(produceArray));
+    Thread* producers[PRODUCER_NUM];
+    Thread* consumers[CONSUMER_NUM];
+    char tname[PRODUCER_NUM+CONSUMER_NUM][20];
+    int tnn=0;
+    for(int i=0;i<PRODUCER_NUM;++i)
+    {
+        sprintf(tname[tnn],"Producer %d",i);
+        producers[i] = new Thread(tname[tnn]);
+        producers[i]->Fork((VoidFunctionPtr)Produce,(void*)i);
+        ++tnn;
+    }
+    for(int i=0;i<CONSUMER_NUM;++i)
+    {
+        sprintf(tname[tnn],"Consumer %d",i);
+        consumers[i] = new Thread(tname[tnn]);
+        consumers[i]->Fork((VoidFunctionPtr)Consume,(void*)i);
+        ++tnn;
+    }
+    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+}
+
+void MyProducerConsumer2()
+{
+    produceList = new SynchList<int>;
+    Thread* producers[PRODUCER_NUM];
+    Thread* consumers[CONSUMER_NUM];
+    char tname[PRODUCER_NUM+CONSUMER_NUM][20];
+    int tnn=0;
+    for(int i=0;i<PRODUCER_NUM;++i)
+    {
+        sprintf(tname[tnn],"Producer %d",i);
+        producers[i] = new Thread(tname[tnn]);
+        producers[i]->Fork((VoidFunctionPtr)Produce1,(void*)i);
+        ++tnn;
+    }
+    for(int i=0;i<CONSUMER_NUM;++i)
+    {
+        sprintf(tname[tnn],"Consumer %d",i);
+        consumers[i] = new Thread(tname[tnn]);
+        consumers[i]->Fork((VoidFunctionPtr)Consume1,(void*)i);
+        ++tnn;
+    }
+    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+}
+
+void static testBarrier(int which)
+{
+    barrierMutex->Acquire();
+    cerr<<"thread"<<which<<" output before barrier:"<<1<<endl;
+    barrier->Barrier(barrierMutex);
+    cerr<<"thread"<<which<<" output after barrier:"<<2<<endl;
+    barrierMutex->Release();
+}
+
+void MyBarrier()
+{
+    barrier = new Condition("myBarrier");
+    barrierMutex = new Lock("myBarrierMutex");
+    Thread* test[TEST_THREAD_NUM];
+    char tname[TEST_THREAD_NUM][20];
+    int tnn=0;
+    for(int i=0;i<TEST_THREAD_NUM;++i)
+    {
+        sprintf(tname[tnn],"testThread %d",i);
+        test[i] = new Thread(tname[tnn]);
+        test[i]->Fork((VoidFunctionPtr)testBarrier,(void*)i);
+        ++tnn;
+    }
+    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+}
+
+void MyReader(int which)
+{
+    for(int i=which;i<which+10;++i)
+    {
+        rwMutex->Acquire();
+        ++readerCount;
+        if(readerCount==1) wLock->Acquire();
+        rwMutex->Release();
+        cerr<<"Reader"<<which<<" read pos"<<i<<": "<<readContent[i]<<endl;
+        rwMutex->Acquire();
+        --readerCount;
+        if(!readerCount) wLock->Release();
+        rwMutex->Release();
+    }
+}
+
+void MyWriter(int which)
+{
+    for(int i=which;i<which+10;++i)
+    {
+        wLock->Acquire();
+        cerr<<"Writer"<<which<<" write pos"<<i<<" from "<<readContent[i];
+        readContent[i] = i*2+1;
+        cerr<<" to "<<readContent[i]<<endl;
+        wLock->Release();
+    }
+}
+
+void MyReaderWriter()
+{
+    readerCount = 0;
+    for(int i=0;i<READ_CONTENT_SIZE;++i) readContent[i] = i+1;
+    wLock = new Lock("writeLock");
+    rwMutex = new Lock("readWriteMutex");
+    Thread* readers[READER_NUM];
+    Thread* writers[WRITER_NUM];
+    char tname[READER_NUM+WRITER_NUM][20];
+    int tnn=0;
+    for(int i=0;i<READER_NUM;++i)
+    {
+        sprintf(tname[tnn],"reader%d",i);
+        readers[i] = new Thread(tname[tnn]);
+        readers[i]->Fork((VoidFunctionPtr)MyReader,(void*)i);
+        ++tnn;
+    }
+    for(int i=0;i<WRITER_NUM;++i)
+    {
+        sprintf(tname[tnn],"writer%d",i);
+        writers[i] = new Thread(tname[tnn]);
+        writers[i]->Fork((VoidFunctionPtr)MyWriter,(void*)i);
+        ++tnn;
+    }
+    while(!kernel->scheduler->isReadyListEmpty()) kernel->currentThread->Yield();
+}
+
+void Kernel::SyncTest(int type)
+{
+    if(type==0) MyProducerConsumer1();
+    else if(type==1) MyProducerConsumer2();
+    else if(type==2) MyBarrier();
+    else if(type==3) MyReaderWriter();
 }

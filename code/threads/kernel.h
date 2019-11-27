@@ -41,6 +41,8 @@ class Kernel {
 
     void NetworkTest();         // interactive 2-machine network test
 
+    void SyncTest(int type);
+
     void TS();
 
 // These are public for notational convenience; really, 

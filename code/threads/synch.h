@@ -19,6 +19,8 @@
 #include "list.h"
 #include "main.h"
 
+#define BARRIER_NUM 5
+
 // The following class defines a "semaphore" whose value is a non-negative
 // integer.  The semaphore has only two operations P() and V():
 //
@@ -132,12 +134,14 @@ class Condition {
 					// lock and going to sleep are 
 					// *atomic* in Wait()
     void Signal(Lock *conditionLock);   // conditionLock must be held by
+    void Barrier(Lock *conditionLock);
     void Broadcast(Lock *conditionLock);// the currentThread for all of 
 					// these operations
     // SelfTest routine provided by SyncLists
 
   private:
     char* name;
+    int barrierNum;
     List<Semaphore *> *waitQueue;	// list of waiting threads
 };
 #endif // SYNCH_H

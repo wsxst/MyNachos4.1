@@ -196,6 +196,7 @@ int main(int argc, char **argv)
     bool threadTestFlag = false;
     bool consoleTestFlag = false;
     bool networkTestFlag = false;
+    int syncTestFlag = -1;
 #ifndef FILESYS_STUB
     char *copyUnixFileName = NULL;   // UNIX file to be copied into Nachos
     char *copyNachosFileName = NULL; // name of copied file in Nachos
@@ -287,6 +288,12 @@ int main(int argc, char **argv)
             cout << "Partial usage: nachos [-l] [-D]\n";
 #endif //FILESYS_STUB
         }
+        else if(strcmp(argv[i],"-st")==0)
+        {
+            ASSERT(i+1<argc);
+            syncTestFlag = atoi(argv[i+1]);
+            ++i;
+        }
     }
     debug = new Debug(debugArg);
 
@@ -317,6 +324,10 @@ int main(int argc, char **argv)
     if (networkTestFlag)
     {
         kernel->NetworkTest(); // two-machine test of the network
+    }
+    if(syncTestFlag!=-1)
+    {
+        kernel->SyncTest(syncTestFlag);
     }
 
 #ifndef FILESYS_STUB

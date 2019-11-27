@@ -78,6 +78,7 @@ void Scheduler::ReadyToRun(Thread *thread)
     ASSERT(kernel->interrupt->getLevel() == IntOff);//判断是否已经关中断
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
+    if(blockList->IsInList(thread)) blockList->Remove(thread);
     thread->setStatus(READY);//将该线程状态设置为就绪态
     if(typeno==1) sortedReadyList->Insert(thread);//抢占式优先级
     else if(typeno==0||typeno==2)
@@ -333,6 +334,8 @@ void Scheduler::restoreAThread()
 
 void Scheduler::blockAThread(Thread* t)
 {
+    cerr<<"当前的阻塞队列为:"<<endl;
+    blockList->Apply(ThreadPrint);
     t->setStatus(BLOCKED);
     blockList->Append(t);
 }

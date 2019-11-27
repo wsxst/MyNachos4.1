@@ -660,3 +660,4 @@ void Thread::loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f)
     if(debug->IsEnabled('a')) cerr<<"Read addr: "<<fileAddr<<" from the file into addr: "<<ppn*PageSize<<" in the main memory!"<<endl;
     f->ReadAt(&(kernel->machine->mainMemory[ppn*PageSize]), PageSize, fileAddr);
 }
+

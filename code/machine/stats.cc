@@ -40,8 +40,10 @@ Statistics::Print()
 		cout << ", writes " << numDiskWrites << "\n";
 		cout << "Console I/O: reads " << numConsoleCharsRead;
     cout << ", writes " << numConsoleCharsWritten << "\n";
+#ifdef USE_TLB
     cout << "TLB miss number: " << numTLBMiss << ", miss rate: " << (double)numTLBMiss/numAddressTranslation*100 << "%\n";
-    cout << "Page fault number:" << numPageFaults << ", Page fault rate:" << (double)numPageFaults/numAddressTranslation*100 << "%\n";
+#endif
+    if(numAddressTranslation!=0) cout << "Page fault number:" << numPageFaults << ", Page fault rate:" << (double)numPageFaults/numAddressTranslation*100 << "%\n";
     cout << "Network I/O: packets received " << numPacketsRecvd;
 		cout << ", sent " << numPacketsSent << "\n";
 }

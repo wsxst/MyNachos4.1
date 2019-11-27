@@ -1,0 +1,12 @@
+第一个是利用信号量和锁实现生产者消费者问题
+第二个是利用锁和条件变量实现生产者消费者问题
+第三个是利用锁和条件变量实现barrier
+第四个是利用锁实现第一类读者写者问题
+-st 后面的参数代表测试的类型
+-rs 0 代表以0为种子生成随机数作为时钟中断长度
+sh compile.sh \
+&& ./nachos -d its -st 0 -rs 0 2>~/MyNachos4.1/lab4-1.log \
+&& ./nachos -d its -st 1 -rs 0 2>~/MyNachos4.1/lab4-2.log \
+&& ./nachos -d its -st 2 -rs 0 2>~/MyNachos4.1/lab4-3.log \
+&& ./nachos -d its -st 3 -rs 0 2>~/MyNachos4.1/lab4-4.log
+
