@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.noff
 
 # cross-compiler
 coff2noff
