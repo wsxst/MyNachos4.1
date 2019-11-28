@@ -2355,7 +2355,7 @@ directory.o: ../filesys/directory.cc /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
- ../filesys/directory.h
+ ../filesys/directory.h ../lib/debug.h ../lib/sysdep.h
 filehdr.o: ../filesys/filehdr.cc /usr/include/stdc-predef.h \
  ../lib/copyright.h ../filesys/filehdr.h ../machine/disk.h \
  ../lib/utility.h ../lib/copyright.h ../machine/callback.h \

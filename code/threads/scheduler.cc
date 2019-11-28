@@ -133,8 +133,11 @@ Thread* Scheduler::FindNextToRun()
     {
         if (!readyList->IsEmpty())
         {
-            Print();
-            if(debug->IsEnabled('t')) cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
+            if(debug->IsEnabled('t'))
+            {
+                Print();
+                cerr<<"从就绪队列中选出线程："<<readyList->Front()->getName()<<";剩余时间片:"<<readyList->Front()->getRemainTime()<<endl;
+            }
             return readyList->RemoveFront();
         }
     }
@@ -334,8 +337,11 @@ void Scheduler::restoreAThread()
 
 void Scheduler::blockAThread(Thread* t)
 {
-    cerr<<"当前的阻塞队列为:"<<endl;
-    blockList->Apply(ThreadPrint);
+    if(debug->IsEnabled('t'))
+    {
+        cerr<<"当前的阻塞队列为:"<<endl;
+        blockList->Apply(ThreadPrint);
+    }
     t->setStatus(BLOCKED);
     blockList->Append(t);
 }

@@ -88,6 +88,12 @@ void ExceptionHandler(ExceptionType which)
 			if(kernel->currentThread->space != NULL)
 			{
 				kernel->fileSystem->Remove(kernel->currentThread->space->getVMFileName());
+				for(int i=0;i<kernel->currentThread->space->getNumPages();++i)
+				{
+					if(kernel->machine->pt[i].valid)
+						kernel->machine->mmBitmap->Clear(kernel->machine->pt[i].ppn);
+				}
+				if(debug->IsEnabled('a')) kernel->machine->mmBitmap->Print();
 			}
 			if(kernel->machine->tlb != NULL)
 			{

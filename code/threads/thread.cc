@@ -75,10 +75,8 @@ Thread::~Thread()
 
     ASSERT(this != kernel->currentThread);
     if(this->space!=NULL) delete this->space;
-    // cout<<"哈哈"<<endl;
     if (stack != NULL)
         DeallocBoundedArray((char *)stack, StackSize * sizeof(int));
-    // cout<<"哈哈1"<<endl;
     removeAThread(this->getTID());
 }
 
@@ -316,6 +314,7 @@ void Thread::SaveAThread(char* fname)
         if(pt[i].valid)
         {
             pt[i].valid = false;
+            if(debug->IsEnabled('a')) m->mmBitmap->Print();
             m->mmBitmap->Clear(pt[i].ppn);
             sprintf(buf,"%d",i);
             ASSERT(f->WriteAt(buf, sizeof(int), offset)>0);
@@ -647,7 +646,7 @@ void Thread::loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f)
     kernel->machine->updateFIFOFlag(pt, vpn, kernel->machine->pageTableSize);
 #endif
 #endif
-    kernel->machine->mmBitmap->Mark(ppn);
+    // kernel->machine->mmBitmap->Mark(ppn);
 #ifndef USE_RPT
     if(writeIntoVM)
     {

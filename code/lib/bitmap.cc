@@ -149,13 +149,10 @@ Bitmap::NumClear() const
 void
 Bitmap::Print() const
 {
-    cout << "Bitmap set:\n"; 
-    for (int i = 0; i < numBits; i++) {
-	if (Test(i)) {
-	    cout << i << ", ";
-	}
-    }
-    cout << "\n"; 
+    cerr << "Bitmap set:\n"; 
+    for (int i = 0; i < numBits; i++)
+	    if (Test(i)) cerr << i << ", ";
+    cerr << "\n"; 
 }
 
 

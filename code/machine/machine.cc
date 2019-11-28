@@ -238,7 +238,9 @@ void Machine::WriteRegister(int num, int value)
 
 int Machine::findAvailablePageFrame()
 {
-    return mmBitmap->FindAndSet();
+    int resBit = mmBitmap->FindAndSet();
+    if(debug->IsEnabled('a')) mmBitmap->Print();
+    return resBit;
 }
 
 void Machine::showTLB()
