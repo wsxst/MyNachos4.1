@@ -282,7 +282,7 @@ void static Produce(int which)
         isEmpty->P();
         produceArrayLock->Acquire();
         produceArray[high++] = i;
-        if(debug->IsEnabled('s')) cerr<<"producer"<<which<<" produces: "<<i<<", now high is "<<high<<". Now number in list is: "<<high-low-1<<endl;
+        cerr<<"producer"<<which<<" produces: "<<i<<", now high is "<<high<<". Now number in list is: "<<high-low-1<<endl;
         produceArrayLock->Release();
         isFull->V();
     }
@@ -294,7 +294,8 @@ void static Consume(int which)
     {
         isFull->P();
         produceArrayLock->Acquire();
-        if(debug->IsEnabled('s')) cerr<<"consumer"<<which<<" consumes: "<<produceArray[++low]<<", now low is "<<low<<". Now number in list is: "<<high-low-2<<endl;
+        ++low;
+        cerr<<"consumer"<<which<<" consumes: "<<produceArray[low]<<", now low is "<<low<<". Now number in list is: "<<high-low-1<<endl;
         produceArrayLock->Release();
         isEmpty->V();
     }
@@ -305,7 +306,7 @@ static void Produce1(int which)
     for(int i=0;i<PRODUCE_TIMES;++i)
     {
         produceList->Append(i);
-        if(debug->IsEnabled('s')) cerr<<"producer"<<which<<" produces: "<<i<<endl;
+        cerr<<"producer"<<which<<" produces: "<<i<<endl;
     }
 }
 
@@ -313,7 +314,8 @@ static void Consume1(int which)
 {
     for(int i=0;i<CONSUME_TIMES;++i)
     {
-        if(debug->IsEnabled('s')) cerr<<"consumer"<<which<<" consumes: "<<produceList->RemoveFront()<<endl;
+        int tmp = produceList->RemoveFront();
+        cerr<<"consumer"<<which<<" consumes: "<<tmp<<endl;
     }
 }
 
@@ -400,14 +402,31 @@ void MyReader(int which)
 {
     for(int i=which;i<which+10;++i)
     {
+        cerr<<"Reader"<<which<<" acquire rwMutex!"<<endl;
         rwMutex->Acquire();
+        cerr<<"Reader"<<which<<" get rwMutex!"<<endl;
         ++readerCount;
-        if(readerCount==1) wLock->Acquire();
+        cerr<<"There are "<<readerCount<<" readers now!"<<endl;
+        if(readerCount==1)
+        {
+            cerr<<"Reader"<<which<<" acquire wLock!"<<endl;
+            wLock->Acquire();
+            cerr<<"Reader"<<which<<" get wLock!"<<endl;
+        }
+        cerr<<"Reader"<<which<<" release rwMutex!"<<endl;
         rwMutex->Release();
         cerr<<"Reader"<<which<<" read pos"<<i<<": "<<readContent[i]<<endl;
+        cerr<<"Reader"<<which<<" acquire rwMutex!"<<endl;
         rwMutex->Acquire();
+        cerr<<"Reader"<<which<<" get rwMutex!"<<endl;
         --readerCount;
-        if(!readerCount) wLock->Release();
+        cerr<<"There are "<<readerCount<<" readers now!"<<endl;
+        if(!readerCount)
+        {
+            cerr<<"Reader"<<which<<" release wLock!"<<endl;
+            wLock->Release();
+        }
+        cerr<<"Reader"<<which<<" release rwMutex!"<<endl;
         rwMutex->Release();
     }
 }
@@ -416,10 +435,13 @@ void MyWriter(int which)
 {
     for(int i=which;i<which+10;++i)
     {
+        cerr<<"Writer"<<which<<" acquire wLock!"<<endl;
         wLock->Acquire();
+        cerr<<"Writer"<<which<<" get wLock!"<<endl;
         cerr<<"Writer"<<which<<" write pos"<<i<<" from "<<readContent[i];
         readContent[i] = i*2+1;
         cerr<<" to "<<readContent[i]<<endl;
+        cerr<<"Writer"<<which<<" release wLock!"<<endl;
         wLock->Release();
     }
 }

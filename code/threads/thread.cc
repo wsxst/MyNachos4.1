@@ -625,11 +625,6 @@ void Thread::loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f)
 {
 #ifdef USE_RPT
     TranslationEntry* pt = kernel->machine->pt;
-#else
-    TranslationEntry* pt = this->space->getPT();
-#endif
-    bool writeIntoVM = false;
-#ifdef USE_RPT
     pt[ppn].tID = this->threadID;
     pt[ppn].vpn = vpn;
     pt[ppn].valid = true;
@@ -638,17 +633,14 @@ void Thread::loadPageFrame(int vpn, int ppn, int fileAddr, OpenFile* f)
     kernel->machine->updateFIFOFlag(pt, ppn, NumPhysPages);
 #endif
 #else
+    TranslationEntry* pt = this->space->getPT();
     pt[vpn].vpn = vpn;
     pt[vpn].ppn = ppn;
     pt[vpn].valid = true;
-    if(pt[vpn].dirty) writeIntoVM = true;
 #ifdef FIFO_REPLACE
     kernel->machine->updateFIFOFlag(pt, vpn, kernel->machine->pageTableSize);
 #endif
-#endif
-    // kernel->machine->mmBitmap->Mark(ppn);
-#ifndef USE_RPT
-    if(writeIntoVM)
+    if(pt[vpn].dirty)
     {
         if(debug->IsEnabled('a')) cerr<<"Dirty page #"<<ppn<<" is written into VM, addr: "<<kernel->currentThread->space->getCurrentNoffHeader().code.inFileAddr+vpn*PageSize<<endl;
         OpenFile* exec = kernel->fileSystem->Open(kernel->currentThread->space->getVMFileName());

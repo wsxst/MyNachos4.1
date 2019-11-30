@@ -44,16 +44,6 @@ public:
 					 // Immediates are sign-extended.
 };
 
-void SuspendAThread()
-{
-
-}
-
-void RestoreAThread()
-{
-
-}
-
 //----------------------------------------------------------------------
 // Machine::Run
 // 	Simulate the execution of a user-level program on Nachos.

@@ -1,12 +1,3 @@
-日志文件名称为一个三位十进制数
-第一位十进制数表示是否启用TLB,1代表是
-第二位表示是否使用倒排页表而非正常页表
-第三位为0表示使用FIFO页面置换算法,1表示使用LRU
-这三种情况在Makefile中(DEFINES参数)分别体现为:
--DUSE_TLB表示使用TLB
--DUSE_RPT表示使用倒排页表,不使用普通页表
--DFIFO_REPLACE表示使用FIFO页面置换算法,-DLRU_REPLACE表示使用LRU
-
 对应用到的测试命令如下:
 #首先清空结果输出文件
 > ~/MyNachos4.1/lab3-FinalTestResult.log
